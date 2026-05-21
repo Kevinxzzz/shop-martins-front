@@ -1,0 +1,51 @@
+@use '@/styles/mixins' as *;
+
+.skeleton {
+  @include skeleton-pulse;
+  
+  &.text {
+    height: 14px;
+    border-radius: var(--radius-sm);
+  }
+
+  &.heading {
+    height: 20px;
+    border-radius: var(--radius-sm);
+  }
+
+  &.avatar {
+    border-radius: var(--radius-pill);
+  }
+
+  &.image {
+    border-radius: var(--radius-lg);
+  }
+
+  &.card {
+    border-radius: var(--radius-xl);
+  }
+
+  &.button {
+    height: 44px;
+    border-radius: var(--radius-lg);
+  }
+}
+
+.productCardSkeleton {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.productImageSkeleton {
+  @include skeleton-pulse;
+  aspect-ratio: 1 / 1;
+}
+
+.productContentSkeleton {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}

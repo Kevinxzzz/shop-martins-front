@@ -1,0 +1,418 @@
+@use '@/styles/mixins' as *;
+
+// ═════════════════════════════════════════════════════════════
+// NAVBAR — AskDialog-inspired premium header
+// ═════════════════════════════════════════════════════════════
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border-light);
+  transition: box-shadow var(--transition-base);
+
+  &:hover {
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+.inner {
+  @include container;
+  display: flex;
+  align-items: center;
+  height: var(--navbar-height);
+  gap: var(--space-4);
+}
+
+// ── Logo ──────────────────────────────────────────────
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 34px;
+  height: 34px;
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+  @include flex-center;
+  color: #fff;
+}
+
+.logoText {
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-lg);
+  color: var(--color-text);
+  letter-spacing: var(--ls-tight);
+
+  span {
+    color: var(--color-primary);
+  }
+}
+
+// ── Center Nav (desktop) ──────────────────────────────
+.centerNav {
+  display: none;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+  margin-right: auto;
+
+  @include respond-to('lg') {
+    display: flex;
+  }
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-bg-tertiary);
+  }
+
+  &.active {
+    color: var(--color-primary);
+    font-weight: var(--fw-semibold);
+  }
+}
+
+// ── Categories Dropdown ───────────────────────────────
+.navDropdown {
+  position: relative;
+
+  .navDropdownIcon {
+    transition: transform var(--transition-fast);
+    transform: rotate(90deg);
+  }
+
+  &:hover .navDropdownIcon {
+    transform: rotate(90deg) translateX(2px);
+  }
+}
+
+.dropdownMenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  padding: var(--space-2);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+
+  .navDropdown:hover & {
+    display: flex;
+    flex-direction: column;
+    animation: fade-in-up 0.15s ease-out;
+  }
+}
+
+.dropdownItem {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--color-primary-ultra-light);
+    color: var(--color-primary);
+  }
+}
+
+// ── Right Actions ─────────────────────────────────────
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+
+  @include respond-to('lg') {
+    margin-left: 0;
+  }
+}
+
+.iconBtn {
+  @include flex-center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.dashboardBtn {
+  @include button-base;
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  box-shadow: none;
+  display: none;
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+    transform: translateY(-1px);
+  }
+
+  @include respond-to('md') {
+    display: inline-flex;
+  }
+}
+
+.menuBtn {
+  @include flex-center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+
+  @include respond-to('lg') {
+    display: none;
+  }
+}
+
+// ── Expandable Search ─────────────────────────────────
+.searchBar {
+  border-top: 1px solid var(--color-border-light);
+  padding: var(--space-2) 0;
+  animation: fade-in 0.2s ease-out;
+}
+
+.searchForm {
+  @include container;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: calc(var(--space-4) + var(--space-4));
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+
+  @include respond-to('md') {
+    left: calc(var(--space-6) + var(--space-4));
+  }
+
+  @include respond-to('xl') {
+    left: calc(var(--space-8) + var(--space-4));
+  }
+}
+
+.searchInput {
+  @include input-base;
+  padding-left: var(--space-10);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-secondary);
+  border-color: transparent;
+  height: 42px;
+  font-size: var(--fs-sm);
+
+  &:focus {
+    background: var(--color-bg);
+    border-color: var(--color-primary);
+  }
+}
+
+.searchClose {
+  @include flex-center;
+  position: absolute;
+  right: calc(var(--space-4) + var(--space-2));
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-tertiary);
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  transition: all var(--transition-fast);
+
+  @include respond-to('md') {
+    right: calc(var(--space-6) + var(--space-2));
+  }
+
+  @include respond-to('xl') {
+    right: calc(var(--space-8) + var(--space-2));
+  }
+
+  &:hover {
+    background: var(--color-danger);
+    color: #fff;
+  }
+}
+
+// ── Mobile Drawer ─────────────────────────────────────
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg-overlay);
+  z-index: var(--z-overlay);
+  animation: fade-in 0.2s ease-out;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  max-width: 90vw;
+  background: var(--color-bg);
+  z-index: var(--z-modal);
+  padding: var(--space-5) var(--space-5);
+  animation: slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.drawerHeader {
+  @include flex-between;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.drawerClose {
+  @include flex-center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+
+  &:hover {
+    background: var(--color-danger);
+    color: #fff;
+  }
+}
+
+.drawerSearchForm {
+  position: relative;
+}
+
+.drawerSearchIcon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+}
+
+.drawerSearch {
+  @include input-base;
+  padding-left: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-secondary);
+  border-color: transparent;
+  height: 42px;
+  font-size: var(--fs-sm);
+
+  &:focus {
+    background: var(--color-bg);
+    border-color: var(--color-primary);
+  }
+}
+
+.drawerSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.drawerLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  color: var(--color-text-tertiary);
+  padding: var(--space-1) var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.drawerLinks {
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--color-primary-ultra-light);
+    color: var(--color-primary);
+  }
+}
+
+.drawerDashboard {
+  @include button-base;
+  background: var(--color-primary);
+  color: #fff;
+  width: 100%;
+  margin-top: auto;
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  box-shadow: var(--shadow-primary);
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+    transform: translateY(-1px);
+  }
+}

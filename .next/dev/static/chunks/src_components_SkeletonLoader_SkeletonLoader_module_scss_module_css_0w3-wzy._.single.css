@@ -1,0 +1,58 @@
+/* [project]/src/components/SkeletonLoader/SkeletonLoader.module.scss.module.css [app-client] (css) */
+.SkeletonLoader-module-scss-module__910G3a__skeleton {
+  background: linear-gradient(90deg, var(--color-bg-tertiary) 25%, var(--color-bg-secondary) 50%, var(--color-bg-tertiary) 75%);
+  border-radius: var(--radius-md);
+  background-size: 200% 100%;
+  animation: 1.5s ease-in-out infinite SkeletonLoader-module-scss-module__910G3a__skeleton-shimmer;
+}
+
+.SkeletonLoader-module-scss-module__910G3a__skeleton.SkeletonLoader-module-scss-module__910G3a__text {
+  border-radius: var(--radius-sm);
+  height: 14px;
+}
+
+.SkeletonLoader-module-scss-module__910G3a__skeleton.SkeletonLoader-module-scss-module__910G3a__heading {
+  border-radius: var(--radius-sm);
+  height: 20px;
+}
+
+.SkeletonLoader-module-scss-module__910G3a__skeleton.SkeletonLoader-module-scss-module__910G3a__avatar {
+  border-radius: var(--radius-pill);
+}
+
+.SkeletonLoader-module-scss-module__910G3a__skeleton.SkeletonLoader-module-scss-module__910G3a__image {
+  border-radius: var(--radius-lg);
+}
+
+.SkeletonLoader-module-scss-module__910G3a__skeleton.SkeletonLoader-module-scss-module__910G3a__card {
+  border-radius: var(--radius-xl);
+}
+
+.SkeletonLoader-module-scss-module__910G3a__skeleton.SkeletonLoader-module-scss-module__910G3a__button {
+  border-radius: var(--radius-lg);
+  height: 44px;
+}
+
+.SkeletonLoader-module-scss-module__910G3a__productCardSkeleton {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.SkeletonLoader-module-scss-module__910G3a__productImageSkeleton {
+  background: linear-gradient(90deg, var(--color-bg-tertiary) 25%, var(--color-bg-secondary) 50%, var(--color-bg-tertiary) 75%);
+  border-radius: var(--radius-md);
+  aspect-ratio: 1;
+  background-size: 200% 100%;
+  animation: 1.5s ease-in-out infinite SkeletonLoader-module-scss-module__910G3a__skeleton-shimmer;
+}
+
+.SkeletonLoader-module-scss-module__910G3a__productContentSkeleton {
+  padding: var(--space-4);
+  gap: var(--space-3);
+  flex-direction: column;
+  display: flex;
+}
+
+/*# sourceMappingURL=src_components_SkeletonLoader_SkeletonLoader_module_scss_module_css_0w3-wzy._.single.css.map*/

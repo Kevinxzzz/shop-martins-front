@@ -1,0 +1,213 @@
+@use '@/styles/mixins' as *;
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+// ── Sidebar ─────────────────────────────────────────────────
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--color-bg-card);
+  border-right: 1px solid var(--color-border);
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: var(--z-sticky);
+  overflow-y: auto;
+
+  @include respond-to('lg') {
+    display: flex;
+  }
+}
+
+.mobileSidebar {
+  @extend .sidebar;
+  display: flex;
+  z-index: var(--z-modal);
+  animation: slide-in-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg-overlay);
+  z-index: var(--z-overlay);
+  animation: fade-in 0.2s ease-out;
+}
+
+.sidebarHeader {
+  padding: var(--space-5) var(--space-5);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  background: var(--color-primary-gradient);
+  border-radius: var(--radius-md);
+  @include flex-center;
+  color: #fff;
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-sm);
+}
+
+.logoText {
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-md);
+  color: var(--color-text);
+  span { color: var(--color-primary); }
+}
+
+.nav {
+  flex: 1;
+  padding: var(--space-4) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.navSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.navLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  color: var(--color-text-tertiary);
+  padding: var(--space-2) var(--space-3);
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+
+  span {
+    flex: 1;
+  }
+
+  &:hover {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text);
+  }
+
+  &.active {
+    background: var(--color-primary-ultra-light);
+    color: var(--color-primary);
+    font-weight: var(--fw-semibold);
+  }
+}
+
+.navArrow {
+  opacity: 0.5;
+}
+
+.sidebarFooter {
+  padding: var(--space-3);
+  border-top: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+// ── Main ────────────────────────────────────────────────────
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  @include respond-to('lg') {
+    margin-left: var(--sidebar-width);
+  }
+}
+
+.topbar {
+  height: var(--dashboard-header-height);
+  @include flex-between;
+  padding-inline: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+
+  @include respond-to('lg') {
+    padding-inline: var(--space-6);
+  }
+}
+
+.menuToggle {
+  @include button-ghost;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: var(--radius-md);
+
+  @include respond-to('lg') {
+    display: none;
+  }
+}
+
+.topbarRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+
+  @include respond-to('lg') {
+    display: none;
+  }
+}
+
+.themeBtn {
+  @include button-ghost;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+}
+
+.content {
+  flex: 1;
+  padding: var(--space-4) var(--space-3);
+  overflow-x: hidden;
+
+  @include respond-to('sm') {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  @include respond-to('lg') {
+    padding: var(--space-8) var(--space-8);
+  }
+}

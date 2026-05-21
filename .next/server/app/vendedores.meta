@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(public)/layout,_N_T_/(public)/vendedores/layout,_N_T_/(public)/vendedores/page,_N_T_/vendedores"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KHB1YmxpYyk/vendedores/__PAGE__",
+    "/!KHB1YmxpYyk/vendedores",
+    "/!KHB1YmxpYyk",
+    "/_index",
+    "/_head"
+  ]
+}

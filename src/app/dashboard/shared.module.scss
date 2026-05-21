@@ -1,0 +1,500 @@
+@use '@/styles/mixins' as *;
+
+// ═══════════════════════════════════════════════════════════
+// DASHBOARD — Shared styles (tables, forms, profiles, etc.)
+// ═══════════════════════════════════════════════════════════
+
+.page {
+  max-width: 1100px;
+  width: 100%;
+}
+
+.loading {
+  @include flex-center;
+  min-height: 300px;
+  color: var(--color-text-tertiary);
+}
+
+.header {
+  @include flex-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+
+  @include respond-to('md') {
+    margin-bottom: var(--space-6);
+    gap: var(--space-4);
+  }
+}
+
+.title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-extrabold);
+
+  @include respond-to('md') {
+    font-size: var(--fs-2xl);
+  }
+}
+
+.addBtn {
+  @include button-primary;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+// ── Table ───────────────────────────────────────────────
+.tableWrapper {
+  @include card;
+  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  &:hover { transform: none; }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+
+  th, td {
+    padding: var(--space-2) var(--space-3);
+    text-align: left;
+    font-size: var(--fs-xs);
+
+    @include respond-to('md') {
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--fs-sm);
+    }
+  }
+
+  th {
+    background: var(--color-bg-secondary);
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-secondary);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-wide);
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+  }
+
+  td {
+    border-bottom: 1px solid var(--color-border-light);
+    color: var(--color-text);
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: var(--color-bg-secondary);
+  }
+}
+
+.productRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+
+  @include respond-to('md') {
+    gap: var(--space-3);
+  }
+}
+
+.productThumb {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background: var(--color-bg-tertiary);
+  flex-shrink: 0;
+
+  @include respond-to('md') {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+  }
+}
+
+.productTitle {
+  font-weight: var(--fw-medium);
+  @include truncate;
+  max-width: 140px;
+
+  @include respond-to('md') {
+    max-width: 200px;
+  }
+}
+
+.badge {
+  display: inline-flex;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: var(--fw-semibold);
+  background: var(--color-primary-ultra-light);
+  color: var(--color-primary);
+  white-space: nowrap;
+
+  @include respond-to('md') {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--fs-xs);
+  }
+}
+
+.price {
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.actionBtns {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.actionBtn {
+  @include button-ghost;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  min-width: 32px;
+
+  &.danger:hover {
+    background: rgba(255, 59, 92, 0.1);
+    color: var(--color-danger);
+  }
+}
+
+// ── Form ────────────────────────────────────────────────
+.form {
+  @include card;
+  padding: var(--space-5);
+  max-width: 720px;
+  &:hover { transform: none; }
+
+  @include respond-to('md') {
+    padding: var(--space-8);
+  }
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  &.full {
+    @include respond-to('md') {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+  }
+}
+
+.input {
+  @include input-base;
+  height: 42px;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-lg);
+}
+
+.textarea {
+  @include input-base;
+  min-height: 100px;
+  resize: vertical;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-lg);
+
+  @include respond-to('md') {
+    min-height: 120px;
+  }
+}
+
+.select {
+  @include input-base;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+}
+
+.uploadArea {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  color: var(--color-text-tertiary);
+  display: block;
+
+  @include respond-to('md') {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-ultra-light);
+    color: var(--color-primary);
+  }
+}
+
+.uploadIcon {
+  margin-bottom: var(--space-2);
+}
+
+.uploadText {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.uploadHint {
+  font-size: var(--fs-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-1);
+}
+
+.previewGrid {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+
+.previewItem {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  overflow: hidden;
+
+  @include respond-to('md') {
+    width: 72px;
+    height: 72px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.formActions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.submitBtn {
+  @include button-primary;
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+.cancelBtn {
+  @include button-ghost;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+  }
+}
+
+// ── Profile ─────────────────────────────────────────────
+.profileCard {
+  @include card;
+  padding: var(--space-5);
+  max-width: 600px;
+  &:hover { transform: none; }
+
+  @include respond-to('md') {
+    padding: var(--space-8);
+  }
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border-light);
+  flex-wrap: wrap;
+
+  @include respond-to('md') {
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
+}
+
+.profileAvatar {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-pill);
+  border: 3px solid var(--color-primary-ultra-light);
+  background: var(--color-bg-tertiary);
+
+  @include respond-to('md') {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.profileName {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+
+  @include respond-to('md') {
+    font-size: var(--fs-xl);
+  }
+}
+
+.profileRole {
+  font-size: var(--fs-xs);
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+}
+
+// ── Status ──────────────────────────────────────────────
+.statusBadge {
+  display: inline-flex;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+
+  &.active {
+    background: rgba(0, 196, 140, 0.1);
+    color: var(--color-success);
+  }
+
+  &.inactive {
+    background: rgba(255, 59, 92, 0.1);
+    color: var(--color-danger);
+  }
+}
+
+.toggleBtn {
+  @include button-ghost;
+  font-size: var(--fs-xs);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+}
+
+// ── Tokens ──────────────────────────────────────────────
+.tokenCard {
+  @include card;
+  padding: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  &:hover { transform: none; }
+
+  @include respond-to('md') {
+    padding: var(--space-5);
+    gap: var(--space-4);
+  }
+}
+
+.tokenValue {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  background: var(--color-bg-secondary);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  flex: 1;
+  word-break: break-all;
+  min-width: 0;
+}
+
+.tokenMeta {
+  font-size: var(--fs-xs);
+  color: var(--color-text-tertiary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.tokenList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+// ── Config ──────────────────────────────────────────────
+.configCard {
+  @include card;
+  padding: var(--space-5);
+  max-width: 600px;
+  &:hover { transform: none; }
+
+  @include respond-to('md') {
+    padding: var(--space-6);
+  }
+}
+
+.configSection {
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border-light);
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}
+
+.configTitle {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-4);
+
+  @include respond-to('md') {
+    font-size: var(--fs-md);
+  }
+}

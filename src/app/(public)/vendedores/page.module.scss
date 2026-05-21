@@ -1,0 +1,60 @@
+@use '@/styles/mixins' as *;
+
+.container {
+  @include container;
+  padding-block: var(--space-10);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.headerIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-xl);
+  background: var(--color-primary-ultra-light);
+  color: var(--color-primary);
+  @include flex-center;
+  margin: 0 auto var(--space-4);
+}
+
+.title {
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-extrabold);
+  margin-bottom: var(--space-3);
+
+  span {
+    color: var(--color-primary);
+  }
+}
+
+.subtitle {
+  font-size: var(--fs-md);
+  color: var(--color-text-secondary);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-5);
+  }
+}
+
+.skeletonCard {
+  @include skeleton-pulse;
+  height: 280px;
+  border-radius: var(--radius-xl);
+}

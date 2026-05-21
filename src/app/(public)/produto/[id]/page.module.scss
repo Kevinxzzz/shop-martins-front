@@ -1,0 +1,232 @@
+@use '@/styles/mixins' as *;
+
+.container {
+  @include container;
+  padding-block: var(--space-8);
+}
+
+.skeleton {
+  @include flex-center;
+  min-height: 400px;
+  color: var(--color-text-tertiary);
+}
+
+.empty {
+  @include flex-center;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 400px;
+
+  h2 {
+    font-size: var(--fs-2xl);
+  }
+}
+
+.backBtn {
+  @include button-secondary;
+  border-radius: var(--radius-pill);
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+
+  a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
+  span {
+    color: var(--color-text);
+    font-weight: var(--fw-medium);
+  }
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+  }
+}
+
+.gallery {
+  position: sticky;
+  top: calc(var(--navbar-height) + var(--space-4));
+  align-self: flex-start;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.categoryBadge {
+  display: inline-flex;
+  align-self: flex-start;
+  background: var(--color-primary-ultra-light);
+  color: var(--color-primary);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+}
+
+.title {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-snug);
+  color: var(--color-text);
+
+  @include respond-to('md') {
+    font-size: var(--fs-4xl);
+  }
+}
+
+.viewCount {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--color-text-tertiary);
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-5);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-light);
+}
+
+.price {
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-primary);
+  letter-spacing: var(--ls-tight);
+}
+
+.priceNote {
+  font-size: var(--fs-sm);
+  color: var(--color-text-tertiary);
+}
+
+.whatsappBtn {
+  @include button-whatsapp;
+  border-radius: var(--radius-xl);
+  font-size: var(--fs-lg);
+  padding: var(--space-5) var(--space-8);
+  justify-content: center;
+  animation: pulse-glow 2s infinite;
+
+  &:hover {
+    animation: none;
+  }
+}
+
+.description {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-light);
+
+  h3 {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    margin-bottom: var(--space-3);
+  }
+
+  p {
+    font-size: var(--fs-base);
+    line-height: var(--lh-relaxed);
+    color: var(--color-text-secondary);
+  }
+}
+
+.vendorBlock {
+  padding: var(--space-5);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-light);
+}
+
+.vendorTitle {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-3);
+}
+
+.vendorInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: inherit;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--color-bg-tertiary);
+  }
+}
+
+.vendorAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-primary-ultra-light);
+}
+
+.vendorName {
+  display: block;
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-base);
+  color: var(--color-text);
+}
+
+.vendorSub {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--color-primary);
+}
+
+// Related
+.related {
+  margin-top: var(--space-16);
+  padding-top: var(--space-10);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.relatedTitle {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-6);
+
+  span {
+    color: var(--color-primary);
+  }
+}
+
+.relatedGrid {
+  @include grid-auto-fill(240px, var(--space-5));
+}

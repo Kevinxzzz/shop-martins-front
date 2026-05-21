@@ -1,0 +1,77 @@
+@use '@/styles/mixins' as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg-overlay);
+  z-index: var(--z-overlay);
+  animation: fade-in 0.2s ease-out;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-bg);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  width: 90%;
+  max-width: 420px;
+  z-index: var(--z-modal);
+  box-shadow: var(--shadow-2xl);
+  animation: fade-in-scale 0.25s ease-out;
+  text-align: center;
+}
+
+.iconWrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 59, 92, 0.1);
+  color: var(--color-danger);
+  @include flex-center;
+  margin: 0 auto var(--space-4);
+}
+
+.title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.message {
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--lh-relaxed);
+  margin-bottom: var(--space-6);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.cancelBtn {
+  @include button-ghost;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+}
+
+.confirmBtn {
+  @include button-primary;
+  border-radius: var(--radius-lg);
+
+  &.danger {
+    background: var(--color-danger);
+    box-shadow: 0 4px 14px rgba(255, 59, 92, 0.35);
+
+    &:hover {
+      background: var(--color-danger-hover);
+      box-shadow: 0 6px 20px rgba(255, 59, 92, 0.4);
+    }
+  }
+}

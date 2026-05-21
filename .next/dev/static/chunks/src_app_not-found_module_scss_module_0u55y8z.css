@@ -1,0 +1,91 @@
+/* [project]/src/app/not-found.module.scss.module.css [app-client] (css) */
+.not-found-module-scss-module__HfxUKG__container {
+  min-height: 100vh;
+  padding: var(--space-8);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.not-found-module-scss-module__HfxUKG__content {
+  text-align: center;
+  max-width: 480px;
+}
+
+.not-found-module-scss-module__HfxUKG__code {
+  font-size: 120px;
+  font-weight: var(--fw-extrabold);
+  background: var(--color-primary-gradient);
+  -webkit-text-fill-color: #0000;
+  margin-bottom: var(--space-4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  line-height: 1;
+  display: block;
+}
+
+.not-found-module-scss-module__HfxUKG__title {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-3);
+}
+
+.not-found-module-scss-module__HfxUKG__text {
+  font-size: var(--fs-base);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-8);
+}
+
+.not-found-module-scss-module__HfxUKG__button {
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  -webkit-user-select: none;
+  user-select: none;
+  border: none;
+  line-height: 1;
+  text-decoration: none;
+  display: inline-flex;
+}
+
+.not-found-module-scss-module__HfxUKG__button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.not-found-module-scss-module__HfxUKG__button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.not-found-module-scss-module__HfxUKG__button {
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-3) var(--space-6);
+  box-shadow: var(--shadow-primary);
+}
+
+.not-found-module-scss-module__HfxUKG__button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px #0b5fff59;
+}
+
+.not-found-module-scss-module__HfxUKG__button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.not-found-module-scss-module__HfxUKG__button {
+  border-radius: var(--radius-pill);
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--fs-md);
+}
+
+/*# sourceMappingURL=src_app_not-found_module_scss_module_0u55y8z.css.map*/

@@ -1,0 +1,175 @@
+@use '@/styles/mixins' as *;
+
+.sidebar {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--navbar-height) + var(--space-6));
+  align-self: flex-start;
+
+  @include respond-to('lg') {
+    display: flex;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-primary);
+}
+
+.title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  color: var(--color-text-tertiary);
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.option {
+  @include button-ghost;
+  font-size: var(--fs-xs);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: transparent;
+
+  &.active {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+  }
+}
+
+.priceInputs {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.priceField {
+  flex: 1;
+
+  label {
+    display: block;
+    font-size: var(--fs-xs);
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-1);
+  }
+}
+
+.priceInput {
+  @include input-base;
+  font-size: var(--fs-sm);
+  padding: var(--space-2) var(--space-3);
+  text-align: center;
+}
+
+.priceSep {
+  color: var(--color-text-tertiary);
+  padding-bottom: var(--space-2);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.applyBtn {
+  @include button-primary;
+  width: 100%;
+  border-radius: var(--radius-pill);
+}
+
+.clearBtn {
+  @include button-ghost;
+  width: 100%;
+  font-size: var(--fs-sm);
+}
+
+// Mobile
+.mobileTrigger {
+  @include button-secondary;
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-4);
+  z-index: var(--z-sticky);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-3) var(--space-5);
+
+  @include respond-to('lg') {
+    display: none;
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg-overlay);
+  z-index: var(--z-overlay);
+  animation: fade-in 0.2s ease-out;
+}
+
+.drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 80vh;
+  background: var(--color-bg);
+  z-index: var(--z-modal);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  padding: var(--space-6);
+  overflow-y: auto;
+  animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @keyframes slide-up {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+}
+
+.drawerHeader {
+  @include flex-between;
+  margin-bottom: var(--space-4);
+}
+
+.drawerClose {
+  @include button-ghost;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+}

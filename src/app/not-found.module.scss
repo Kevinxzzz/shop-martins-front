@@ -1,0 +1,43 @@
+@use '@/styles/mixins' as *;
+
+.container {
+  min-height: 100vh;
+  @include flex-center;
+  padding: var(--space-8);
+}
+
+.content {
+  text-align: center;
+  max-width: 480px;
+}
+
+.code {
+  font-size: 120px;
+  font-weight: var(--fw-extrabold);
+  background: var(--color-primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  display: block;
+  margin-bottom: var(--space-4);
+}
+
+.title {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-3);
+}
+
+.text {
+  font-size: var(--fs-base);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-8);
+}
+
+.button {
+  @include button-primary;
+  border-radius: var(--radius-pill);
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--fs-md);
+}

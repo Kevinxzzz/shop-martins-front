@@ -1,0 +1,19 @@
+{
+  "/(public)/page": "app/(public)/page.js",
+  "/(public)/produto/[id]/page": "app/(public)/produto/[id]/page.js",
+  "/(public)/vendedor/[id]/page": "app/(public)/vendedor/[id]/page.js",
+  "/(public)/vendedores/page": "app/(public)/vendedores/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/admin/categorias/page": "app/dashboard/admin/categorias/page.js",
+  "/dashboard/admin/configuracoes/page": "app/dashboard/admin/configuracoes/page.js",
+  "/dashboard/admin/produtos/page": "app/dashboard/admin/produtos/page.js",
+  "/dashboard/admin/tokens/page": "app/dashboard/admin/tokens/page.js",
+  "/dashboard/admin/usuarios/page": "app/dashboard/admin/usuarios/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/perfil/page": "app/dashboard/perfil/page.js",
+  "/dashboard/produtos/[id]/editar/page": "app/dashboard/produtos/[id]/editar/page.js",
+  "/dashboard/produtos/novo/page": "app/dashboard/produtos/novo/page.js",
+  "/dashboard/produtos/page": "app/dashboard/produtos/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
+}
