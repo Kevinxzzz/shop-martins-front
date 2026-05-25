@@ -1,0 +1,68 @@
+@use '@/styles/mixins' as *;
+
+// ═══════════════════════════════════════════════════════════════
+// SHOP MARTINS — Auth Layout
+// ═══════════════════════════════════════════════════════════════
+
+.authRoot {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+// ── Background Effects ──────────────────────────────────────
+.gridTexture {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: var(--bg-texture-layer);
+  background-size: 100% 100%, var(--bg-grid-size) var(--bg-grid-size), var(--bg-grid-size) var(--bg-grid-size);
+  opacity: 0.6;
+
+  [data-theme="dark"] & {
+    opacity: 0.8;
+  }
+}
+
+.glowOrb {
+  position: fixed;
+  top: -20vh;
+  left: -10vw;
+  width: 60vw;
+  height: 60vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-primary-glow) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+  opacity: 0.8;
+
+  @include respond-to("lg") {
+    width: 40vw;
+    height: 40vw;
+  }
+}
+
+.glowOrbSecondary {
+  position: fixed;
+  bottom: -20vh;
+  right: -10vw;
+  width: 50vw;
+  height: 50vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 212, 170, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+
+  @include respond-to("lg") {
+    width: 35vw;
+    height: 35vw;
+  }
+}

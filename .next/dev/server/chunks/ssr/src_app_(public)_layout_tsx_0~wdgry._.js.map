@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/kevin/Documents/projects/shop-martins/src/app/%28public%29/layout.tsx"],"sourcesContent":["import Header from '@/components/Header/Header';\nimport Footer from '@/components/Footer';\n\nexport default function PublicLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <>\n      <Header />\n      <main>{children}</main>\n      <Footer />\n    </>\n  );\n}\n"],"names":["PublicLayout","children","Header","Footer"],"mappings":";;;;;;;;;;;;;;;;;;AAGe,SAASA,aAAa,EAAEC,QAAQ,EAAiC;IAC9E,qBACE;;0BACE,8OAACC;;;;;0BACD,8OAAC;0BAAMD;;;;;;0BACP,8OAACE;;;;;;;AAGP"}}]
-}
