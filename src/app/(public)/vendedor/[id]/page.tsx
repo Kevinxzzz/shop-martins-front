@@ -8,20 +8,20 @@ import { MessageCircle, Package, ArrowLeft } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import { getVendorById, getProducts } from '@/mock/api';
 import { getWhatsAppLink } from '@/utils';
-import type { Usuario, Produto } from '@/types';
+import type { User, Product } from '@/types';
 import styles from './page.module.scss';
 
 export default function VendorStorePage() {
   const params = useParams();
-  const [vendor, setVendor] = useState<Usuario | null>(null);
-  const [products, setProducts] = useState<Produto[]>([]);
+  const [vendor, setVendor] = useState<User | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const id = params.id as string;
     Promise.all([
       getVendorById(id),
-      getProducts({ vendedorId: id, limit: 100 }),
+      getProducts({ sellerId: id, limit: 100 }),
     ]).then(([v, p]) => {
       setVendor(v);
       setProducts(p.products);
@@ -44,7 +44,7 @@ export default function VendorStorePage() {
     );
   }
 
-  const whatsappLink = getWhatsAppLink(vendor.telefone_whatsapp, `Olá ${vendor.nome}! Vi sua loja no Shop Martins e gostaria de conversar.`);
+  const whatsappLink = getWhatsAppLink(vendor.whatsappPhone, `Olá ${vendor.name}! Vi sua loja no Shop Martins e gostaria de conversar.`);
 
   return (
     <div className={styles.container}>
@@ -53,15 +53,15 @@ export default function VendorStorePage() {
         <div className={styles.bannerBg} />
         <div className={styles.bannerContent}>
           <Image
-            src={vendor.foto_perfil}
-            alt={vendor.nome}
+            src={vendor.profilePicture}
+            alt={vendor.name}
             width={96}
             height={96}
             className={styles.avatar}
             unoptimized
           />
           <div className={styles.bannerInfo}>
-            <h1 className={styles.vendorName}>{vendor.nome}</h1>
+            <h1 className={styles.vendorName}>{vendor.name}</h1>
             <span className={styles.vendorMeta}>
               <Package size={16} /> {products.length} produtos
             </span>
@@ -81,7 +81,7 @@ export default function VendorStorePage() {
       {/* Products */}
       <section className={styles.products}>
         <h2 className={styles.sectionTitle}>
-          Produtos de <span>{vendor.nome.split(' ')[0]}</span>
+          Produtos de <span>{vendor.name.split(' ')[0]}</span>
         </h2>
         <div className={styles.grid}>
           {products.map((p, i) => (

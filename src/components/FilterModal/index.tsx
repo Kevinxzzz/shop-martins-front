@@ -3,30 +3,30 @@
 import { useState, useEffect } from 'react';
 import { X, Check } from 'lucide-react';
 import { getCategories } from '@/mock/api';
-import type { Categoria } from '@/types';
+import type { Category } from '@/types';
 import styles from './FilterModal.module.scss';
 
 interface FilterModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedCategoria?: string;
-  precoMin?: number;
-  precoMax?: number;
-  onFilter: (filters: { categoria?: string; precoMin?: number; precoMax?: number }) => void;
+  selectedCategory?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  onFilter: (filters: { category?: string; minPrice?: number; maxPrice?: number }) => void;
 }
 
 export default function FilterModal({
   isOpen,
   onClose,
-  selectedCategoria,
-  precoMin = 0,
-  precoMax = 2000,
+  selectedCategory,
+  minPrice = 0,
+  maxPrice = 2000,
   onFilter,
 }: FilterModalProps) {
-  const [categories, setCategories] = useState<Categoria[]>([]);
-  const [cat, setCat] = useState(selectedCategoria || '');
-  const [min, setMin] = useState(precoMin);
-  const [max, setMax] = useState(precoMax);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [cat, setCat] = useState(selectedCategory || '');
+  const [min, setMin] = useState(minPrice);
+  const [max, setMax] = useState(maxPrice);
 
   useEffect(() => {
     getCategories().then(setCategories);
@@ -34,17 +34,17 @@ export default function FilterModal({
 
   useEffect(() => {
     if (isOpen) {
-      setCat(selectedCategoria || '');
-      setMin(precoMin);
-      setMax(precoMax);
+      setCat(selectedCategory || '');
+      setMin(minPrice);
+      setMax(maxPrice);
     }
-  }, [isOpen, selectedCategoria, precoMin, precoMax]);
+  }, [isOpen, selectedCategory, minPrice, maxPrice]);
 
   const apply = () => {
     onFilter({
-      categoria: cat || undefined,
-      precoMin: min > 0 ? min : undefined,
-      precoMax: max < 2000 ? max : undefined,
+      category: cat || undefined,
+      minPrice: min > 0 ? min : undefined,
+      maxPrice: max < 2000 ? max : undefined,
     });
   };
 
@@ -87,7 +87,7 @@ export default function FilterModal({
                   onClick={() => setCat(c.id)}
                 >
                   {cat === c.id && <Check size={12} />}
-                  {c.nome}
+                  {c.name}
                 </button>
               ))}
             </div>

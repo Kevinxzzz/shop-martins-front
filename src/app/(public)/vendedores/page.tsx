@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import { Users } from 'lucide-react';
 import VendorCard from '@/components/VendorCard';
 import { getVendors } from '@/mock/api';
-import type { Usuario } from '@/types';
+import type { User } from '@/types';
 import styles from './page.module.scss';
 
 export default function VendorsPage() {
-  const [vendors, setVendors] = useState<Usuario[]>([]);
+  const [vendors, setVendors] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

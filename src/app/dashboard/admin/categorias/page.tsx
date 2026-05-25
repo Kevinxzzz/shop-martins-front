@@ -5,11 +5,11 @@ import { Plus, Pencil, Trash2, Tag, Save, X } from 'lucide-react';
 import ModalConfirm from '@/components/ModalConfirm';
 import { getCategories } from '@/mock/api';
 import { slugify } from '@/utils';
-import type { Categoria } from '@/types';
+import type { Category } from '@/types';
 import styles from '../../shared.module.scss';
 
 export default function AdminCategoriesPage() {
-  const [categories, setCategories] = useState<Categoria[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
@@ -25,9 +25,9 @@ export default function AdminCategoriesPage() {
 
   const handleCreate = () => {
     if (!formName.trim()) return;
-    const newCat: Categoria = {
+    const newCat: Category = {
       id: `cat-${Date.now()}`,
-      nome: formName.trim(),
+      name: formName.trim(),
       slug: slugify(formName.trim()),
     };
     setCategories(prev => [...prev, newCat]);
@@ -38,7 +38,7 @@ export default function AdminCategoriesPage() {
   const handleEdit = () => {
     if (!formName.trim() || !editId) return;
     setCategories(prev => prev.map(c =>
-      c.id === editId ? { ...c, nome: formName.trim(), slug: slugify(formName.trim()) } : c
+      c.id === editId ? { ...c, name: formName.trim(), slug: slugify(formName.trim()) } : c
     ));
     setEditId(null);
     setFormName('');
@@ -51,9 +51,9 @@ export default function AdminCategoriesPage() {
     }
   };
 
-  const startEdit = (cat: Categoria) => {
+  const startEdit = (cat: Category) => {
     setEditId(cat.id);
-    setFormName(cat.nome);
+    setFormName(cat.name);
     setShowCreate(false);
   };
 
@@ -133,7 +133,7 @@ export default function AdminCategoriesPage() {
                 <td>
                   <div className={styles.productRow}>
                     <Tag size={16} style={{ color: 'var(--color-primary)', flexShrink: 0 }} />
-                    <span>{cat.nome}</span>
+                    <span>{cat.name}</span>
                   </div>
                 </td>
                 <td style={{ color: 'var(--color-text-tertiary)', fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-xs)' }}>

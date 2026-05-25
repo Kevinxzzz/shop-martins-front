@@ -10,9 +10,13 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg);
+  background: radial-gradient(circle at top left, rgba(11, 95, 255, 0.08) 0%, var(--color-bg) 60%);
   overflow-x: hidden;
   overflow-y: auto;
+
+  [data-theme="dark"] & {
+    background: radial-gradient(circle at top left, rgba(11, 95, 255, 0.12) 0%, var(--color-bg) 70%);
+  }
 }
 
 // ── Background Effects ──────────────────────────────────────

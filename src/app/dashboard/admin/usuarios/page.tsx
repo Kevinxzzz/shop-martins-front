@@ -9,7 +9,7 @@ export default function AdminUsersPage() {
   const [users, setUsers] = useState(vendedores.map(v => ({ ...v })));
 
   const toggleUser = (id: string) => {
-    setUsers(prev => prev.map(u => u.id === id ? { ...u, ativo: !u.ativo } : u));
+    setUsers(prev => prev.map(u => u.id === id ? { ...u, isActive: !u.isActive } : u));
   };
 
   return (
@@ -35,27 +35,27 @@ export default function AdminUsersPage() {
                 <td>
                   <div className={styles.productRow}>
                     <Image
-                      src={user.foto_perfil}
-                      alt={user.nome}
+                      src={user.profilePicture}
+                      alt={user.name}
                       width={36}
                       height={36}
                       className={styles.productThumb}
                       style={{ borderRadius: '50%' }}
                       unoptimized
                     />
-                    <span>{user.nome}</span>
+                    <span>{user.name}</span>
                   </div>
                 </td>
                 <td>{user.email}</td>
                 <td><span className={styles.badge}>{user.role}</span></td>
                 <td>
-                  <span className={`${styles.statusBadge} ${user.ativo ? styles.active : styles.inactive}`}>
-                    {user.ativo ? 'Ativo' : 'Inativo'}
+                  <span className={`${styles.statusBadge} ${user.isActive ? styles.active : styles.inactive}`}>
+                    {user.isActive ? 'Ativo' : 'Inativo'}
                   </span>
                 </td>
                 <td>
                   <button className={styles.toggleBtn} onClick={() => toggleUser(user.id)}>
-                    {user.ativo ? 'Desativar' : 'Ativar'}
+                    {user.isActive ? 'Desativar' : 'Ativar'}
                   </button>
                 </td>
               </tr>

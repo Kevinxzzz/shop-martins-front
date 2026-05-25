@@ -6,7 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { Search, Moon, Sun, Menu, X, LayoutDashboard, Home, ShoppingBag, Users, ChevronRight } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import { getCategories } from '@/mock/api';
-import type { Categoria } from '@/types';
+import type { Category } from '@/types';
 import styles from './Navbar.module.scss';
 
 const navLinks = [
@@ -18,7 +18,7 @@ export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
-  const [categories, setCategories] = useState<Categoria[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
@@ -74,10 +74,10 @@ export default function Navbar() {
                 {categories.map(cat => (
                   <Link
                     key={cat.id}
-                    href={`/?categoria=${cat.id}`}
+                    href={`/?category=${cat.id}`}
                     className={styles.dropdownItem}
                   >
-                    {cat.nome}
+                    {cat.name}
                   </Link>
                 ))}
               </div>
@@ -181,8 +181,8 @@ export default function Navbar() {
               <span className={styles.drawerLabel}>Categorias</span>
               <div className={styles.drawerLinks}>
                 {categories.map(cat => (
-                  <Link key={cat.id} href={`/?categoria=${cat.id}`} className={styles.drawerLink}>
-                    {cat.nome}
+                  <Link key={cat.id} href={`/?category=${cat.id}`} className={styles.drawerLink}>
+                    {cat.name}
                   </Link>
                 ))}
               </div>
