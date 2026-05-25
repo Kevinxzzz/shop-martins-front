@@ -4,3 +4,5 @@ build
 .next
 .vite
 .env
+.env.local
+coverage
