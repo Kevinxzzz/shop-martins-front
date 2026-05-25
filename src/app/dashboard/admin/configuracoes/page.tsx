@@ -6,10 +6,10 @@ import { empresa } from '@/mock/data';
 import styles from '../../shared.module.scss';
 
 export default function AdminConfigPage() {
-  const [nome, setNome] = useState(empresa.nome);
-  const [numero, setNumero] = useState(empresa.numero);
+  const [nome, setNome] = useState(empresa.name);
+  const [numero, setNumero] = useState(empresa.number);
   const [cpfCnpj, setCpfCnpj] = useState(empresa.cpfCnpj);
-  const [linkGrupo, setLinkGrupo] = useState(empresa.linkGrupoDevenda || '');
+  const [linkGrupo, setLinkGrupo] = useState(empresa.salesGroupLink || '');
   const [saving, setSaving] = useState(false);
 
   const handleSave = async (e: React.FormEvent) => {

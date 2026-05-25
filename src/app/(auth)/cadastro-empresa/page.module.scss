@@ -1,7 +1,7 @@
 @use '@/styles/mixins' as *;
 
 // ═══════════════════════════════════════════════════════════════
-// SHOP MARTINS — Login Page Styles (Mobile-First)
+// SHOP MARTINS — Cadastro Empresa Page Styles (Mobile-First)
 // ═══════════════════════════════════════════════════════════════
 
 // ── Page Container ──────────────────────────────────────────
@@ -131,7 +131,7 @@
 // ── Form Card ───────────────────────────────────────────────
 .formCard {
   width: 100%;
-  max-width: 440px;
+  max-width: 500px;
   padding: var(--space-8);
   border-radius: var(--radius-2xl);
   background: var(--glass-bg);
@@ -309,73 +309,13 @@
   gap: 4px;
 }
 
-// ── Form Options ────────────────────────────────────────────
-.formOptions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: calc(var(--space-2) * -1);
-}
-
-.checkboxWrapper {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  cursor: pointer;
-}
-
-.checkbox {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid var(--color-border);
-  border-radius: 4px;
-  background: var(--color-bg);
-  cursor: pointer;
-  position: relative;
-  transition: all var(--transition-fast);
-
-  &:checked {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 1px;
-      left: 4px;
-      width: 4px;
-      height: 8px;
-      border: solid white;
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
-    }
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-primary-glow);
-    outline-offset: 2px;
-  }
-}
-
-.checkboxLabel {
-  font-size: var(--fs-sm);
-  color: var(--color-text-secondary);
-  user-select: none;
-}
-
-.forgotPassword {
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
-}
-
 // ── Submit Button ───────────────────────────────────────────
 .submitButton {
   @include button-primary;
   width: 100%;
   padding: var(--space-4);
   font-size: var(--fs-base);
-  margin-top: var(--space-2);
+  margin-top: var(--space-4);
 }
 
 .loader {
@@ -417,4 +357,14 @@
   a {
     font-weight: var(--fw-semibold);
   }
+}
+
+.sectionTitle {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
 }

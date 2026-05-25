@@ -10,32 +10,32 @@ import { ProductCardSkeleton } from '@/components/SkeletonLoader';
 import FilterModal from '@/components/FilterModal';
 import { getProducts } from '@/mock/api';
 import { empresa } from '@/mock/data';
-import type { Produto } from '@/types';
+import type { Product } from '@/types';
 import styles from './page.module.scss';
 
 function HomeContent() {
   const searchParams = useSearchParams();
-  const [products, setProducts] = useState<Produto[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState<{
-    categoria?: string;
-    precoMin?: number;
-    precoMax?: number;
+    category?: string;
+    minPrice?: number;
+    maxPrice?: number;
     search?: string;
   }>({});
 
-  const categoriaParam = searchParams.get('categoria');
+  const categoryParam = searchParams.get('category');
   const searchParam = searchParams.get('search');
 
   useEffect(() => {
     setFilters(prev => ({
       ...prev,
-      categoria: categoriaParam || undefined,
+      category: categoryParam || undefined,
       search: searchParam || undefined,
     }));
-  }, [categoriaParam, searchParam]);
+  }, [categoryParam, searchParam]);
 
   useEffect(() => {
     setLoading(true);
@@ -46,11 +46,11 @@ function HomeContent() {
     });
   }, [filters]);
 
-  const handleFilter = (newFilters: { categoria?: string; precoMin?: number; precoMax?: number }) => {
+  const handleFilter = (newFilters: { category?: string; minPrice?: number; maxPrice?: number }) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
 
-  const activeFilterCount = [filters.categoria, filters.precoMin, filters.precoMax].filter(Boolean).length;
+  const activeFilterCount = [filters.category, filters.minPrice, filters.maxPrice].filter(Boolean).length;
 
   return (
     <>
@@ -90,11 +90,11 @@ function HomeContent() {
         </div>
 
         {/* Active Filter Tags */}
-        {filters.categoria && (
+        {filters.category && (
           <div className={styles.activeTags}>
             <button
               className={styles.activeTag}
-              onClick={() => setFilters(prev => ({ ...prev, categoria: undefined }))}
+              onClick={() => setFilters(prev => ({ ...prev, category: undefined }))}
             >
               Categoria ativa <X size={12} />
             </button>
@@ -122,7 +122,7 @@ function HomeContent() {
       </section>
 
       {/* Sell CTA Banner */}
-      {empresa.linkGrupoDevenda && (
+      {empresa.salesGroupLink && (
         <section className={styles.ctaBanner}>
           <div className={styles.ctaInner}>
             <h2 className={styles.ctaTitle}>Deseja vender seus produtos?</h2>
@@ -130,7 +130,7 @@ function HomeContent() {
               Entre no nosso grupo de vendas e comece a anunciar.
             </p>
             <a
-              href={empresa.linkGrupoDevenda}
+              href={empresa.salesGroupLink}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.ctaBtn}
@@ -145,9 +145,9 @@ function HomeContent() {
       <FilterModal
         isOpen={filterOpen}
         onClose={() => setFilterOpen(false)}
-        selectedCategoria={filters.categoria}
-        precoMin={filters.precoMin}
-        precoMax={filters.precoMax}
+        selectedCategory={filters.category}
+        minPrice={filters.minPrice}
+        maxPrice={filters.maxPrice}
         onFilter={(f) => {
           handleFilter(f);
           setFilterOpen(false);

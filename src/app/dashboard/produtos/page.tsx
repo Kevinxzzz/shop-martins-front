@@ -7,16 +7,16 @@ import { Plus, Eye, Pencil, Trash2 } from 'lucide-react';
 import ModalConfirm from '@/components/ModalConfirm';
 import { getProducts } from '@/mock/api';
 import { formatPrice } from '@/utils';
-import type { Produto } from '@/types';
+import type { Product } from '@/types';
 import styles from '../shared.module.scss';
 
 export default function DashboardProductsPage() {
-  const [products, setProducts] = useState<Produto[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
-    getProducts({ vendedorId: 'ven-001', limit: 100 }).then(res => {
+    getProducts({ sellerId: 'ven-001', limit: 100 }).then(res => {
       setProducts(res.products);
       setLoading(false);
     });
@@ -57,18 +57,18 @@ export default function DashboardProductsPage() {
                 <td>
                   <div className={styles.productRow}>
                     <Image
-                      src={product.midias[0]?.url_arquivo || ''}
-                      alt={product.titulo}
+                      src={product.media[0]?.fileUrl || ''}
+                      alt={product.title}
                       width={44}
                       height={44}
                       className={styles.productThumb}
                       unoptimized
                     />
-                    <span className={styles.productTitle}>{product.titulo}</span>
+                    <span className={styles.productTitle}>{product.title}</span>
                   </div>
                 </td>
-                <td><span className={styles.badge}>{product.categoria?.nome}</span></td>
-                <td><span className={styles.price}>{formatPrice(product.preco)}</span></td>
+                <td><span className={styles.badge}>{product.category?.name}</span></td>
+                <td><span className={styles.price}>{formatPrice(product.price)}</span></td>
                 <td>{product.countViews}</td>
                 <td>
                   <div className={styles.actionBtns}>

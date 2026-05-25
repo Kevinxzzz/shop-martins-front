@@ -57,8 +57,8 @@ export default function AdminTokensPage() {
               <span><Clock size={12} style={{ display: 'inline', verticalAlign: 'middle' }} /> Criado: {formatDate(token.createdAt)}</span>
               <span><Shield size={12} style={{ display: 'inline', verticalAlign: 'middle' }} /> Expira: {formatDate(token.expiresAt)}</span>
             </div>
-            <span className={`${styles.statusBadge} ${token.ativo ? styles.active : styles.inactive}`}>
-              {token.ativo ? 'Ativo' : 'Expirado'}
+            <span className={`${styles.statusBadge} ${token.isActive ? styles.active : styles.inactive}`}>
+              {token.isActive ? 'Ativo' : 'Expirado'}
             </span>
           </div>
         ))}

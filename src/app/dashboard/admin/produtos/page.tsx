@@ -6,11 +6,11 @@ import Link from 'next/link';
 import { Eye } from 'lucide-react';
 import { getProducts } from '@/mock/api';
 import { formatPrice } from '@/utils';
-import type { Produto } from '@/types';
+import type { Product } from '@/types';
 import styles from '../../shared.module.scss';
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState<Produto[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -49,19 +49,19 @@ export default function AdminProductsPage() {
                 <td>
                   <div className={styles.productRow}>
                     <Image
-                      src={p.midias[0]?.url_arquivo || ''}
-                      alt={p.titulo}
+                      src={p.media[0]?.fileUrl || ''}
+                      alt={p.title}
                       width={36}
                       height={36}
                       className={styles.productThumb}
                       unoptimized
                     />
-                    <span className={styles.productTitle}>{p.titulo}</span>
+                    <span className={styles.productTitle}>{p.title}</span>
                   </div>
                 </td>
-                <td>{p.vendedor?.nome}</td>
-                <td><span className={styles.badge}>{p.categoria?.nome}</span></td>
-                <td><span className={styles.price}>{formatPrice(p.preco)}</span></td>
+                <td>{p.seller?.name}</td>
+                <td><span className={styles.badge}>{p.category?.name}</span></td>
+                <td><span className={styles.price}>{formatPrice(p.price)}</span></td>
                 <td>{p.countViews}</td>
                 <td>
                   <Link href={`/produto/${p.id}`} className={styles.actionBtn}><Eye size={16} /></Link>

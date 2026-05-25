@@ -18,13 +18,13 @@ export default function DashboardPage() {
   }
 
   const cards = [
-    { label: 'Produtos', value: stats.totalProdutos, icon: Package, color: '#0066FF' },
+    { label: 'Produtos', value: stats.totalProducts, icon: Package, color: '#0066FF' },
     { label: 'Views Totais', value: stats.totalViews.toLocaleString('pt-BR'), icon: Eye, color: '#00d4aa' },
-    { label: 'Categorias', value: stats.totalCategorias, icon: Layers, color: '#ffb020' },
-    { label: 'Média Views', value: Math.round(stats.totalViews / (stats.totalProdutos || 1)), icon: TrendingUp, color: '#ff3b5c' },
+    { label: 'Categorias', value: stats.totalCategories, icon: Layers, color: '#ffb020' },
+    { label: 'Média Views', value: Math.round(stats.totalViews / (stats.totalProducts || 1)), icon: TrendingUp, color: '#ff3b5c' },
   ];
 
-  const maxViews = Math.max(...stats.viewsPorDia.map(d => d.views));
+  const maxViews = Math.max(...stats.viewsByDay.map(d => d.views));
 
   return (
     <div className={styles.page}>
@@ -51,7 +51,7 @@ export default function DashboardPage() {
         <div className={styles.chartCard}>
           <h3 className={styles.chartTitle}>Views por dia</h3>
           <div className={styles.barChart}>
-            {stats.viewsPorDia.map((day, i) => (
+            {stats.viewsByDay.map((day, i) => (
               <div key={i} className={styles.barItem}>
                 <div className={styles.barTrack}>
                   <div
@@ -59,7 +59,7 @@ export default function DashboardPage() {
                     style={{ height: `${(day.views / maxViews) * 100}%` }}
                   />
                 </div>
-                <span className={styles.barLabel}>{day.dia}</span>
+                <span className={styles.barLabel}>{day.day}</span>
               </div>
             ))}
           </div>
@@ -68,16 +68,16 @@ export default function DashboardPage() {
         <div className={styles.chartCard}>
           <h3 className={styles.chartTitle}>Produtos por categoria</h3>
           <div className={styles.categoryList}>
-            {stats.produtosPorCategoria.map((cat, i) => (
+            {stats.productsByCategory.map((cat, i) => (
               <div key={i} className={styles.categoryItem}>
                 <div className={styles.categoryInfo}>
-                  <span className={styles.categoryName}>{cat.categoria}</span>
+                  <span className={styles.categoryName}>{cat.category}</span>
                   <span className={styles.categoryCount}>{cat.total}</span>
                 </div>
                 <div className={styles.categoryBar}>
                   <div
                     className={styles.categoryFill}
-                    style={{ width: `${(cat.total / stats.totalProdutos) * 100}%` }}
+                    style={{ width: `${(cat.total / stats.totalProducts) * 100}%` }}
                   />
                 </div>
               </div>

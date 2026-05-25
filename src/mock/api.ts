@@ -1,5 +1,5 @@
 import { produtos, vendedores, categorias, empresa, tokens } from './data';
-import type { Produto, Usuario, Categoria, DashboardStats, AdminStats, Token } from '@/types';
+import type { Product, User, Category, DashboardStats, AdminStats, Token } from '@/types';
 
 // ═══════════════════════════════════════════════════════════════
 // SHOP MARTINS — Mock API Service
@@ -9,34 +9,34 @@ const delay = (ms = 300) => new Promise(r => setTimeout(r, ms));
 
 // ── Products ────────────────────────────────────────────────
 export async function getProducts(filters?: {
-  categoria?: string;
-  precoMin?: number;
-  precoMax?: number;
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
   search?: string;
-  vendedorId?: string;
+  sellerId?: string;
   page?: number;
   limit?: number;
-}): Promise<{ products: Produto[]; total: number }> {
+}): Promise<{ products: Product[]; total: number }> {
   await delay(350);
   let filtered = [...produtos];
 
-  if (filters?.categoria) {
-    filtered = filtered.filter(p => p.categoria_id === filters.categoria);
+  if (filters?.category) {
+    filtered = filtered.filter(p => p.categoryId === filters.category);
   }
-  if (filters?.precoMin !== undefined) {
-    filtered = filtered.filter(p => p.preco >= filters.precoMin!);
+  if (filters?.minPrice !== undefined) {
+    filtered = filtered.filter(p => p.price >= filters.minPrice!);
   }
-  if (filters?.precoMax !== undefined) {
-    filtered = filtered.filter(p => p.preco <= filters.precoMax!);
+  if (filters?.maxPrice !== undefined) {
+    filtered = filtered.filter(p => p.price <= filters.maxPrice!);
   }
   if (filters?.search) {
     const q = filters.search.toLowerCase();
     filtered = filtered.filter(
-      p => p.titulo.toLowerCase().includes(q) || p.descricao.toLowerCase().includes(q)
+      p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
     );
   }
-  if (filters?.vendedorId) {
-    filtered = filtered.filter(p => p.vendedor_id === filters.vendedorId);
+  if (filters?.sellerId) {
+    filtered = filtered.filter(p => p.sellerId === filters.sellerId);
   }
 
   const total = filtered.length;
@@ -48,64 +48,64 @@ export async function getProducts(filters?: {
   return { products: paginated, total };
 }
 
-export async function getProductById(id: string): Promise<Produto | null> {
+export async function getProductById(id: string): Promise<Product | null> {
   await delay(250);
   return produtos.find(p => p.id === id) || null;
 }
 
-export async function getRelatedProducts(categoryId: string, excludeId?: string): Promise<Produto[]> {
+export async function getRelatedProducts(categoryId: string, excludeId?: string): Promise<Product[]> {
   await delay(200);
   return produtos
-    .filter(p => p.categoria_id === categoryId && p.id !== excludeId)
+    .filter(p => p.categoryId === categoryId && p.id !== excludeId)
     .slice(0, 8);
 }
 
 // ── Vendors ─────────────────────────────────────────────────
-export async function getVendors(): Promise<Usuario[]> {
+export async function getVendors(): Promise<User[]> {
   await delay(300);
-  return vendedores.filter(v => v.role === 'VENDEDOR' || v.role === 'ADMIN');
+  return vendedores.filter(v => v.role === 'VENDOR' || v.role === 'ADMIN');
 }
 
-export async function getVendorById(id: string): Promise<Usuario | null> {
+export async function getVendorById(id: string): Promise<User | null> {
   await delay(200);
   return vendedores.find(v => v.id === id) || null;
 }
 
 // ── Categories ──────────────────────────────────────────────
-export async function getCategories(): Promise<Categoria[]> {
+export async function getCategories(): Promise<Category[]> {
   await delay(150);
   return categorias;
 }
 
 // ── Search ──────────────────────────────────────────────────
 export async function searchGlobal(query: string): Promise<{
-  products: Produto[];
-  vendors: Usuario[];
+  products: Product[];
+  vendors: User[];
 }> {
   await delay(300);
   const q = query.toLowerCase();
   return {
-    products: produtos.filter(p => p.titulo.toLowerCase().includes(q)).slice(0, 10),
-    vendors: vendedores.filter(v => v.nome.toLowerCase().includes(q)),
+    products: produtos.filter(p => p.title.toLowerCase().includes(q)).slice(0, 10),
+    vendors: vendedores.filter(v => v.name.toLowerCase().includes(q)),
   };
 }
 
 // ── Dashboard ───────────────────────────────────────────────
 export async function getDashboardStats(userId: string): Promise<DashboardStats> {
   await delay(400);
-  const userProducts = produtos.filter(p => p.vendedor_id === userId);
-  const cats = [...new Set(userProducts.map(p => p.categoria_id))];
+  const userProducts = produtos.filter(p => p.sellerId === userId);
+  const cats = [...new Set(userProducts.map(p => p.categoryId))];
 
   return {
-    totalProdutos: userProducts.length,
+    totalProducts: userProducts.length,
     totalViews: userProducts.reduce((sum, p) => sum + p.countViews, 0),
-    totalCategorias: cats.length,
-    produtosPorCategoria: cats.map(catId => ({
-      categoria: categorias.find(c => c.id === catId)?.nome || '',
-      total: userProducts.filter(p => p.categoria_id === catId).length,
+    totalCategories: cats.length,
+    productsByCategory: cats.map(catId => ({
+      category: categorias.find(c => c.id === catId)?.name || '',
+      total: userProducts.filter(p => p.categoryId === catId).length,
     })),
-    viewsPorDia: Array.from({ length: 7 }, (_, i) => ({
-      dia: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'][i],
+    viewsByDay: Array.from({ length: 7 }, (_, i) => ({
+      day: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'][i],
       views: Math.floor(Math.random() * 500) + 50,
     })),
   };
@@ -113,22 +113,22 @@ export async function getDashboardStats(userId: string): Promise<DashboardStats>
 
 export async function getAdminStats(empresaId: string): Promise<AdminStats> {
   await delay(500);
-  const empProducts = produtos.filter(p => p.empresa_id === empresaId);
-  const cats = [...new Set(empProducts.map(p => p.categoria_id))];
-  const activeVendors = vendedores.filter(v => v.ativo);
+  const empProducts = produtos.filter(p => p.enterpriseId === empresaId);
+  const cats = [...new Set(empProducts.map(p => p.categoryId))];
+  const activeVendors = vendedores.filter(v => v.isActive);
 
   return {
-    totalProdutos: empProducts.length,
+    totalProducts: empProducts.length,
     totalViews: empProducts.reduce((sum, p) => sum + p.countViews, 0),
-    totalCategorias: cats.length,
-    totalVendedores: vendedores.length,
-    totalUsuariosAtivos: activeVendors.length,
-    produtosPorCategoria: cats.map(catId => ({
-      categoria: categorias.find(c => c.id === catId)?.nome || '',
-      total: empProducts.filter(p => p.categoria_id === catId).length,
+    totalCategories: cats.length,
+    totalVendors: vendedores.length,
+    totalActiveUsers: activeVendors.length,
+    productsByCategory: cats.map(catId => ({
+      category: categorias.find(c => c.id === catId)?.name || '',
+      total: empProducts.filter(p => p.categoryId === catId).length,
     })),
-    viewsPorDia: Array.from({ length: 7 }, (_, i) => ({
-      dia: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'][i],
+    viewsByDay: Array.from({ length: 7 }, (_, i) => ({
+      day: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'][i],
       views: Math.floor(Math.random() * 2000) + 200,
     })),
   };
@@ -147,7 +147,7 @@ export async function generateToken(): Promise<Token> {
     token: `sk_live_${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`,
     createdAt: new Date().toISOString(),
     expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-    ativo: true,
+    isActive: true,
   };
   tokens.push(newToken);
   return newToken;
@@ -156,4 +156,13 @@ export async function generateToken(): Promise<Token> {
 export async function getEmpresa() {
   await delay(150);
   return empresa;
+}
+
+export async function registerEnterprise(data: any): Promise<{ token: string, user: any, enterprise: any }> {
+  await delay(1000);
+  return {
+    token: 'mock-enterprise-token-123',
+    user: { id: 'new-admin-1', name: data.userName, email: data.userEmail, role: 'ADMIN' },
+    enterprise: { id: 'new-emp-1', name: data.name, cnpj: data.document }
+  };
 }

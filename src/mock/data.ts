@@ -1,15 +1,15 @@
-import { Empresa, Usuario, Categoria, Produto, Midia, Token } from '@/types';
+import { Enterprise, User, Category, Product, Media, Token } from '@/types';
 
 // ═══════════════════════════════════════════════════════════════
 // SHOP MARTINS — Mock Data
 // ═══════════════════════════════════════════════════════════════
 
-export const empresa: Empresa = {
+export const empresa: Enterprise = {
   id: 'emp-001',
-  nome: 'Shop Martins',
-  numero: '5511999999999',
+  name: 'Shop Martins',
+  number: '5511999999999',
   cpfCnpj: '12.345.678/0001-90',
-  linkGrupoDevenda: 'https://chat.whatsapp.com/abc123grupo',
+  salesGroupLink: 'https://chat.whatsapp.com/abc123grupo',
 };
 
 const vendedorNomes = [
@@ -25,26 +25,26 @@ const vendedorNomes = [
   { nome: 'Diego Martins', email: 'diego@shopmartins.com' },
 ];
 
-export const categorias: Categoria[] = [
-  { id: 'cat-001', nome: 'Neymar', slug: 'neymar' },
-  { id: 'cat-002', nome: 'over 3200', slug: 'over-3200' },
-  { id: 'cat-003', nome: 'messi blitz', slug: 'messi-blitz' },
-  { id: 'cat-004', nome: 'Gullit', slug: 'gullit' },
-  { id: 'cat-005', nome: 'Hazzard', slug: 'hazzard' },
-  { id: 'cat-006', nome: 'Cruyff', slug: 'cruyff' },
+export const categorias: Category[] = [
+  { id: 'cat-001', name: 'Neymar', slug: 'neymar' },
+  { id: 'cat-002', name: 'over 3200', slug: 'over-3200' },
+  { id: 'cat-003', name: 'messi blitz', slug: 'messi-blitz' },
+  { id: 'cat-004', name: 'Gullit', slug: 'gullit' },
+  { id: 'cat-005', name: 'Hazzard', slug: 'hazzard' },
+  { id: 'cat-006', name: 'Cruyff', slug: 'cruyff' },
 ];
 
 const avatarSeeds = ['Felix', 'Aneka', 'Jude', 'Sasha', 'Leo', 'Milo', 'Luna', 'Zoe', 'Max', 'Aria'];
 
-export const vendedores: Usuario[] = vendedorNomes.map((v, i) => ({
+export const vendedores: User[] = vendedorNomes.map((v, i) => ({
   id: `ven-${String(i + 1).padStart(3, '0')}`,
-  empresa_id: empresa.id,
-  nome: v.nome,
+  enterpriseId: empresa.id,
+  name: v.nome,
   email: v.email,
-  telefone_whatsapp: `5511${String(900000000 + i * 11111111)}`,
-  foto_perfil: `https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${avatarSeeds[i]}`,
-  role: i === 0 ? 'ADMIN' : 'VENDEDOR',
-  ativo: true,
+  whatsappPhone: `5511${String(900000000 + i * 11111111)}`,
+  profilePicture: `https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${avatarSeeds[i]}`,
+  role: i === 0 ? 'ADMIN' : 'VENDOR',
+  isActive: true,
 }));
 
 const produtoTitulos: Record<string, string[]> = {
@@ -100,29 +100,29 @@ const descricoes = [
   'Produto licenciado oficial com todas as especificações técnicas. Fabricado com os mais altos padrões de qualidade. Garante conforto, estilo e funcionalidade.',
 ];
 
-function generateMidias(produtoId: string): Midia[] {
+function generateMedia(productId: string): Media[] {
   const baseUrl = 'https://picsum.photos/seed';
-  const midias: Midia[] = [];
+  const media: Media[] = [];
 
   for (let i = 1; i <= 3; i++) {
-    midias.push({
-      id: `mid-${produtoId}-${i}`,
-      url_arquivo: `${baseUrl}/${produtoId}-${i}/600/600`,
-      tipo: 'imagem',
-      ordem: i,
-      produto_id: produtoId,
+    media.push({
+      id: `mid-${productId}-${i}`,
+      fileUrl: `${baseUrl}/${productId}-${i}/600/600`,
+      type: 'image',
+      order: i,
+      productId: productId,
     });
   }
 
-  midias.push({
-    id: `mid-${produtoId}-vid`,
-    url_arquivo: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-    tipo: 'video',
-    ordem: 4,
-    produto_id: produtoId,
+  media.push({
+    id: `mid-${productId}-vid`,
+    fileUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    type: 'video',
+    order: 4,
+    productId: productId,
   });
 
-  return midias;
+  return media;
 }
 
 function gerarPreco(): number {
@@ -130,7 +130,7 @@ function gerarPreco(): number {
   return precos[Math.floor(Math.random() * precos.length)];
 }
 
-export const produtos: Produto[] = [];
+export const produtos: Product[] = [];
 
 vendedores.forEach((vendedor, vIdx) => {
   const catKeys = Object.keys(produtoTitulos);
@@ -140,20 +140,20 @@ vendedores.forEach((vendedor, vIdx) => {
     const titulos = produtoTitulos[catId];
     const titulo = titulos[p % titulos.length];
     const prodId = `prod-${String(vIdx + 1).padStart(2, '0')}-${String(p + 1).padStart(2, '0')}`;
-    const categoria = categorias.find(c => c.id === catId)!;
+    const category = categorias.find(c => c.id === catId)!;
 
     produtos.push({
       id: prodId,
-      titulo,
-      descricao: descricoes[p % descricoes.length],
-      preco: gerarPreco(),
-      categoria_id: catId,
-      vendedor_id: vendedor.id,
-      empresa_id: empresa.id,
+      title: titulo,
+      description: descricoes[p % descricoes.length],
+      price: gerarPreco(),
+      categoryId: catId,
+      sellerId: vendedor.id,
+      enterpriseId: empresa.id,
       countViews: Math.floor(Math.random() * 5000) + 100,
-      midias: generateMidias(prodId),
-      categoria,
-      vendedor,
+      media: generateMedia(prodId),
+      category,
+      seller: vendedor,
       createdAt: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString(),
     });
   }
@@ -165,13 +165,13 @@ export const tokens: Token[] = [
     token: 'sk_live_a1b2c3d4e5f6g7h8i9j0',
     createdAt: new Date().toISOString(),
     expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-    ativo: true,
+    isActive: true,
   },
   {
     id: 'tok-002',
     token: 'sk_live_k1l2m3n4o5p6q7r8s9t0',
     createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
     expiresAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    ativo: false,
+    isActive: false,
   },
 ];

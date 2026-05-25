@@ -6,14 +6,14 @@ import Image from 'next/image';
 import { Save, X, Upload } from 'lucide-react';
 import MultiSelect from '@/components/MultiSelect';
 import { getProductById, getCategories } from '@/mock/api';
-import type { Produto, Categoria } from '@/types';
+import type { Product, Category } from '@/types';
 import styles from '../../../shared.module.scss';
 
 export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
-  const [product, setProduct] = useState<Produto | null>(null);
-  const [categories, setCategories] = useState<Categoria[]>([]);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -29,10 +29,10 @@ export default function EditProductPage() {
       setCategories(cats);
       if (p) {
         setProduct(p);
-        setTitulo(p.titulo);
-        setDescricao(p.descricao);
-        setPreco(p.preco);
-        setSelectedCats([p.categoria_id]);
+        setTitulo(p.title);
+        setDescricao(p.description);
+        setPreco(p.price);
+        setSelectedCats([p.categoryId]);
       }
       setLoading(false);
     });
@@ -106,9 +106,9 @@ export default function EditProductPage() {
           <div className={`${styles.formGroup} ${styles.full}`}>
             <label className={styles.label}>Mídias atuais</label>
             <div className={styles.previewGrid}>
-              {product.midias.filter(m => m.tipo === 'imagem').map(m => (
+              {product.media.filter(m => m.type === 'image').map(m => (
                 <div key={m.id} className={styles.previewItem}>
-                  <Image src={m.url_arquivo} alt="Mídia" width={72} height={72} unoptimized />
+                  <Image src={m.fileUrl} alt="Mídia" width={72} height={72} unoptimized />
                 </div>
               ))}
             </div>

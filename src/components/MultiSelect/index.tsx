@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { X, ChevronDown } from 'lucide-react';
-import type { Categoria } from '@/types';
+import type { Category } from '@/types';
 import styles from './MultiSelect.module.scss';
 
 interface MultiSelectProps {
-  options: Categoria[];
+  options: Category[];
   selected: string[];
   onChange: (ids: string[]) => void;
   placeholder?: string;
@@ -49,14 +49,14 @@ export default function MultiSelect({ options, selected, onChange, placeholder =
           <div className={styles.tags}>
             {selectedOptions.map(opt => (
               <span key={opt.id} className={styles.tag}>
-                {opt.nome}
+                {opt.name}
                 <span
                   role="button"
                   tabIndex={0}
                   className={styles.tagRemove}
                   onClick={e => { e.stopPropagation(); remove(opt.id); }}
                   onKeyDown={e => { if (e.key === 'Enter') { e.stopPropagation(); remove(opt.id); } }}
-                  aria-label={`Remover ${opt.nome}`}
+                  aria-label={`Remover ${opt.name}`}
                 >
                   <X size={10} />
                 </span>
@@ -79,7 +79,7 @@ export default function MultiSelect({ options, selected, onChange, placeholder =
               <span className={styles.checkbox}>
                 {selected.includes(opt.id) && <span className={styles.checkmark} />}
               </span>
-              {opt.nome}
+              {opt.name}
             </button>
           ))}
         </div>

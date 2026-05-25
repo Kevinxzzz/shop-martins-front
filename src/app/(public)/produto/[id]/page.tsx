@@ -9,13 +9,13 @@ import ProductCarousel from '@/components/ProductCarousel';
 import ProductCard from '@/components/ProductCard';
 import { getProductById, getRelatedProducts } from '@/mock/api';
 import { formatPrice, formatViews, getWhatsAppLink } from '@/utils';
-import type { Produto } from '@/types';
+import type { Product } from '@/types';
 import styles from './page.module.scss';
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const [product, setProduct] = useState<Produto | null>(null);
-  const [related, setRelated] = useState<Produto[]>([]);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [related, setRelated] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function ProductDetailPage() {
       setProduct(p);
       setLoading(false);
       if (p) {
-        getRelatedProducts(p.categoria_id, p.id).then(setRelated);
+        getRelatedProducts(p.categoryId, p.id).then(setRelated);
       }
     });
   }, [params.id]);
@@ -51,8 +51,8 @@ export default function ProductDetailPage() {
     );
   }
 
-  const whatsappMessage = `Olá! Vi o produto "${product.titulo}" por ${formatPrice(product.preco)} no Shop Martins e gostaria de mais informações.`;
-  const whatsappLink = getWhatsAppLink(product.vendedor?.telefone_whatsapp || '', whatsappMessage);
+  const whatsappMessage = `Olá! Vi o produto "${product.title}" por ${formatPrice(product.price)} no Shop Martins e gostaria de mais informações.`;
+  const whatsappLink = getWhatsAppLink(product.seller?.whatsappPhone || '', whatsappMessage);
 
   return (
     <div className={styles.container}>
@@ -60,28 +60,28 @@ export default function ProductDetailPage() {
       <nav className={styles.breadcrumbs} aria-label="Navegação">
         <Link href="/">Início</Link>
         <ChevronRight size={14} aria-hidden="true" />
-        {product.categoria && (
+        {product.category && (
           <>
-            <Link href={`/?categoria=${product.categoria_id}`}>{product.categoria.nome}</Link>
+            <Link href={`/?category=${product.categoryId}`}>{product.category.name}</Link>
             <ChevronRight size={14} aria-hidden="true" />
           </>
         )}
-        <span>{product.titulo}</span>
+        <span>{product.title}</span>
       </nav>
 
       <div className={styles.layout}>
         {/* Carousel */}
         <div className={styles.gallery}>
-          <ProductCarousel midias={product.midias} title={product.titulo} />
+          <ProductCarousel media={product.media} title={product.title} />
         </div>
 
         {/* Details */}
         <div className={styles.details}>
-          {product.categoria && (
-            <span className={styles.categoryBadge}>{product.categoria.nome}</span>
+          {product.category && (
+            <span className={styles.categoryBadge}>{product.category.name}</span>
           )}
 
-          <h1 className={styles.title}>{product.titulo}</h1>
+          <h1 className={styles.title}>{product.title}</h1>
 
           <div className={styles.viewCount}>
             <Eye size={16} aria-hidden="true" />
@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
           </div>
 
           <div className={styles.priceBlock}>
-            <span className={styles.price}>{formatPrice(product.preco)}</span>
+            <span className={styles.price}>{formatPrice(product.price)}</span>
             <span className={styles.priceNote}>à vista via WhatsApp</span>
           </div>
 
@@ -106,24 +106,24 @@ export default function ProductDetailPage() {
 
           <div className={styles.description}>
             <h3>Descrição</h3>
-            <p>{product.descricao}</p>
+            <p>{product.description}</p>
           </div>
 
-          {/* Vendor */}
-          {product.vendedor && (
+          {/* Seller */}
+          {product.seller && (
             <div className={styles.vendorBlock}>
               <h4 className={styles.vendorTitle}>Vendedor</h4>
-              <Link href={`/vendedor/${product.vendedor.id}`} className={styles.vendorInfo}>
+              <Link href={`/vendedor/${product.seller.id}`} className={styles.vendorInfo}>
                 <Image
-                  src={product.vendedor.foto_perfil}
-                  alt={product.vendedor.nome}
+                  src={product.seller.profilePicture}
+                  alt={product.seller.name}
                   width={48}
                   height={48}
                   className={styles.vendorAvatar}
                   unoptimized
                 />
                 <div>
-                  <span className={styles.vendorName}>{product.vendedor.nome}</span>
+                  <span className={styles.vendorName}>{product.seller.name}</span>
                   <span className={styles.vendorSub}>Ver todos os produtos</span>
                 </div>
               </Link>

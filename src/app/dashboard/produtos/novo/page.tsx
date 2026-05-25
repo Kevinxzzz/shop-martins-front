@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import { Upload, Save, X } from 'lucide-react';
 import MultiSelect from '@/components/MultiSelect';
 import { getCategories } from '@/mock/api';
-import type { Categoria } from '@/types';
+import type { Category } from '@/types';
 import styles from '../../shared.module.scss';
 
 export default function NewProductPage() {
   const router = useRouter();
-  const [categories, setCategories] = useState<Categoria[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);

@@ -8,8 +8,8 @@ import styles from '../shared.module.scss';
 
 export default function ProfilePage() {
   const user = vendedores[0];
-  const [nome, setNome] = useState(user.nome);
-  const [whatsapp, setWhatsapp] = useState(user.telefone_whatsapp);
+  const [nome, setNome] = useState(user.name);
+  const [whatsapp, setWhatsapp] = useState(user.whatsappPhone);
   const [saving, setSaving] = useState(false);
 
   const handleSave = async (e: React.FormEvent) => {
@@ -28,15 +28,15 @@ export default function ProfilePage() {
       <div className={styles.profileCard}>
         <div className={styles.profileHeader}>
           <Image
-            src={user.foto_perfil}
-            alt={user.nome}
+            src={user.profilePicture}
+            alt={user.name}
             width={80}
             height={80}
             className={styles.profileAvatar}
             unoptimized
           />
           <div>
-            <h2 className={styles.profileName}>{user.nome}</h2>
+            <h2 className={styles.profileName}>{user.name}</h2>
             <span className={styles.profileRole}>{user.role}</span>
           </div>
         </div>
