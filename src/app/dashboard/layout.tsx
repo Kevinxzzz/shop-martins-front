@@ -11,8 +11,8 @@ import { useTheme } from '@/components/ThemeProvider';
 import styles from './layout.module.scss';
 
 const vendorNav = [
-  { href: '/dashboard', label: 'Visão Geral', icon: LayoutDashboard },
-  { href: '/dashboard/produtos', label: 'Meus Produtos', icon: Package },
+  // { href: '/dashboard', label: 'Visão Geral', icon: LayoutDashboard },
+  { href: '/dashboard', label: 'Meus Produtos', icon: Package },
   { href: '/dashboard/produtos/novo', label: 'Novo Produto', icon: Plus },
   { href: '/dashboard/perfil', label: 'Meu Perfil', icon: User },
 ];
