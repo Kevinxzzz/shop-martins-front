@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { QueryProvider } from '@/lib/react-query/QueryProvider';
+import { AuthProvider } from '@/contexts/AuthProvider';
 import '@/styles/global.scss';
 
 const inter = Inter({
@@ -34,7 +36,11 @@ export default function RootLayout({
     <html lang="pt-BR" className={inter.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          {children}
+          <QueryProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>

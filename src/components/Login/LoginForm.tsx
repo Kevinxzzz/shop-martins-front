@@ -4,15 +4,18 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, Loader2, Sparkles } from 'lucide-react';
+import { useLogin } from '@/hooks/auth/useLogin';
+import { getErrorMessage } from '@/services/httpClient';
 import styles from './Login.module.scss';
 
 export default function LoginForm() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+
+  const router = useRouter();
+  const loginMutation = useLogin();
 
   const validate = () => {
     const newErrors: typeof errors = {};
@@ -32,7 +35,7 @@ export default function LoginForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) {
       const card = document.getElementById('login-card');
@@ -44,20 +47,15 @@ export default function LoginForm() {
       return;
     }
 
-    setLoading(true);
-    setErrors({});
-
-    try {
-      // Simulate API call for now
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      localStorage.setItem('shop-martins-token', 'demo-token-123');
-      router.push('/');
-    } catch (error: any) {
-      setErrors({ general: error.message || 'Credenciais inválidas. Tente novamente.' });
-    } finally {
-      setLoading(false);
-    }
+    loginMutation.reset();
+    loginMutation.mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          router.push('/');
+        },
+      }
+    );
   };
 
   return (
@@ -73,9 +71,9 @@ export default function LoginForm() {
         <p className={styles.formSubtitle}>Insira seus dados para acessar sua conta.</p>
       </div>
 
-      {errors.general && (
+      {loginMutation.isError && (
         <div className={`${styles.errorText} animate-shake`} style={{ marginBottom: '1rem', justifyContent: 'center' }}>
-          {errors.general}
+          {getErrorMessage(loginMutation.error, 'Credenciais inválidas. Tente novamente.')}
         </div>
       )}
 
@@ -98,7 +96,7 @@ export default function LoginForm() {
               }}
               className={styles.inputField}
               autoComplete="email"
-              disabled={loading}
+              disabled={loginMutation.isPending}
             />
           </div>
           {errors.email && <span className={styles.errorText}>{errors.email}</span>}
@@ -122,7 +120,7 @@ export default function LoginForm() {
               }}
               className={styles.inputField}
               autoComplete="current-password"
-              disabled={loading}
+              disabled={loginMutation.isPending}
             />
             <button
               type="button"
@@ -149,8 +147,8 @@ export default function LoginForm() {
         </div>
 
         {/* Submit */}
-        <button type="submit" className={styles.submitButton} disabled={loading}>
-          {loading ? (
+        <button type="submit" className={styles.submitButton} disabled={loginMutation.isPending}>
+          {loginMutation.isPending ? (
             <Loader2 size={20} className={styles.loader} />
           ) : (
             'Entrar'

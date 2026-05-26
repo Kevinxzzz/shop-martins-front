@@ -8,6 +8,7 @@ import {
   ChevronRight, Moon, Sun, Menu, X, Home, LogOut, Tag
 } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import styles from './layout.module.scss';
 
 const vendorNav = [
@@ -91,36 +92,38 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   );
 
   return (
-    <div className={styles.wrapper}>
-      {/* Desktop sidebar */}
-      <aside className={styles.sidebar}>{sidebarContent}</aside>
+    <ProtectedRoute>
+      <div className={styles.wrapper}>
+        {/* Desktop sidebar */}
+        <aside className={styles.sidebar}>{sidebarContent}</aside>
 
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <>
-          <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />
-          <aside className={styles.mobileSidebar}>{sidebarContent}</aside>
-        </>
-      )}
+        {/* Mobile overlay */}
+        {sidebarOpen && (
+          <>
+            <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />
+            <aside className={styles.mobileSidebar}>{sidebarContent}</aside>
+          </>
+        )}
 
-      {/* Main content */}
-      <div className={styles.main}>
-        <header className={styles.topbar}>
-          <button
-            className={styles.menuToggle}
-            onClick={() => setSidebarOpen(true)}
-            aria-label="Abrir menu"
-          >
-            <Menu size={20} />
-          </button>
-          <div className={styles.topbarRight}>
-            <button className={styles.themeBtn} onClick={toggleTheme}>
-              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+        {/* Main content */}
+        <div className={styles.main}>
+          <header className={styles.topbar}>
+            <button
+              className={styles.menuToggle}
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Abrir menu"
+            >
+              <Menu size={20} />
             </button>
-          </div>
-        </header>
-        <div className={styles.content}>{children}</div>
+            <div className={styles.topbarRight}>
+              <button className={styles.themeBtn} onClick={toggleTheme}>
+                {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+              </button>
+            </div>
+          </header>
+          <div className={styles.content}>{children}</div>
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }

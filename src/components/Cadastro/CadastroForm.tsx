@@ -4,10 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, Loader2, Sparkles, User, Ticket } from 'lucide-react';
+import { useRegisterUser } from '@/hooks/auth/useRegisterUser';
+import { getErrorMessage } from '@/services/httpClient';
 import styles from './Cadastro.module.scss';
 
 export default function CadastroForm() {
-  const router = useRouter();
   const [inviteToken, setInviteToken] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -16,7 +17,6 @@ export default function CadastroForm() {
   
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   
   const [errors, setErrors] = useState<{
     inviteToken?: string;
@@ -24,8 +24,10 @@ export default function CadastroForm() {
     email?: string;
     password?: string;
     confirmPassword?: string;
-    general?: string;
   }>({});
+
+  const router = useRouter();
+  const registerUserMutation = useRegisterUser();
 
   const clearFieldError = (field: keyof typeof errors) => {
     if (errors[field]) {
@@ -64,7 +66,7 @@ export default function CadastroForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) {
       const card = document.getElementById('register-card');
@@ -76,20 +78,20 @@ export default function CadastroForm() {
       return;
     }
 
-    setLoading(true);
-    setErrors({});
-
-    try {
-      // Simulate API call for now
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      
-      localStorage.setItem('shop-martins-token', 'demo-token-reg-123');
-      router.push('/');
-    } catch (error: any) {
-      setErrors({ general: error.message || 'Falha ao registrar. Verifique os dados.' });
-    } finally {
-      setLoading(false);
-    }
+    registerUserMutation.reset();
+    registerUserMutation.mutate(
+      {
+        inviteToken,
+        name,
+        email,
+        password,
+      },
+      {
+        onSuccess: () => {
+          router.push('/');
+        },
+      }
+    );
   };
 
   return (
@@ -105,9 +107,9 @@ export default function CadastroForm() {
         <p className={styles.formSubtitle}>Junte-se à plataforma usando seu convite.</p>
       </div>
 
-      {errors.general && (
+      {registerUserMutation.isError && (
         <div className={`${styles.errorText} animate-shake`} style={{ marginBottom: '1rem', justifyContent: 'center' }}>
-          {errors.general}
+          {getErrorMessage(registerUserMutation.error, 'Falha ao registrar. Verifique os dados.')}
         </div>
       )}
 
@@ -130,7 +132,7 @@ export default function CadastroForm() {
               }}
               className={styles.inputField}
               autoComplete="off"
-              disabled={loading}
+              disabled={registerUserMutation.isPending}
             />
           </div>
           {errors.inviteToken && <span className={styles.errorText}>{errors.inviteToken}</span>}
@@ -154,7 +156,7 @@ export default function CadastroForm() {
               }}
               className={styles.inputField}
               autoComplete="name"
-              disabled={loading}
+              disabled={registerUserMutation.isPending}
             />
           </div>
           {errors.name && <span className={styles.errorText}>{errors.name}</span>}
@@ -178,7 +180,7 @@ export default function CadastroForm() {
               }}
               className={styles.inputField}
               autoComplete="email"
-              disabled={loading}
+              disabled={registerUserMutation.isPending}
             />
           </div>
           {errors.email && <span className={styles.errorText}>{errors.email}</span>}
@@ -202,7 +204,7 @@ export default function CadastroForm() {
               }}
               className={styles.inputField}
               autoComplete="new-password"
-              disabled={loading}
+              disabled={registerUserMutation.isPending}
             />
             <button
               type="button"
@@ -235,7 +237,7 @@ export default function CadastroForm() {
               }}
               className={styles.inputField}
               autoComplete="new-password"
-              disabled={loading}
+              disabled={registerUserMutation.isPending}
             />
             <button
               type="button"
@@ -251,8 +253,8 @@ export default function CadastroForm() {
         </div>
 
         {/* Submit */}
-        <button type="submit" className={styles.submitButton} disabled={loading}>
-          {loading ? (
+        <button type="submit" className={styles.submitButton} disabled={registerUserMutation.isPending}>
+          {registerUserMutation.isPending ? (
             <Loader2 size={20} className={styles.loader} />
           ) : (
             'Criar Conta'

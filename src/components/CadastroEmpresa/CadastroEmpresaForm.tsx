@@ -4,12 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, Loader2, Sparkles, User, Link as LinkIcon, Building2, BriefcaseBusiness } from 'lucide-react';
-import { registerEnterprise } from '@/mock/api';
+import { useRegisterEnterprise } from '@/hooks/auth/useRegisterEnterprise';
+import { getErrorMessage } from '@/services/httpClient';
 import styles from './CadastroEmpresa.module.scss';
 
 export default function CadastroEmpresaForm() {
-  const router = useRouter();
-
   // Dados da Empresa
   const [documentVal, setDocumentVal] = useState('');
   const [enterpriseName, setEnterpriseName] = useState('');
@@ -23,7 +22,6 @@ export default function CadastroEmpresaForm() {
   
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   
   const [errors, setErrors] = useState<{
     document?: string;
@@ -33,8 +31,10 @@ export default function CadastroEmpresaForm() {
     email?: string;
     password?: string;
     confirmPassword?: string;
-    general?: string;
   }>({});
+
+  const router = useRouter();
+  const registerEnterpriseMutation = useRegisterEnterprise();
 
   const clearFieldError = (field: keyof typeof errors) => {
     if (errors[field]) {
@@ -104,7 +104,7 @@ export default function CadastroEmpresaForm() {
     clearFieldError('document');
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) {
       const card = window.document.getElementById('register-card');
@@ -116,31 +116,22 @@ export default function CadastroEmpresaForm() {
       return;
     }
 
-    setLoading(true);
-    setErrors({});
-
-    try {
-      // Usar a API mockada
-      const response = await registerEnterprise({
+    registerEnterpriseMutation.reset();
+    registerEnterpriseMutation.mutate(
+      {
         document: documentVal.replace(/\D/g, ''),
         name: enterpriseName,
         contactLink: contactLink || undefined,
         userName: name,
         userEmail: email,
-        userPassword: password
-      });
-
-      if (response.token) {
-        localStorage.setItem('shop-martins-token', response.token);
-        router.push('/dashboard'); // Redireciona pro dashboard após o cadastro da empresa
-      } else {
-        throw new Error('Erro ao criar conta da empresa');
+        userPassword: password,
+      },
+      {
+        onSuccess: () => {
+          router.push('/dashboard');
+        },
       }
-    } catch (error: any) {
-      setErrors({ general: error.message || 'Falha ao registrar empresa. Verifique os dados.' });
-    } finally {
-      setLoading(false);
-    }
+    );
   };
 
   return (
@@ -156,9 +147,9 @@ export default function CadastroEmpresaForm() {
         <p className={styles.formSubtitle}>Crie a conta da sua empresa e do administrador principal.</p>
       </div>
 
-      {errors.general && (
+      {registerEnterpriseMutation.isError && (
         <div className={`${styles.errorText} animate-shake`} style={{ marginBottom: '1rem', justifyContent: 'center' }}>
-          {errors.general}
+          {getErrorMessage(registerEnterpriseMutation.error, 'Falha ao registrar empresa. Verifique os dados.')}
         </div>
       )}
 
@@ -181,7 +172,7 @@ export default function CadastroEmpresaForm() {
               onChange={handleCnpjChange}
               className={styles.inputField}
               autoComplete="off"
-              disabled={loading}
+              disabled={registerEnterpriseMutation.isPending}
             />
           </div>
           {errors.document && <span className={styles.errorText}>{errors.document}</span>}
@@ -205,7 +196,7 @@ export default function CadastroEmpresaForm() {
               }}
               className={styles.inputField}
               autoComplete="organization"
-              disabled={loading}
+              disabled={registerEnterpriseMutation.isPending}
             />
           </div>
           {errors.enterpriseName && <span className={styles.errorText}>{errors.enterpriseName}</span>}
@@ -229,7 +220,7 @@ export default function CadastroEmpresaForm() {
               }}
               className={styles.inputField}
               autoComplete="url"
-              disabled={loading}
+              disabled={registerEnterpriseMutation.isPending}
             />
           </div>
           {errors.contactLink && <span className={styles.errorText}>{errors.contactLink}</span>}
@@ -255,7 +246,7 @@ export default function CadastroEmpresaForm() {
               }}
               className={styles.inputField}
               autoComplete="name"
-              disabled={loading}
+              disabled={registerEnterpriseMutation.isPending}
             />
           </div>
           {errors.name && <span className={styles.errorText}>{errors.name}</span>}
@@ -279,7 +270,7 @@ export default function CadastroEmpresaForm() {
               }}
               className={styles.inputField}
               autoComplete="email"
-              disabled={loading}
+              disabled={registerEnterpriseMutation.isPending}
             />
           </div>
           {errors.email && <span className={styles.errorText}>{errors.email}</span>}
@@ -303,7 +294,7 @@ export default function CadastroEmpresaForm() {
               }}
               className={styles.inputField}
               autoComplete="new-password"
-              disabled={loading}
+              disabled={registerEnterpriseMutation.isPending}
             />
             <button
               type="button"
@@ -336,7 +327,7 @@ export default function CadastroEmpresaForm() {
               }}
               className={styles.inputField}
               autoComplete="new-password"
-              disabled={loading}
+              disabled={registerEnterpriseMutation.isPending}
             />
             <button
               type="button"
@@ -352,8 +343,8 @@ export default function CadastroEmpresaForm() {
         </div>
 
         {/* Submit */}
-        <button type="submit" className={styles.submitButton} disabled={loading}>
-          {loading ? (
+        <button type="submit" className={styles.submitButton} disabled={registerEnterpriseMutation.isPending}>
+          {registerEnterpriseMutation.isPending ? (
             <Loader2 size={20} className={styles.loader} />
           ) : (
             'Cadastrar Empresa e Admin'
