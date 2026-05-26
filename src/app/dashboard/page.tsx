@@ -1,90 +1,107 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Package, Eye, Layers, TrendingUp } from 'lucide-react';
-import { getDashboardStats } from '@/mock/api';
-import type { DashboardStats } from '@/types';
-import styles from './page.module.scss';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Plus, Eye, Pencil, Trash2 } from 'lucide-react';
+import ModalConfirm from '@/components/ModalConfirm';
+import { getProducts } from '@/mock/api';
+import { formatPrice } from '@/utils';
+import type { Product } from '@/types';
+import styles from './shared.module.scss'; // Aponta para os estilos compartilhados do dashboard
 
 export default function DashboardPage() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
-    getDashboardStats('ven-001').then(setStats);
+    getProducts({ sellerId: 'ven-001', limit: 100 }).then(res => {
+      setProducts(res.products);
+      setLoading(false);
+    });
   }, []);
 
-  if (!stats) {
-    return <div className={styles.loading}>Carregando...</div>;
-  }
+  const handleDelete = () => {
+    if (deleteId) {
+      setProducts(prev => prev.filter(p => p.id !== deleteId));
+      setDeleteId(null);
+    }
+  };
 
-  const cards = [
-    { label: 'Produtos', value: stats.totalProducts, icon: Package, color: '#0066FF' },
-    { label: 'Views Totais', value: stats.totalViews.toLocaleString('pt-BR'), icon: Eye, color: '#00d4aa' },
-    { label: 'Categorias', value: stats.totalCategories, icon: Layers, color: '#ffb020' },
-    { label: 'Média Views', value: Math.round(stats.totalViews / (stats.totalProducts || 1)), icon: TrendingUp, color: '#ff3b5c' },
-  ];
-
-  const maxViews = Math.max(...stats.viewsByDay.map(d => d.views));
+  if (loading) return <div className={styles.loading}>Carregando...</div>;
 
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Visão Geral</h1>
-        <p className={styles.subtitle}>Acompanhe as métricas da sua loja</p>
+        <h1 className={styles.title}>Meus Produtos</h1>
+        <Link href="/dashboard/produtos/novo" className={styles.addBtn}>
+          <Plus size={16} /> Novo Produto
+        </Link>
       </div>
 
-      <div className={styles.statsGrid}>
-        {cards.map((card, i) => (
-          <div key={i} className={styles.statCard} style={{ animationDelay: `${i * 80}ms` }}>
-            <div className={styles.statIcon} style={{ background: `${card.color}15`, color: card.color }}>
-              <card.icon size={22} />
-            </div>
-            <div className={styles.statInfo}>
-              <span className={styles.statValue}>{card.value}</span>
-              <span className={styles.statLabel}>{card.label}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className={styles.chartsRow}>
-        <div className={styles.chartCard}>
-          <h3 className={styles.chartTitle}>Views por dia</h3>
-          <div className={styles.barChart}>
-            {stats.viewsByDay.map((day, i) => (
-              <div key={i} className={styles.barItem}>
-                <div className={styles.barTrack}>
-                  <div
-                    className={styles.barFill}
-                    style={{ height: `${(day.views / maxViews) * 100}%` }}
-                  />
-                </div>
-                <span className={styles.barLabel}>{day.day}</span>
-              </div>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Views</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map(product => (
+              <tr key={product.id}>
+                <td>
+                  <div className={styles.productRow}>
+                    <Image
+                      src={product.media[0]?.fileUrl || ''}
+                      alt={product.title}
+                      width={44}
+                      height={44}
+                      className={styles.productThumb}
+                      unoptimized
+                    />
+                    <span className={styles.productTitle}>{product.title}</span>
+                  </div>
+                </td>
+                <td><span className={styles.badge}>{product.category?.name}</span></td>
+                <td><span className={styles.price}>{formatPrice(product.price)}</span></td>
+                <td>{product.countViews}</td>
+                <td>
+                  <div className={styles.actionBtns}>
+                    <Link href={`/produto/${product.id}`} className={styles.actionBtn} title="Ver">
+                      <Eye size={16} />
+                    </Link>
+                    <Link href={`/dashboard/produtos/${product.id}/editar`} className={styles.actionBtn} title="Editar">
+                      <Pencil size={16} />
+                    </Link>
+                    <button
+                      className={`${styles.actionBtn} ${styles.danger}`}
+                      onClick={() => setDeleteId(product.id)}
+                      title="Excluir"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
             ))}
-          </div>
-        </div>
-
-        <div className={styles.chartCard}>
-          <h3 className={styles.chartTitle}>Produtos por categoria</h3>
-          <div className={styles.categoryList}>
-            {stats.productsByCategory.map((cat, i) => (
-              <div key={i} className={styles.categoryItem}>
-                <div className={styles.categoryInfo}>
-                  <span className={styles.categoryName}>{cat.category}</span>
-                  <span className={styles.categoryCount}>{cat.total}</span>
-                </div>
-                <div className={styles.categoryBar}>
-                  <div
-                    className={styles.categoryFill}
-                    style={{ width: `${(cat.total / stats.totalProducts) * 100}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
+
+      <ModalConfirm
+        isOpen={!!deleteId}
+        title="Excluir produto"
+        message="Tem certeza que deseja excluir este produto? Essa ação não pode ser desfeita."
+        confirmText="Excluir"
+        variant="danger"
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteId(null)}
+      />
     </div>
   );
 }
