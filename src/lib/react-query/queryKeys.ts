@@ -8,6 +8,10 @@ export const queryKeys = {
     all: ['auth'] as const,
     me: ['auth', 'me'] as const,
   },
+  users: {
+    all: ['users'] as const,
+    list: ['users', 'list'] as const,
+  },
   // Expanda conforme necessário:
   // products: { ... },
 };

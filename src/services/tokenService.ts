@@ -1,10 +1,5 @@
 import { httpClient } from './httpClient';
-import type { Token } from '@/types';
-
-export interface CreateTokenData {
-  maxUses: number;
-  expiredAt: string;
-}
+import type { Token, CreateTokenData } from '@/types';
 
 export async function getTokens(page = 1, limit = 50): Promise<Token[]> {
   const response = await httpClient.get<{ data: Token[], meta: any }>(`/tokens?page=${page}&limit=${limit}`);

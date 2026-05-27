@@ -9,3 +9,6 @@ export * from './mediaType';
 export * from './productType';
 export * from './statsType';
 export * from './tokenType';
+export * from './authType';
+export * from './apiType';
+

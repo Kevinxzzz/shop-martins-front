@@ -5,3 +5,9 @@ export interface Enterprise {
   cpfCnpj: string;
   salesGroupLink?: string;
 }
+
+export interface AuthEnterprise {
+  id: string;
+  name: string;
+  cnpj: string;
+}

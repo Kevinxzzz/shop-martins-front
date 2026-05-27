@@ -4,7 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { login, type LoginRequest, type LoginResponse } from '@/services/authService';
+import { login } from '@/services/authService';
+import { type LoginRequest, type LoginResponse } from '@/types';
 import { type ApiError } from '@/services/httpClient';
 import { tokenStorage } from '@/lib/auth/tokenStorage';
 import { queryKeys } from '@/lib/react-query/queryKeys';

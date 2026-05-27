@@ -13,7 +13,7 @@ import { tokenStorage } from '@/lib/auth/tokenStorage';
 import { AUTH_EXPIRED_EVENT } from '@/lib/auth/authEvents';
 import { queryKeys } from '@/lib/react-query/queryKeys';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
-import { type AuthUser } from '@/services/authService';
+import { type AuthUser } from '@/types';
 
 export interface AuthContextValue {
   user: AuthUser | undefined;

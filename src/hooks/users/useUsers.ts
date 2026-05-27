@@ -1,23 +1,19 @@
 // ═══════════════════════════════════════════════════════════════
-// Hook: useCurrentUser
-// Busca os dados da sessão global. Source of truth de autenticação.
+// Hook: useUsers
+// Busca a lista de usuários da empresa do usuário logado.
 // ═══════════════════════════════════════════════════════════════
 
 import { useQuery } from '@tanstack/react-query';
-import { getCurrentUser } from '@/services/authService';
-import { type AuthUser } from '@/types';
+import { getUsers } from '@/services/userService';
 import { type ApiError } from '@/services/httpClient';
+import { type UserDTO } from '@/types';
 import { queryKeys } from '@/lib/react-query/queryKeys';
-import { tokenStorage } from '@/lib/auth/tokenStorage';
 
-export function useCurrentUser() {
-  const token = tokenStorage.getAccessToken();
-
-  return useQuery<AuthUser, ApiError>({
-    queryKey: queryKeys.auth.me,
-    queryFn: getCurrentUser,
-    enabled: !!token,
-    staleTime: 5 * 60 * 1000,
+export function useUsers() {
+  return useQuery<UserDTO[], ApiError>({
+    queryKey: queryKeys.users.list,
+    queryFn: getUsers,
+    staleTime: 10 * 60 * 1000, // 10 minutos
     retry: 1,
   });
 }
