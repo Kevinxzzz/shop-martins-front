@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { useAuth } from '@/hooks/auth/useAuth';
+import { isAdmin } from '@/shared/utils/permissions';
 import styles from './layout.module.scss';
 
 const vendorNav = [
@@ -29,7 +31,10 @@ const adminNav = [
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const showAdminNav = isAdmin(user?.role);
 
   const isActive = (href: string) => pathname === href;
 
@@ -59,23 +64,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           ))}
         </div>
 
-        <div className={styles.navSection}>
-          <span className={styles.navLabel}>
-            <Shield size={12} /> Admin
-          </span>
-          {adminNav.map(item => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`${styles.navLink} ${isActive(item.href) ? styles.active : ''}`}
-              onClick={() => setSidebarOpen(false)}
-            >
-              <item.icon size={18} />
-              <span>{item.label}</span>
-              {isActive(item.href) && <ChevronRight size={14} className={styles.navArrow} />}
-            </Link>
-          ))}
-        </div>
+        {showAdminNav && (
+          <div className={styles.navSection}>
+            <span className={styles.navLabel}>
+              <Shield size={12} /> Admin
+            </span>
+            {adminNav.map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${styles.navLink} ${isActive(item.href) ? styles.active : ''}`}
+                onClick={() => setSidebarOpen(false)}
+              >
+                <item.icon size={18} />
+                <span>{item.label}</span>
+                {isActive(item.href) && <ChevronRight size={14} className={styles.navArrow} />}
+              </Link>
+            ))}
+          </div>
+        )}
       </nav>
 
       <div className={styles.sidebarFooter}>
