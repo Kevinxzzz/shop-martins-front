@@ -3,10 +3,12 @@
 import { AlertTriangle } from 'lucide-react';
 import styles from './ModalConfirm.module.scss';
 
+import { ReactNode } from 'react';
+
 interface ModalConfirmProps {
   isOpen: boolean;
-  title: string;
-  message: string;
+  title: string | ReactNode;
+  message: string | ReactNode;
   confirmText?: string;
   cancelText?: string;
   onConfirm: () => void;
