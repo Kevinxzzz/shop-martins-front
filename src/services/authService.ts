@@ -85,7 +85,26 @@ export async function registerEnterprise(data: RegisterEnterpriseRequest): Promi
  * POST /users/register/invite
  */
 export async function registerUser(data: RegisterUserRequest): Promise<RegisterUserResponse> {
-  const response = await httpClient.post<RegisterUserResponse>('/users/register/invite', data);
+  const payload = {
+    token: data.inviteToken,
+    name: data.name,
+    email: data.email,
+    password: data.password
+  };
+  const response = await httpClient.post<RegisterUserResponse>('/auth/register-seller', payload);
+  return response.data;
+}
+
+export interface ValidateTokenResponse {
+  valid: boolean;
+  enterpriseName: string;
+  maxUses: number;
+  currentUses: number;
+  expiredAt: string;
+}
+
+export async function validateToken(rawToken: string): Promise<ValidateTokenResponse> {
+  const response = await httpClient.get<ValidateTokenResponse>(`/tokens/validate/${rawToken}`);
   return response.data;
 }
 
