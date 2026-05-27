@@ -4,61 +4,17 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { httpClient } from './httpClient';
-
-// ── Tipagens de Requisição ──────────────────────────────────
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface RegisterEnterpriseRequest {
-  document: string;
-  name: string;
-  contactLink?: string;
-  userName: string;
-  userEmail: string;
-  userPassword: string;
-}
-
-export interface RegisterUserRequest {
-  inviteToken: string;
-  name: string;
-  email: string;
-  password: string;
-}
-
-// ── Tipagens de Resposta ────────────────────────────────────
-
-export interface AuthUser {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  enterpriseId?: string;
-}
-
-export interface AuthEnterprise {
-  id: string;
-  name: string;
-  cnpj: string;
-}
-
-export interface LoginResponse {
-  token: string;
-  user: AuthUser;
-}
-
-export interface RegisterEnterpriseResponse {
-  token: string;
-  user: AuthUser;
-  enterprise: AuthEnterprise;
-}
-
-export interface RegisterUserResponse {
-  token: string;
-  user: AuthUser;
-}
+import {
+  LoginRequest,
+  RegisterEnterpriseRequest,
+  RegisterUserRequest,
+  AuthUser,
+  AuthEnterprise,
+  LoginResponse,
+  RegisterEnterpriseResponse,
+  RegisterUserResponse,
+  ValidateTokenResponse,
+} from '@/types';
 
 // ── Funções do Serviço ──────────────────────────────────────
 
@@ -95,13 +51,7 @@ export async function registerUser(data: RegisterUserRequest): Promise<RegisterU
   return response.data;
 }
 
-export interface ValidateTokenResponse {
-  valid: boolean;
-  enterpriseName: string;
-  maxUses: number;
-  currentUses: number;
-  expiredAt: string;
-}
+
 
 export async function validateToken(rawToken: string): Promise<ValidateTokenResponse> {
   const response = await httpClient.get<ValidateTokenResponse>(`/tokens/validate/${rawToken}`);

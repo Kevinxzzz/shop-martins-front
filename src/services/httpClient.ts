@@ -5,12 +5,9 @@
 import axios, { AxiosError } from 'axios';
 import { tokenStorage } from '@/lib/auth/tokenStorage';
 import { dispatchAuthExpired } from '@/lib/auth/authEvents';
+import { ApiErrorResponse } from '@/types';
 
 // ── Tipos de Erro ───────────────────────────────────────────
-export interface ApiErrorResponse {
-  error: string;
-  details?: Array<{ message: string; path?: string[] }>;
-}
 
 export class ApiError extends Error {
   public readonly statusCode: number;
