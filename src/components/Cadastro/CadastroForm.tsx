@@ -1,15 +1,20 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Mail, Lock, Eye, EyeOff, Loader2, Sparkles, User, Ticket } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Loader2, Sparkles, User, Ticket, CheckCircle, AlertTriangle, ArrowLeft } from 'lucide-react';
 import { useRegisterUser } from '@/hooks/auth/useRegisterUser';
 import { getErrorMessage } from '@/services/httpClient';
+import { validateToken } from '@/services/authService';
 import styles from './Cadastro.module.scss';
 
-export default function CadastroForm() {
-  const [inviteToken, setInviteToken] = useState('');
+interface CadastroFormProps {
+  initialToken?: string;
+}
+
+export default function CadastroForm({ initialToken }: CadastroFormProps) {
+  const [inviteToken, setInviteToken] = useState(initialToken || '');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,6 +23,12 @@ export default function CadastroForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
+  // States for token validation
+  const [isValidating, setIsValidating] = useState(!!initialToken);
+  const [validationError, setValidationError] = useState('');
+  const [enterpriseName, setEnterpriseName] = useState('');
+  const [isTokenValid, setIsTokenValid] = useState(false);
+
   const [errors, setErrors] = useState<{
     inviteToken?: string;
     name?: string;
@@ -28,6 +39,25 @@ export default function CadastroForm() {
 
   const router = useRouter();
   const registerUserMutation = useRegisterUser();
+
+  useEffect(() => {
+    if (initialToken) {
+      setInviteToken(initialToken);
+      const checkToken = async () => {
+        try {
+          const res = await validateToken(initialToken);
+          setEnterpriseName(res.enterpriseName);
+          setIsTokenValid(true);
+        } catch (error: any) {
+          setValidationError(getErrorMessage(error, 'Convite inválido ou expirado.'));
+          setIsTokenValid(false);
+        } finally {
+          setIsValidating(false);
+        }
+      };
+      checkToken();
+    }
+  }, [initialToken]);
 
   const clearFieldError = (field: keyof typeof errors) => {
     if (errors[field]) {
@@ -94,6 +124,33 @@ export default function CadastroForm() {
     );
   };
 
+  if (isValidating) {
+    return (
+      <div className={`${styles.formCard} animate-fade-in-up`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem' }}>
+        <Loader2 size={40} className={`animate-spin ${styles.loader}`} style={{ marginBottom: '1rem', color: 'var(--color-primary)' }} />
+        <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--color-text)' }}>Validando convite...</h3>
+        <p style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>Aguarde um momento.</p>
+      </div>
+    );
+  }
+
+  if (initialToken && validationError) {
+    return (
+      <div className={`${styles.formCard} animate-fade-in-up`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '3rem 2rem', textAlign: 'center' }}>
+        <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
+          <AlertTriangle size={48} color="var(--color-error)" />
+        </div>
+        <h2 style={{ margin: '0 0 1rem', fontSize: '1.5rem', color: 'var(--color-text)' }}>Oops!</h2>
+        <p style={{ color: 'var(--color-error)', fontWeight: 500, fontSize: '1.1rem', marginBottom: '2rem' }}>{validationError}</p>
+        
+        <Link href="/cadastro" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'var(--color-primary)', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '0.5rem', textDecoration: 'none', fontWeight: 600, transition: 'background 0.2s' }}>
+          <ArrowLeft size={18} />
+          Tentar outro convite
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div id="register-card" className={`${styles.formCard} animate-fade-in-up`}>
       <div className={styles.formHeader}>
@@ -113,30 +170,56 @@ export default function CadastroForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className={styles.form} noValidate>
-        {/* Token de Convite */}
-        <div className={styles.fieldGroup}>
-          <label htmlFor="register-token" className={styles.inputLabel}>
-            Token de Convite
-          </label>
-          <div className={`${styles.inputWrapper} ${errors.inviteToken ? styles.inputError : ''}`}>
-            <Ticket size={18} className={styles.inputIcon} />
-            <input
-              id="register-token"
-              type="text"
-              placeholder="EX: INVITE-123"
-              value={inviteToken}
-              onChange={(e) => {
-                setInviteToken(e.target.value);
-                clearFieldError('inviteToken');
-              }}
-              className={styles.inputField}
-              autoComplete="off"
-              disabled={registerUserMutation.isPending}
-            />
+      {isTokenValid && (
+        <div style={{ 
+          background: 'rgba(34, 197, 94, 0.1)', 
+          border: '1px solid rgba(34, 197, 94, 0.2)',
+          padding: '1rem', 
+          borderRadius: '0.5rem', 
+          marginBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '0.75rem'
+        }}>
+          <CheckCircle size={20} color="var(--color-success, #22c55e)" style={{ marginTop: '0.125rem', flexShrink: 0 }} />
+          <div>
+            <h4 style={{ margin: 0, color: 'var(--color-success, #22c55e)', fontSize: '0.95rem', fontWeight: 600 }}>Convite aplicado ✓</h4>
+            <p style={{ margin: '0.25rem 0 0', color: 'var(--color-text)', fontSize: '0.9rem' }}>
+              Empresa: <strong>{enterpriseName}</strong>
+            </p>
+            <p style={{ margin: '0.25rem 0 0', color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>
+              Token vinculado automaticamente.
+            </p>
           </div>
-          {errors.inviteToken && <span className={styles.errorText}>{errors.inviteToken}</span>}
         </div>
+      )}
+
+      <form onSubmit={handleSubmit} className={styles.form} noValidate>
+        {/* Token de Convite - Oculto se já foi validado pela URL */}
+        {!isTokenValid && (
+          <div className={styles.fieldGroup}>
+            <label htmlFor="register-token" className={styles.inputLabel}>
+              Token de Convite
+            </label>
+            <div className={`${styles.inputWrapper} ${errors.inviteToken ? styles.inputError : ''}`}>
+              <Ticket size={18} className={styles.inputIcon} />
+              <input
+                id="register-token"
+                type="text"
+                placeholder="EX: INVITE-123"
+                value={inviteToken}
+                onChange={(e) => {
+                  setInviteToken(e.target.value);
+                  clearFieldError('inviteToken');
+                }}
+                className={styles.inputField}
+                autoComplete="off"
+                disabled={registerUserMutation.isPending}
+              />
+            </div>
+            {errors.inviteToken && <span className={styles.errorText}>{errors.inviteToken}</span>}
+          </div>
+        )}
 
         {/* Nome */}
         <div className={styles.fieldGroup}>

@@ -159,19 +159,3 @@ vendedores.forEach((vendedor, vIdx) => {
   }
 });
 
-export const tokens: Token[] = [
-  {
-    id: 'tok-001',
-    token: 'sk_live_a1b2c3d4e5f6g7h8i9j0',
-    createdAt: new Date().toISOString(),
-    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-    isActive: true,
-  },
-  {
-    id: 'tok-002',
-    token: 'sk_live_k1l2m3n4o5p6q7r8s9t0',
-    createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
-    expiresAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    isActive: false,
-  },
-];

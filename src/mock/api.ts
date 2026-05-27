@@ -1,5 +1,5 @@
-import { produtos, vendedores, categorias, empresa, tokens } from './data';
-import type { Product, User, Category, DashboardStats, AdminStats, Token } from '@/types';
+import { produtos, vendedores, categorias, empresa } from './data';
+import type { Product, User, Category, DashboardStats, AdminStats } from '@/types';
 
 // ═══════════════════════════════════════════════════════════════
 // SHOP MARTINS — Mock API Service
@@ -135,24 +135,6 @@ export async function getAdminStats(empresaId: string): Promise<AdminStats> {
 }
 
 // ── Admin ───────────────────────────────────────────────────
-export async function getTokens(): Promise<Token[]> {
-  await delay(200);
-  return tokens;
-}
-
-export async function generateToken(): Promise<Token> {
-  await delay(400);
-  const newToken: Token = {
-    id: `tok-${Date.now()}`,
-    token: `sk_live_${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`,
-    createdAt: new Date().toISOString(),
-    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-    isActive: true,
-  };
-  tokens.push(newToken);
-  return newToken;
-}
-
 export async function getEmpresa() {
   await delay(150);
   return empresa;
