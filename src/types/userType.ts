@@ -1,6 +1,4 @@
-import { UserRole as SystemUserRole } from '@/shared/constants/userRoles';
-
-export type UserRole = 'ADMIN' | 'VENDOR';
+import { UserRole } from "@/shared/constants/userRoles";
 
 export interface User {
   id: string;
@@ -11,6 +9,7 @@ export interface User {
   profilePicture: string;
   role: UserRole;
   isActive: boolean;
+  isFounder?: boolean;
 }
 
 export interface AuthUser {
@@ -25,8 +24,9 @@ export interface UserDTO {
   id: string;
   name: string;
   email: string;
-  role: SystemUserRole;
-  status: 'ACTIVE' | 'INACTIVE';
+  role: UserRole;
+  status: "ACTIVE" | "INACTIVE";
+  isFounder?: boolean;
   createdAt: string;
   deletedAt: string | null;
 }
