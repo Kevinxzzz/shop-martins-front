@@ -1,0 +1,622 @@
+@use '@/styles/mixins' as *;
+
+.page {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin-inline: auto;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+
+  @include respond-to('md') {
+    padding: var(--space-6);
+    gap: var(--space-8);
+  }
+}
+
+.loading {
+  @include flex-center;
+  min-height: 300px;
+  color: var(--color-text-tertiary);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0;
+  }
+}
+
+.title {
+  @include heading(var(--fs-2xl));
+  margin: 0;
+
+  @include respond-to('md') {
+    font-size: var(--fs-3xl);
+  }
+}
+
+.headerActions {
+  display: flex;
+  gap: var(--space-3);
+  width: 100%;
+  justify-content: stretch;
+
+  button {
+    flex: 1;
+  }
+
+  @media (min-width: 576px) {
+    width: auto;
+    justify-content: flex-end;
+
+    button {
+      flex: initial;
+    }
+  }
+}
+
+.addBtn {
+  @include button-primary;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+// ── Form ────────────────────────────────────────────────
+.form {
+  @include card;
+  padding: var(--space-5);
+  width: 100%;
+  max-width: 720px;
+  margin-bottom: var(--space-6);
+  
+  &:hover { 
+    transform: none; 
+  }
+
+  @include respond-to('md') {
+    padding: var(--space-8);
+  }
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+
+  @include respond-to('md') {
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--space-5);
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+  }
+}
+
+.input {
+  @include input-base;
+  height: 42px;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-lg);
+}
+
+.formActions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.submitBtn {
+  @include button-primary;
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+  flex: 1;
+
+  @include respond-to('sm') {
+    flex: initial;
+  }
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+.cancelBtn {
+  @include button-ghost;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+  flex: 1;
+
+  @include respond-to('sm') {
+    flex: initial;
+  }
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+// ── Mobile-First Responsive List ────────────────────────
+.categoriesList {
+  @include card;
+  padding: 0;
+  overflow: hidden;
+  background: var(--color-bg-card);
+  
+  &:hover {
+    transform: none; // Disable card scale animation for the main list
+  }
+}
+
+// Desktop Header (hidden on mobile)
+.listHeader {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: var(--space-4);
+    align-items: center;
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 11px;
+    font-weight: var(--fw-bold);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-wide);
+  }
+}
+
+.listBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+
+  @media (min-width: 768px) {
+    gap: 0;
+    padding: 0;
+  }
+}
+
+// Category Row (Card on mobile, Table Row on desktop)
+.categoryRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-primary-light);
+    background: var(--color-bg-card);
+  }
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: var(--space-4);
+    align-items: center;
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-bg-card);
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--color-border-light);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background: var(--color-bg-secondary);
+    }
+  }
+}
+
+// Column 1: Category Name
+.nameCol {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.nameText {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  @include truncate;
+}
+
+.tagIcon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+// Mobile Details Columns
+.slugCol {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-xs);
+  min-width: 0;
+
+  @media (min-width: 768px) {
+    display: block;
+    font-size: var(--fs-sm);
+  }
+}
+
+.mobileLabel {
+  font-weight: var(--fw-bold);
+  color: var(--color-text-tertiary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.slugText {
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  @include truncate;
+
+  @media (min-width: 768px) {
+    font-size: var(--fs-xs);
+  }
+}
+
+// Action Column
+.actionsCol {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+    justify-content: flex-end;
+    gap: var(--space-1);
+  }
+}
+
+.actionBtn {
+  @include button-ghost;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+
+  &:hover {
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+    background: var(--color-primary-ultra-light);
+  }
+
+  &.danger {
+    &:hover {
+      border-color: rgba(255, 59, 92, 0.2);
+      background: rgba(255, 59, 92, 0.1);
+      color: var(--color-danger);
+    }
+  }
+
+  @media (min-width: 768px) {
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+
+    &:hover {
+      background: var(--color-bg-tertiary);
+    }
+
+    &.danger:hover {
+      background: rgba(255, 59, 92, 0.1);
+    }
+  }
+}
+
+.alignRight {
+  @media (min-width: 768px) {
+    text-align: right;
+  }
+}
+
+.emptyList {
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: var(--fs-sm);
+}
+
+// ── Trash System ─────────────────────────────────────────
+.trashBtn {
+  @include button-ghost;
+  position: relative;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--fs-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+
+  &:hover {
+    background: rgba(255, 59, 92, 0.05);
+    color: var(--color-danger);
+    border-color: rgba(255, 59, 92, 0.2);
+  }
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-5);
+  }
+}
+
+.trashBadge {
+  background: var(--color-danger);
+  color: white;
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  padding: 1px 5px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg-overlay);
+  z-index: var(--z-overlay);
+  animation: fade-in 0.2s ease-out;
+}
+
+.modalTrash {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  padding: var(--space-6);
+  width: 92%;
+  max-width: 640px;
+  max-height: 85vh;
+  z-index: var(--z-modal);
+  box-shadow: var(--shadow-2xl);
+  animation: fade-in-scale 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+
+  @include respond-to('md') {
+    padding: var(--space-8);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: var(--space-4);
+}
+
+.modalTitle {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+
+  @include respond-to('md') {
+    font-size: var(--fs-lg);
+  }
+}
+
+.modalCloseBtn {
+  @include button-ghost;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--color-text-tertiary);
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  @include flex-center;
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-bg-tertiary);
+  }
+}
+
+.modalContent {
+  overflow-y: auto;
+  flex: 1;
+  max-height: 50vh;
+  padding-right: var(--space-1);
+}
+
+.emptyTrash {
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: var(--fs-sm);
+}
+
+.trashList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.trashRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+
+  @media (min-width: 480px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+.trashInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  flex: 1;
+}
+
+.trashNameWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.trashTagIcon {
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.trashName {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  @include truncate;
+}
+
+.trashSlug {
+  font-size: var(--fs-xs);
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  @include truncate;
+}
+
+.trashActions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+  width: 100%;
+
+  @media (min-width: 480px) {
+    width: auto;
+  }
+}
+
+.restoreBtn {
+  @include button-ghost;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-success);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+
+  @media (min-width: 480px) {
+    width: auto;
+    padding: var(--space-1) var(--space-3);
+  }
+
+  &:hover {
+    background: rgba(0, 196, 140, 0.08);
+    color: var(--color-success);
+    border-color: rgba(0, 196, 140, 0.2);
+  }
+}
+
+.purgeBtn {
+  @include button-ghost;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-danger);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+
+  @media (min-width: 480px) {
+    width: auto;
+    padding: var(--space-1) var(--space-3);
+  }
+
+  &:hover {
+    background: rgba(255, 59, 92, 0.08);
+    color: var(--color-danger);
+    border-color: rgba(255, 59, 92, 0.2);
+  }
+}

@@ -26,12 +26,12 @@ const vendedorNomes = [
 ];
 
 export const categorias: Category[] = [
-  { id: 'cat-001', name: 'Neymar', slug: 'neymar' },
-  { id: 'cat-002', name: 'over 3200', slug: 'over-3200' },
-  { id: 'cat-003', name: 'messi blitz', slug: 'messi-blitz' },
-  { id: 'cat-004', name: 'Gullit', slug: 'gullit' },
-  { id: 'cat-005', name: 'Hazzard', slug: 'hazzard' },
-  { id: 'cat-006', name: 'Cruyff', slug: 'cruyff' },
+  { id: 'cat-001', name: 'Neymar', slug: 'neymar', status: 'ACTIVE', deletedAt: null, productsCount: 10 },
+  { id: 'cat-002', name: 'over 3200', slug: 'over-3200', status: 'ACTIVE', deletedAt: null, productsCount: 5 },
+  { id: 'cat-003', name: 'messi blitz', slug: 'messi-blitz', status: 'ACTIVE', deletedAt: null, productsCount: 8 },
+  { id: 'cat-004', name: 'Gullit', slug: 'gullit', status: 'ACTIVE', deletedAt: null, productsCount: 2 },
+  { id: 'cat-005', name: 'Hazzard', slug: 'hazzard', status: 'ACTIVE', deletedAt: null, productsCount: 1 },
+  { id: 'cat-006', name: 'Cruyff', slug: 'cruyff', status: 'ACTIVE', deletedAt: null, productsCount: 15 },
 ];
 
 const avatarSeeds = ['Felix', 'Aneka', 'Jude', 'Sasha', 'Leo', 'Milo', 'Luna', 'Zoe', 'Max', 'Aria'];

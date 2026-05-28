@@ -12,6 +12,9 @@ export const queryKeys = {
     all: ['users'] as const,
     list: ['users', 'list'] as const,
   },
-  // Expanda conforme necessário:
-  // products: { ... },
+  categories: {
+    all: ['categories'] as const,
+    list: ['categories', 'list'] as const,
+    trash: ['categories', 'trash'] as const,
+  },
 };
