@@ -1,4 +1,4 @@
-import { produtos, vendedores, categorias, empresa } from "./data";
+import { produtos, vendedores, categorias } from "./data";
 import type { Product, User, Category, DashboardStats, AdminStats } from '@/types';
 import { UserRole } from '@/shared/constants/userRoles';
 
@@ -145,10 +145,7 @@ export async function getAdminStats(empresaId: string): Promise<AdminStats> {
 }
 
 // ── Admin ───────────────────────────────────────────────────
-export async function getEmpresa() {
-  await delay(150);
-  return empresa;
-}
+
 
 export async function registerEnterprise(
   data: any,

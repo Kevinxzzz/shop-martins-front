@@ -1,17 +1,11 @@
-import { Enterprise, User, Category, Product, Media, Token } from "@/types";
+import { User, Category, Product, Media, Token } from "@/types";
 import { UserRole } from "@/shared/constants/userRoles";
 
 // ═══════════════════════════════════════════════════════════════
 // SHOP MARTINS — Mock Data
 // ═══════════════════════════════════════════════════════════════
 
-export const empresa: Enterprise = {
-  id: "emp-001",
-  name: "Shop Martins",
-  number: "5511999999999",
-  cpfCnpj: "12.345.678/0001-90",
-  salesGroupLink: "https://chat.whatsapp.com/abc123grupo",
-};
+
 
 const vendedorNomes = [
   { nome: "Rafael Oliveira", email: "rafael@shopmartins.com" },
@@ -92,7 +86,7 @@ const avatarSeeds = [
 
 export const vendedores: User[] = vendedorNomes.map((v, i) => ({
   id: `ven-${String(i + 1).padStart(3, "0")}`,
-  enterpriseId: empresa.id,
+  enterpriseId: "emp-001",
   name: v.nome,
   email: v.email,
   whatsappPhone: `5511${String(900000000 + i * 11111111)}`,
@@ -298,7 +292,7 @@ vendedores.forEach((vendedor, vIdx) => {
       price: gerarPreco(),
       categoryId: catId,
       sellerId: vendedor.id,
-      enterpriseId: empresa.id,
+      enterpriseId: "emp-001",
       countViews: Math.floor(Math.random() * 5000) + 100,
       media: generateMedia(prodId),
       category,
