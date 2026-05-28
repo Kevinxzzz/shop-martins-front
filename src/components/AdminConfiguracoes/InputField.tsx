@@ -11,6 +11,7 @@ interface InputFieldProps {
   icon: LucideIcon;
   fullWidth?: boolean;
   type?: string;
+  readOnly?: boolean;
 }
 
 export function InputField({
@@ -23,6 +24,7 @@ export function InputField({
   icon: Icon,
   fullWidth = false,
   type = 'text',
+  readOnly = false,
 }: InputFieldProps) {
   return (
     <div className={`${styles.formGroup} ${fullWidth ? styles.fullWidth : ''}`}>
@@ -38,6 +40,7 @@ export function InputField({
           onChange={e => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
+          readOnly={readOnly}
         />
         <Icon className={styles.inputIcon} size={16} />
       </div>

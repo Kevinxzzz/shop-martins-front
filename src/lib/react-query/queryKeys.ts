@@ -17,4 +17,8 @@ export const queryKeys = {
     list: ['categories', 'list'] as const,
     trash: ['categories', 'trash'] as const,
   },
+  enterprise: {
+    all: ['enterprise'] as const,
+    detail: ['enterprise', 'detail'] as const,
+  },
 };

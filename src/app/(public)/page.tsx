@@ -9,7 +9,6 @@ import ProductCard from '@/components/ProductCard';
 import { ProductCardSkeleton } from '@/components/SkeletonLoader';
 import FilterModal from '@/components/FilterModal';
 import { getProducts } from '@/mock/api';
-import { empresa } from '@/mock/data';
 import type { Product } from '@/types';
 import styles from './page.module.scss';
 
@@ -122,24 +121,22 @@ function HomeContent() {
       </section>
 
       {/* Sell CTA Banner */}
-      {empresa.salesGroupLink && (
-        <section className={styles.ctaBanner}>
-          <div className={styles.ctaInner}>
-            <h2 className={styles.ctaTitle}>Deseja vender seus produtos?</h2>
-            <p className={styles.ctaText}>
-              Entre no nosso grupo de vendas e comece a anunciar.
-            </p>
-            <a
-              href={empresa.salesGroupLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.ctaBtn}
-            >
-              Quero vender <ArrowRight size={16} />
-            </a>
-          </div>
-        </section>
-      )}
+      <section className={styles.ctaBanner}>
+        <div className={styles.ctaInner}>
+          <h2 className={styles.ctaTitle}>Deseja vender seus produtos?</h2>
+          <p className={styles.ctaText}>
+            Entre no nosso grupo de vendas e comece a anunciar.
+          </p>
+          <a
+            href="https://chat.whatsapp.com/abc123grupo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.ctaBtn}
+          >
+            Quero vender <ArrowRight size={16} />
+          </a>
+        </div>
+      </section>
 
       {/* Filter Modal */}
       <FilterModal

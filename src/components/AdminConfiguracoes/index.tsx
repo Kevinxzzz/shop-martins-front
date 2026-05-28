@@ -1,42 +1,59 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Save, Building2, Fingerprint, Phone, Link2, CheckCircle2, Loader2 } from 'lucide-react';
-import { empresa } from '@/mock/data';
 import { InputField } from './InputField';
 import { FormSection } from './FormSection';
+import { useEnterprise } from '@/hooks/enterprise/useEnterprise';
+import { useUpdateEnterprise } from '@/hooks/enterprise/useUpdateEnterprise';
 import styles from './AdminConfiguracoes.module.scss';
 
 export default function AdminConfiguracoesContainer() {
-  const [nome, setNome] = useState(empresa.name);
-  const [numero, setNumero] = useState(empresa.number);
-  const [cpfCnpj, setCpfCnpj] = useState(empresa.cpfCnpj);
-  const [linkGrupo, setLinkGrupo] = useState(empresa.salesGroupLink || '');
-  const [saving, setSaving] = useState(false);
+  const { data: enterprise, isLoading } = useEnterprise();
+  const { mutateAsync: updateEnterprise, isPending: isSaving } = useUpdateEnterprise();
+
+  const [nome, setNome] = useState('');
+  const [numero, setNumero] = useState('');
+  const [cpfCnpj, setCpfCnpj] = useState('');
+  const [linkGrupo, setLinkGrupo] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    if (enterprise) {
+      setNome(enterprise.name || '');
+      setNumero(enterprise.phone || '');
+      setCpfCnpj(enterprise.document || '');
+      setLinkGrupo(enterprise.salesGroupLink || '');
+    }
+  }, [enterprise]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaving(true);
     setShowSuccess(false);
 
-    // Simula a requisição para salvar as configurações
-    await new Promise(r => setTimeout(r, 1000));
-
-    // Atualiza localmente os dados mockados para simular persistência em tela
-    empresa.name = nome;
-    empresa.number = numero;
-    empresa.cpfCnpj = cpfCnpj;
-    empresa.salesGroupLink = linkGrupo;
-
-    setSaving(false);
-    setShowSuccess(true);
-
-    // Remove a mensagem de sucesso após 4 segundos
-    setTimeout(() => {
-      setShowSuccess(false);
-    }, 4000);
+    try {
+      await updateEnterprise({
+        name: nome,
+        phone: numero,
+        salesGroupLink: linkGrupo || null,
+      });
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 4000);
+    } catch (error) {
+      console.error("Erro ao salvar as configurações:", error);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className={styles.pageContainer} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px', color: 'var(--color-text-tertiary)' }}>
+        <Loader2 size={24} className={styles.spinner} />
+        <span style={{ marginLeft: '8px' }}>Carregando dados da empresa...</span>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.pageContainer}>
@@ -77,6 +94,7 @@ export default function AdminConfiguracoesContainer() {
               onChange={setCpfCnpj}
               placeholder="00.000.000/0000-00"
               required
+              readOnly
               icon={Fingerprint}
             />
 
@@ -109,8 +127,8 @@ export default function AdminConfiguracoesContainer() {
 
         {/* Ações do Formulário */}
         <div className={styles.formActions}>
-          <button type="submit" className={styles.submitBtn} disabled={saving}>
-            {saving ? (
+          <button type="submit" className={styles.submitBtn} disabled={isSaving}>
+            {isSaving ? (
               <>
                 <Loader2 size={16} className={styles.spinner} />
                 <span>Salvando...</span>
