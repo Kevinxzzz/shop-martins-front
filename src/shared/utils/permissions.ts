@@ -12,7 +12,7 @@ export function isAdmin(role: string | undefined | null): boolean {
  */
 export function hasRole(
   userRole: string | undefined | null,
-  requiredRole: UserRole
+  requiredRole: UserRole,
 ): boolean {
   return userRole === requiredRole;
 }
