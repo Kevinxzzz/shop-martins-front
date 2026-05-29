@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Save, Building2, Fingerprint, Phone, Link2, CheckCircle2, Loader2 } from 'lucide-react';
-import { InputField } from './InputField';
+import { InputField } from '@/components/InputField';
 import { FormSection } from './FormSection';
 import { useEnterprise } from '@/hooks/enterprise/useEnterprise';
 import { useUpdateEnterprise } from '@/hooks/enterprise/useUpdateEnterprise';
