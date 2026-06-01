@@ -11,6 +11,7 @@ export const queryKeys = {
   users: {
     all: ['users'] as const,
     list: ['users', 'list'] as const,
+    profile: ['users', 'profile'] as const,
   },
   categories: {
     all: ['categories'] as const,
