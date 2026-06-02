@@ -30,3 +30,18 @@ export interface UserDTO {
   createdAt: string;
   deletedAt: string | null;
 }
+
+export interface ProfileResponse {
+  id: string;
+  name: string;
+  email: string;
+  contactLink: string | null;
+  profileImageUrl: string | null;
+  role: string;
+}
+
+export interface UpdateProfileData {
+  name?: string;
+  email?: string;
+  contactLink?: string;
+}

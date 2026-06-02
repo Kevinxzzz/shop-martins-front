@@ -11,4 +11,4 @@ export * from './statsType';
 export * from './tokenType';
 export * from './authType';
 export * from './apiType';
-
+export * from './uploadType';
