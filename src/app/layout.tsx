@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { QueryProvider } from '@/lib/react-query/QueryProvider';
 import { AuthProvider } from '@/contexts/AuthProvider';
+import { ToastProvider } from '@/contexts/ToastContext';
 import '@/styles/global.scss';
 
 const inter = Inter({
@@ -38,7 +39,9 @@ export default function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             <AuthProvider>
-              {children}
+              <ToastProvider>
+                {children}
+              </ToastProvider>
             </AuthProvider>
           </QueryProvider>
         </ThemeProvider>

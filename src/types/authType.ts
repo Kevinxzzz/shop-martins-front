@@ -9,6 +9,7 @@ export interface LoginRequest {
 export interface RegisterEnterpriseRequest {
   document: string;
   name: string;
+  phoneNumber: string;
   contactLink?: string;
   userName: string;
   userEmail: string;

@@ -3,15 +3,18 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Mail, Lock, Eye, EyeOff, Loader2, Sparkles, User, Link as LinkIcon, Building2, BriefcaseBusiness } from 'lucide-react';
+import { Loader2, Sparkles } from 'lucide-react';
 import { useRegisterEnterprise } from '@/hooks/auth/useRegisterEnterprise';
 import { getErrorMessage } from '@/services/httpClient';
+import EnterpriseDataFields from './EnterpriseDataFields';
+import AdminDataFields from './AdminDataFields';
 import styles from './CadastroEmpresa.module.scss';
 
 export default function CadastroEmpresaForm() {
   // Dados da Empresa
   const [documentVal, setDocumentVal] = useState('');
   const [enterpriseName, setEnterpriseName] = useState('');
+  const [phoneVal, setPhoneVal] = useState('');
   const [contactLink, setContactLink] = useState('');
 
   // Dados do Administrador
@@ -26,6 +29,7 @@ export default function CadastroEmpresaForm() {
   const [errors, setErrors] = useState<{
     document?: string;
     enterpriseName?: string;
+    phoneNumber?: string;
     contactLink?: string;
     name?: string;
     email?: string;
@@ -57,6 +61,15 @@ export default function CadastroEmpresaForm() {
       newErrors.enterpriseName = 'Nome da empresa é obrigatório';
     }
 
+    if (!phoneVal.trim()) {
+      newErrors.phoneNumber = 'Telefone da empresa é obrigatório';
+    } else {
+      const cleanPhone = phoneVal.replace(/\D/g, '');
+      if (cleanPhone.length < 10 || cleanPhone.length > 11) {
+        newErrors.phoneNumber = 'Telefone deve ter 10 ou 11 dígitos';
+      }
+    }
+
     if (contactLink && !contactLink.startsWith('http')) {
       newErrors.contactLink = 'Link de contato deve começar com http:// ou https://';
     }
@@ -85,8 +98,8 @@ export default function CadastroEmpresaForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, '');
+  const handleCnpjChange = (val: string) => {
+    let value = val.replace(/\D/g, '');
     if (value.length > 14) value = value.slice(0, 14);
 
     // Apply Mask 00.000.000/0000-00
@@ -102,6 +115,25 @@ export default function CadastroEmpresaForm() {
 
     setDocumentVal(value);
     clearFieldError('document');
+  };
+
+  const handlePhoneChange = (val: string) => {
+    let value = val.replace(/\D/g, '');
+    if (value.length > 11) value = value.slice(0, 11);
+
+    // Apply Mask (99) 99999-9999 or (99) 9999-9999
+    if (value.length > 10) {
+      value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+    } else if (value.length > 6) {
+      value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+    } else if (value.length > 2) {
+      value = value.replace(/^(\d{2})(\d{0,4}).*/, '($1) $2');
+    } else if (value.length > 0) {
+      value = value.replace(/^(\d{0,2}).*/, '($1');
+    }
+
+    setPhoneVal(value);
+    clearFieldError('phoneNumber');
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -121,6 +153,7 @@ export default function CadastroEmpresaForm() {
       {
         document: documentVal.replace(/\D/g, ''),
         name: enterpriseName,
+        phoneNumber: phoneVal.replace(/\D/g, ''),
         contactLink: contactLink || undefined,
         userName: name,
         userEmail: email,
@@ -157,190 +190,39 @@ export default function CadastroEmpresaForm() {
         
         <h3 className={styles.sectionTitle}>Dados da Empresa</h3>
 
-        {/* CNPJ */}
-        <div className={styles.fieldGroup}>
-          <label htmlFor="enterprise-cnpj" className={styles.inputLabel}>
-            CNPJ
-          </label>
-          <div className={`${styles.inputWrapper} ${errors.document ? styles.inputError : ''}`}>
-            <BriefcaseBusiness size={18} className={styles.inputIcon} />
-            <input
-              id="enterprise-cnpj"
-              type="text"
-              placeholder="00.000.000/0000-00"
-              value={documentVal}
-              onChange={handleCnpjChange}
-              className={styles.inputField}
-              autoComplete="off"
-              disabled={registerEnterpriseMutation.isPending}
-            />
-          </div>
-          {errors.document && <span className={styles.errorText}>{errors.document}</span>}
-        </div>
-
-        {/* Nome da Empresa */}
-        <div className={styles.fieldGroup}>
-          <label htmlFor="enterprise-name" className={styles.inputLabel}>
-            Nome da Empresa
-          </label>
-          <div className={`${styles.inputWrapper} ${errors.enterpriseName ? styles.inputError : ''}`}>
-            <Building2 size={18} className={styles.inputIcon} />
-            <input
-              id="enterprise-name"
-              type="text"
-              placeholder="Razão Social ou Nome Fantasia"
-              value={enterpriseName}
-              onChange={(e) => {
-                setEnterpriseName(e.target.value);
-                clearFieldError('enterpriseName');
-              }}
-              className={styles.inputField}
-              autoComplete="organization"
-              disabled={registerEnterpriseMutation.isPending}
-            />
-          </div>
-          {errors.enterpriseName && <span className={styles.errorText}>{errors.enterpriseName}</span>}
-        </div>
-
-        {/* Link de Contato */}
-        <div className={styles.fieldGroup}>
-          <label htmlFor="enterprise-link" className={styles.inputLabel}>
-            Link de Contato (Opcional)
-          </label>
-          <div className={`${styles.inputWrapper} ${errors.contactLink ? styles.inputError : ''}`}>
-            <LinkIcon size={18} className={styles.inputIcon} />
-            <input
-              id="enterprise-link"
-              type="url"
-              placeholder="https://wa.me/seu-numero"
-              value={contactLink}
-              onChange={(e) => {
-                setContactLink(e.target.value);
-                clearFieldError('contactLink');
-              }}
-              className={styles.inputField}
-              autoComplete="url"
-              disabled={registerEnterpriseMutation.isPending}
-            />
-          </div>
-          {errors.contactLink && <span className={styles.errorText}>{errors.contactLink}</span>}
-        </div>
+        <EnterpriseDataFields
+          documentVal={documentVal}
+          handleCnpjChange={handleCnpjChange}
+          enterpriseName={enterpriseName}
+          setEnterpriseName={setEnterpriseName}
+          phoneVal={phoneVal}
+          handlePhoneChange={handlePhoneChange}
+          contactLink={contactLink}
+          setContactLink={setContactLink}
+          isPending={registerEnterpriseMutation.isPending}
+          errors={errors}
+          clearFieldError={clearFieldError}
+        />
 
         <h3 className={styles.sectionTitle}>Dados do Administrador</h3>
 
-        {/* Nome do Admin */}
-        <div className={styles.fieldGroup}>
-          <label htmlFor="admin-name" className={styles.inputLabel}>
-            Nome Completo
-          </label>
-          <div className={`${styles.inputWrapper} ${errors.name ? styles.inputError : ''}`}>
-            <User size={18} className={styles.inputIcon} />
-            <input
-              id="admin-name"
-              type="text"
-              placeholder="Seu nome"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                clearFieldError('name');
-              }}
-              className={styles.inputField}
-              autoComplete="name"
-              disabled={registerEnterpriseMutation.isPending}
-            />
-          </div>
-          {errors.name && <span className={styles.errorText}>{errors.name}</span>}
-        </div>
-
-        {/* Email */}
-        <div className={styles.fieldGroup}>
-          <label htmlFor="admin-email" className={styles.inputLabel}>
-            Email
-          </label>
-          <div className={`${styles.inputWrapper} ${errors.email ? styles.inputError : ''}`}>
-            <Mail size={18} className={styles.inputIcon} />
-            <input
-              id="admin-email"
-              type="email"
-              placeholder="seu@email.com"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                clearFieldError('email');
-              }}
-              className={styles.inputField}
-              autoComplete="email"
-              disabled={registerEnterpriseMutation.isPending}
-            />
-          </div>
-          {errors.email && <span className={styles.errorText}>{errors.email}</span>}
-        </div>
-
-        {/* Senha */}
-        <div className={styles.fieldGroup}>
-          <label htmlFor="admin-password" className={styles.inputLabel}>
-            Senha
-          </label>
-          <div className={`${styles.inputWrapper} ${errors.password ? styles.inputError : ''}`}>
-            <Lock size={18} className={styles.inputIcon} />
-            <input
-              id="admin-password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                clearFieldError('password');
-              }}
-              className={styles.inputField}
-              autoComplete="new-password"
-              disabled={registerEnterpriseMutation.isPending}
-            />
-            <button
-              type="button"
-              className={styles.togglePassword}
-              onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-              tabIndex={-1}
-            >
-              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-            </button>
-          </div>
-          {errors.password && <span className={styles.errorText}>{errors.password}</span>}
-        </div>
-
-        {/* Confirmar Senha */}
-        <div className={styles.fieldGroup}>
-          <label htmlFor="admin-confirm" className={styles.inputLabel}>
-            Confirmar senha
-          </label>
-          <div className={`${styles.inputWrapper} ${errors.confirmPassword ? styles.inputError : ''}`}>
-            <Lock size={18} className={styles.inputIcon} />
-            <input
-              id="admin-confirm"
-              type={showConfirmPassword ? 'text' : 'password'}
-              placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-                clearFieldError('confirmPassword');
-              }}
-              className={styles.inputField}
-              autoComplete="new-password"
-              disabled={registerEnterpriseMutation.isPending}
-            />
-            <button
-              type="button"
-              className={styles.togglePassword}
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              aria-label={showConfirmPassword ? 'Ocultar senha' : 'Mostrar senha'}
-              tabIndex={-1}
-            >
-              {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-            </button>
-          </div>
-          {errors.confirmPassword && <span className={styles.errorText}>{errors.confirmPassword}</span>}
-        </div>
+        <AdminDataFields
+          name={name}
+          setName={setName}
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
+          showPassword={showPassword}
+          setShowPassword={setShowPassword}
+          showConfirmPassword={showConfirmPassword}
+          setShowConfirmPassword={setShowConfirmPassword}
+          isPending={registerEnterpriseMutation.isPending}
+          errors={errors}
+          clearFieldError={clearFieldError}
+        />
 
         {/* Submit */}
         <button type="submit" className={styles.submitButton} disabled={registerEnterpriseMutation.isPending}>

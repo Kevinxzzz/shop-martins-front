@@ -1,8 +1,5 @@
 import { httpClient } from './httpClient';
-
-type UploadResponse = {
-  url: string;
-};
+import type { UploadResponse, MediaUploadResponse } from '@/types/uploadType';
 
 export const uploadService = {
   async uploadImage(file: File): Promise<UploadResponse> {
@@ -18,4 +15,20 @@ export const uploadService = {
 
     return response.data;
   },
+
+  async uploadProductMedia(files: File[]): Promise<MediaUploadResponse[]> {
+    const formData = new FormData();
+    files.forEach(file => {
+      formData.append('files', file);
+    });
+
+    const response = await httpClient.post<MediaUploadResponse[]>('/upload/product-media', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      timeout: 60000, // Timeout maior pois pode conter vídeo
+    });
+
+    return response.data;
+  }
 };

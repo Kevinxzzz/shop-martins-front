@@ -14,6 +14,10 @@ interface InputFieldProps {
   readOnly?: boolean;
   step?: string;
   min?: string;
+  disabled?: boolean;
+  autoComplete?: string;
+  error?: string;
+  rightElement?: React.ReactNode;
 }
 
 export function InputField({
@@ -29,6 +33,10 @@ export function InputField({
   readOnly = false,
   step,
   min,
+  disabled = false,
+  autoComplete,
+  error,
+  rightElement,
 }: InputFieldProps) {
   return (
     <div className={`${styles.formGroup} ${fullWidth ? styles.fullWidth : ''}`}>
@@ -39,17 +47,21 @@ export function InputField({
         <input
           id={id}
           type={type}
-          className={`${styles.input} ${!Icon ? styles.noIcon : ''}`}
+          className={`${styles.input} ${!Icon ? styles.noIcon : ''} ${error ? styles.inputError : ''} ${rightElement ? styles.hasRightElement : ''}`}
           value={value}
           onChange={e => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
           readOnly={readOnly}
+          disabled={disabled}
+          autoComplete={autoComplete}
           step={step}
           min={min}
         />
         {Icon && <Icon className={styles.inputIcon} size={16} />}
+        {rightElement && <div className={styles.rightElement}>{rightElement}</div>}
       </div>
+      {error && <span className={styles.errorText}>{error}</span>}
     </div>
   );
 }

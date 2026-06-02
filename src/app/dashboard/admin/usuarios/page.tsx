@@ -3,16 +3,22 @@
 import { useUsers } from '@/hooks/users/useUsers';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { UserTable } from '@/components/AdminUsers/UserTable';
+import { useToast } from '@/contexts/ToastContext';
 import styles from './usuarios.module.scss';
 
 export default function AdminUsersPage() {
   const { data: users, isLoading, isError, error } = useUsers();
   const { user: currentUser } = useAuth();
+  const { addToast } = useToast();
 
   const toggleUserStatus = (id: string) => {
     // TODO: Implementar ativação/desativação real integrada com a API
     console.log('Toggle user status:', id);
-    alert('Funcionalidade de alterar status será implementada em breve.');
+    addToast({
+      type: 'alert',
+      title: 'Em Desenvolvimento',
+      message: 'A funcionalidade de alterar status será implementada em breve.',
+    });
   };
 
   if (isError) {

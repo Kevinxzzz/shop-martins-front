@@ -1,0 +1,191 @@
+.toast {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 360px;
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-lg, 0 10px 15px rgba(0, 0, 0, 0.06));
+  pointer-events: auto;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  // Animação de entrada
+  animation: slideIn var(--transition-spring, 400ms cubic-bezier(0.34, 1.56, 0.64, 1)) forwards;
+
+  &.closing {
+    animation: slideOut var(--transition-fast, 150ms ease-out) forwards;
+  }
+
+  // Variações de cor por tipo
+  &.success {
+    border-left: 4px solid var(--color-success, #00c48c);
+    .icon {
+      color: var(--color-success, #00c48c);
+    }
+    .progressBar {
+      background-color: var(--color-success, #00c48c);
+    }
+  }
+
+  &.error {
+    border-left: 4px solid var(--color-danger, #ff3b5c);
+    .icon {
+      color: var(--color-danger, #ff3b5c);
+    }
+    .progressBar {
+      background-color: var(--color-danger, #ff3b5c);
+    }
+  }
+
+  &.alert {
+    border-left: 4px solid var(--color-warning, #ffb020);
+    .icon {
+      color: var(--color-warning, #ffb020);
+    }
+    .progressBar {
+      background-color: var(--color-warning, #ffb020);
+    }
+  }
+
+  &.info {
+    border-left: 4px solid var(--color-primary, #0b5fff);
+    .icon {
+      color: var(--color-primary, #0b5fff);
+    }
+    .progressBar {
+      background-color: var(--color-primary, #0b5fff);
+    }
+  }
+}
+
+// Em dark mode
+[data-theme="dark"] .toast {
+  background: var(--color-bg-elevated, #111116);
+  border-color: var(--color-border, #1f1f2e);
+  box-shadow: var(--shadow-lg, 0 10px 15px rgba(0, 0, 0, 0.3));
+}
+
+.iconContainer {
+  flex-shrink: 0;
+  margin-right: var(--space-3, 12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px; // Alinha o ícone com a primeira linha de texto
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 4px);
+  margin-right: var(--space-4, 16px);
+}
+
+.title {
+  color: var(--color-text, #0d1117);
+  font-size: var(--fs-sm, 13px);
+  font-weight: var(--fw-semibold, 600);
+  line-height: var(--lh-tight, 1.2);
+}
+
+.message {
+  color: var(--color-text-secondary, #525f7f);
+  font-size: var(--fs-sm, 13px);
+  line-height: var(--lh-normal, 1.5);
+}
+
+.closeButton {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-text-tertiary, #8898aa);
+  cursor: pointer;
+  padding: var(--space-1, 4px);
+  margin: -4px -4px -4px 0; // Aumenta área de clique sem mudar layout
+  border-radius: var(--radius-sm, 6px);
+  transition: all var(--transition-fast, 150ms ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: var(--color-text, #0d1117);
+    background-color: var(--color-bg-tertiary, #eef1f6);
+  }
+}
+
+[data-theme="dark"] .closeButton:hover {
+  background-color: var(--color-bg-secondary, #0a0a0f);
+}
+
+.progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  animation: shrink linear forwards;
+  transform-origin: left;
+}
+
+@keyframes shrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+// Desktop animations alteradas (Top Right origin)
+@media (min-width: 768px) {
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(30px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(30px) scale(0.95);
+    }
+  }
+}

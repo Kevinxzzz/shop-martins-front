@@ -12,19 +12,19 @@ export default function BrandPanel() {
       </div>
 
       <div className={styles.brandContent}>
-        <h1 className={styles.brandTitle}>Faça parte da nossa equipe.</h1>
+        <h1 className={styles.brandTitle}>Cadastre sua empresa e inicie sua jornada.</h1>
         <div className={styles.featuresList}>
           <div className={`${styles.featureItem} stagger-1 animate-fade-in-up`}>
             <div className={styles.featureIcon}>
               <Zap size={18} />
             </div>
-            <span>Sistema rápido e integrado.</span>
+            <span>Plataforma rápida, moderna e integrada.</span>
           </div>
           <div className={`${styles.featureItem} stagger-2 animate-fade-in-up`}>
             <div className={styles.featureIcon}>
               <ShieldCheck size={18} />
             </div>
-            <span>Proteção e suporte dedicado aos parceiros.</span>
+            <span>Controle completo de produtos e equipe de vendas.</span>
           </div>
         </div>
       </div>

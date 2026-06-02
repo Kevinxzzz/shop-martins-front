@@ -8,6 +8,7 @@ interface TextAreaFieldProps {
   placeholder?: string;
   required?: boolean;
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 export function TextAreaField({
@@ -18,6 +19,7 @@ export function TextAreaField({
   placeholder,
   required = false,
   fullWidth = false,
+  disabled = false,
 }: TextAreaFieldProps) {
   return (
     <div className={`${styles.formGroup} ${fullWidth ? styles.fullWidth : ''}`}>
@@ -31,6 +33,7 @@ export function TextAreaField({
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
+        disabled={disabled}
       />
     </div>
   );
