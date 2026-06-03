@@ -1,0 +1,300 @@
+.pageContainer {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  /* Espaçamento extra no topo para não sobrepor o header flutuante */
+  padding: 6rem 1rem 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (min-width: 640px) {
+    padding: 7rem 1.5rem 4rem 1.5rem;
+    gap: 2rem;
+  }
+}
+
+.loadingContainer, .emptyContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-tertiary);
+  flex-wrap: wrap;
+
+  a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  span {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+}
+
+/* Main Layout: Mobile First = Column, Desktop = Grid */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.galleryColumn {
+  width: 100%;
+  
+  @media (min-width: 1024px) {
+    flex: 1;
+    min-width: 0; /* Impede transbordo flexbox */
+  }
+}
+
+.detailsColumn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (min-width: 1024px) {
+    width: 400px;
+    flex-shrink: 0;
+  }
+}
+
+/* Categorias */
+.categoriesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.categoryBadge {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.3;
+  margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+.viewCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--color-text-tertiary);
+  font-size: 0.875rem;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.priceNote {
+  font-size: 0.875rem;
+  color: var(--color-text-tertiary);
+}
+
+.whatsappBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #25D366;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #20b958;
+  }
+}
+
+.description {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+  }
+
+  p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    white-space: pre-wrap;
+  }
+}
+
+/* Seller Block */
+.vendorBlock {
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background-color: var(--color-bg-secondary);
+}
+
+.vendorTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.vendorInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+}
+
+.vendorAvatar {
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--color-bg);
+}
+
+.vendorName {
+  display: block;
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.vendorSub {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  margin-top: 0.25rem;
+}
+
+/* Related */
+.relatedSection {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+  /* Remover margem lateral para o scroll ir de ponta a ponta na tela */
+  margin-left: -1rem;
+  margin-right: -1rem;
+
+  @media (min-width: 640px) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.relatedTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+
+  @media (min-width: 640px) {
+    padding-left: 0;
+  }
+
+  span {
+    color: var(--color-primary);
+  }
+}
+
+.relatedGrid {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  
+  /* Esconde a barra de rolagem (Premium Look) no mobile */
+  scrollbar-width: none; 
+  &::-webkit-scrollbar {
+    display: none; 
+  }
+
+  /* Define o tamanho do card no carrossel horizontal */
+  > * {
+    width: 150px;
+    min-width: 150px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  /* No desktop (PC), volta para a grade tradicional para evitar problemas de scroll sem mousepad */
+  @media (min-width: 640px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    overflow-x: visible;
+    padding-left: 0;
+    padding-right: 0;
+    gap: 1.5rem;
+
+    > * {
+      width: auto;
+      min-width: 0;
+      scroll-snap-align: none;
+    }
+  }
+}
