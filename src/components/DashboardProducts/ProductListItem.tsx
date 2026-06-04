@@ -1,28 +1,29 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { Eye, Pencil, Trash2, Eye as EyeIcon } from 'lucide-react';
+import { Eye, Pencil, Trash2 } from 'lucide-react';
 import type { Product } from '@/types';
 import { formatPrice } from '@/utils';
 import styles from './styles.module.scss';
 
 interface ProductListItemProps {
   product: Product;
-  onDelete: (id: string) => void;
+  onView: (product: Product) => void;
+  onEdit: (product: Product) => void;
+  onDelete: (productId: string) => void;
 }
 
-export function ProductListItem({ product, onDelete }: ProductListItemProps) {
-  const thumbnail = product.media?.[0]?.fileUrl || '/placeholder-product.png';
+export function ProductListItem({ product, onView, onEdit, onDelete }: ProductListItemProps) {
+  const thumbnail = product.media?.[0]?.fileUrl || '/placeholder-product.svg';
 
   return (
     <article className={styles.card}>
       <div className={styles.imageWrapper}>
         <div className={styles.viewsBadge} title="Visualizações">
-          <EyeIcon size={12} />
+          <Eye size={12} />
           {product.countViews || 0}
         </div>
         <Image
           src={thumbnail}
-          alt={product.title}
+          alt={product.title || 'Imagem do produto'}
           fill
           unoptimized
         />
@@ -37,12 +38,22 @@ export function ProductListItem({ product, onDelete }: ProductListItemProps) {
 
         <div className={styles.actions}>
           <div className={styles.actionGroup}>
-            <Link href={`/produto/${product.id}`} className={styles.actionBtn} title="Ver na loja">
+            <button
+              className={styles.actionBtn}
+              onClick={() => onView(product)}
+              title="Ver na loja"
+              aria-label="Ver na loja"
+            >
               <Eye size={18} />
-            </Link>
-            <Link href={`/dashboard/produtos/${product.id}/editar`} className={styles.actionBtn} title="Editar">
+            </button>
+            <button
+              className={styles.actionBtn}
+              onClick={() => onEdit(product)}
+              title="Editar"
+              aria-label="Editar produto"
+            >
               <Pencil size={18} />
-            </Link>
+            </button>
           </div>
           <button
             className={`${styles.actionBtn} ${styles.danger}`}

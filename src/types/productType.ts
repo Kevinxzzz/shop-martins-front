@@ -16,3 +16,11 @@ export interface Product {
   seller?: User;
   createdAt: string;
 }
+
+export interface PaginatedProductsResponse {
+  products: Product[];
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+}

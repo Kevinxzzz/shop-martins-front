@@ -22,4 +22,10 @@ export const queryKeys = {
     all: ['enterprise'] as const,
     detail: ['enterprise', 'detail'] as const,
   },
+  products: {
+    all: ['products'] as const,
+    lists: () => ['products', 'list'] as const,
+    list: (userId: string, page: number) => ['products', 'list', userId, page] as const,
+  },
 };
+
