@@ -4,8 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { httpClient } from './httpClient';
-import type { CreateProductDTO } from '@/types/productDTO';
-import type { Product, PaginatedProductsResponse } from '@/types/productType';
+import type { CreateProductDTO, UpdateProductDTO, UpdateProductMediaDTO } from '@/types/productDTO';
+import type { Product, PaginatedProductsResponse, PublicProductDetail } from '@/types/productType';
 import type { Media } from '@/types/mediaType';
 import { UserRole } from '@/shared/constants/userRoles';
 
@@ -72,6 +72,29 @@ export const productService = {
   async deleteProduct(productId: string): Promise<{ message: string }> {
     const response = await httpClient.delete<{ message: string }>(`/products/${productId}`);
     return response.data;
+  },
+
+  async getProductById(productId: string): Promise<PublicProductDetail> {
+    const response = await httpClient.get<PublicProductDetail>(`/products/${productId}`);
+    return response.data;
+  },
+
+  async updateProduct(productId: string, data: UpdateProductDTO): Promise<Product> {
+    const response = await httpClient.put<any>(`/products/${productId}`, data);
+    return mapBackendProductToFrontend(response.data);
+  },
+
+  async updateProductMedia(productId: string, data: UpdateProductMediaDTO): Promise<Product> {
+    const formData = new FormData();
+    data.keepMediaIds.forEach((id) => formData.append('keepMediaIds[]', id));
+    data.files.forEach((file) => formData.append('files', file));
+
+    const response = await httpClient.put<any>(`/products/${productId}/media`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return mapBackendProductToFrontend(response.data);
   },
 };
 

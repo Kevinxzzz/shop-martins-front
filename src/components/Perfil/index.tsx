@@ -158,7 +158,7 @@ export default function PerfilContainer() {
 
           <InputField
             id="contactLink"
-            label="Link de Contato (WhatsApp, Instagram, etc)"
+            label="Link de Contato para atendimento"
             value={contactLink}
             onChange={setContactLink}
             icon={Link2}

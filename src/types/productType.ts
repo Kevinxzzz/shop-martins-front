@@ -24,3 +24,35 @@ export interface PaginatedProductsResponse {
   totalItems: number;
   totalPages: number;
 }
+
+export interface PublicProductDetail {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  countViews: number;
+
+  categories: {
+    category: {
+      id: string;
+      name: string;
+      slug: string;
+    };
+  }[];
+
+  media: {
+    id: string;
+    url: string;
+    type: 'FOTO' | 'VIDEO';
+    isMain: boolean;
+    order: number;
+  }[];
+
+  user: {
+    id: string;
+    name: string;
+    contactLink: string;
+    profilePicture?: string;
+    profileImageUrl?: string;
+  };
+}

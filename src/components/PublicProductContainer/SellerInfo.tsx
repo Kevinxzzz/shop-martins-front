@@ -2,22 +2,24 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import type { Product } from '@/types';
+import type { PublicProductDetail } from '@/types/productType';
 import styles from './PublicProductContainer.module.scss';
 
 interface SellerInfoProps {
-  seller: Product['seller'];
+  seller: PublicProductDetail['user'];
 }
 
 export function SellerInfo({ seller }: SellerInfoProps) {
   if (!seller) return null;
+
+  const avatarUrl = seller.profilePicture || seller.profileImageUrl || `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(seller.name)}`;
 
   return (
     <div className={styles.vendorBlock}>
       <h4 className={styles.vendorTitle}>Vendedor</h4>
       <Link href={`/vendedor/${seller.id}`} className={styles.vendorInfo}>
         <Image
-          src={seller.profilePicture || '/placeholder-avatar.png'}
+          src={avatarUrl}
           alt={seller.name}
           width={48}
           height={48}

@@ -1,28 +1,27 @@
 'use client';
 
 import { Eye, MessageCircle } from 'lucide-react';
-import { formatPrice, formatViews, getWhatsAppLink } from '@/utils';
-import type { Product } from '@/types';
+import { formatPrice, formatViews, ensureExternalLink } from '@/utils';
+import type { PublicProductDetail } from '@/types/productType';
 import styles from './PublicProductContainer.module.scss';
 
 interface ProductDetailsProps {
-  product: Product;
+  product: PublicProductDetail;
 }
 
 export function ProductDetails({ product }: ProductDetailsProps) {
-  const whatsappMessage = `Olá! Vi o produto "${product.title}" por ${formatPrice(product.price)} no Shop Martins e gostaria de mais informações.`;
-  const whatsappLink = getWhatsAppLink(product.seller?.whatsappPhone || '', whatsappMessage);
-
   return (
     <div className={styles.detailsColumn}>
-      {/* Adaptação para múltiplas categorias (ou a única suportada atualmente) */}
       <div className={styles.categoriesContainer}>
-        {product.category && (
-          <span className={styles.categoryBadge}>{product.category.name}</span>
-        )}
+        {product.categories &&
+          product.categories.map((c) => (
+            <span key={c.category.id} className={styles.categoryBadge}>
+              {c.category.name}
+            </span>
+          ))}
       </div>
 
-      <h1 className={styles.title}>{product.title}</h1>
+      <h1 className={styles.title}>{product.name}</h1>
 
       <div className={styles.viewCount}>
         <Eye size={16} aria-hidden="true" />
@@ -31,18 +30,18 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
       <div className={styles.priceBlock}>
         <span className={styles.price}>{formatPrice(product.price)}</span>
-        <span className={styles.priceNote}>à vista via WhatsApp</span>
+        <span className={styles.priceNote}>à vista com o vendedor</span>
       </div>
 
       <a
-        href={whatsappLink}
+        href={ensureExternalLink(product.user?.contactLink)}
         target="_blank"
         rel="noopener noreferrer"
-        className={styles.whatsappBtn}
-        aria-label="Chamar vendedor no WhatsApp"
+        className={styles.contactBtn}
+        aria-label="Entrar em contato com o vendedor"
       >
         <MessageCircle size={22} />
-        Chamar no WhatsApp
+        Entrar em Contato
       </a>
 
       <div className={styles.description}>

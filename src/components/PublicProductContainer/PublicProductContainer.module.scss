@@ -101,13 +101,16 @@
 }
 
 .categoryBadge {
-  background-color: var(--color-bg-secondary);
-  color: var(--color-text-secondary);
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
+  background: linear-gradient(135deg, var(--color-primary), #6366f1);
+  color: #fff;
+  padding: 0.35rem 0.85rem;
+  border-radius: 1.5rem;
   font-size: 0.75rem;
-  font-weight: 600;
-  border: 1px solid var(--color-border);
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .title {
@@ -147,21 +150,28 @@
   color: var(--color-text-tertiary);
 }
 
-.whatsappBtn {
+.contactBtn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background-color: #25D366;
+  background-color: var(--color-primary);
   color: #fff;
   padding: 1rem;
   border-radius: 0.5rem;
   font-weight: 600;
   text-decoration: none;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.1s;
 
   &:hover {
-    background-color: #20b958;
+    background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary));
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
@@ -211,6 +221,7 @@
   border-radius: 50%;
   object-fit: cover;
   background-color: var(--color-bg);
+  flex-shrink: 0;
 }
 
 .vendorName {

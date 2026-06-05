@@ -137,9 +137,7 @@ export default function CadastroForm({ initialToken }: CadastroFormProps) {
   if (initialToken && validationError) {
     return (
       <div className={`${styles.formCard} animate-fade-in-up`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '3rem 2rem', textAlign: 'center' }}>
-        <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
-          <AlertTriangle size={48} color="var(--color-error)" />
-        </div>
+
         <h2 style={{ margin: '0 0 1rem', fontSize: '1.5rem', color: 'var(--color-text)' }}>Oops!</h2>
         <p style={{ color: 'var(--color-error)', fontWeight: 500, fontSize: '1.1rem', marginBottom: '2rem' }}>{validationError}</p>
         

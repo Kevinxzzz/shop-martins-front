@@ -1,14 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ChevronRight, ArrowLeft } from 'lucide-react';
+import { ChevronRight, ArrowLeft, Loader2 } from 'lucide-react';
 import ProductCarousel from '@/components/ProductCarousel';
-import ProductCard from '@/components/ProductCard';
-import { getProductById, getRelatedProducts } from '@/mock/api';
+import { useProductDetail } from '@/hooks/products/useProductDetail';
 import { ProductDetails } from './ProductDetails';
 import { SellerInfo } from './SellerInfo';
-import type { Product } from '@/types';
+import type { Media } from '@/types';
 import styles from './PublicProductContainer.module.scss';
 
 interface PublicProductContainerProps {
@@ -16,25 +14,35 @@ interface PublicProductContainerProps {
 }
 
 export default function PublicProductContainer({ productId }: PublicProductContainerProps) {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [related, setRelated] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: product, isLoading, isError, error } = useProductDetail(productId);
 
-  useEffect(() => {
-    setLoading(true);
-    getProductById(productId).then(p => {
-      setProduct(p);
-      setLoading(false);
-      if (p) {
-        getRelatedProducts(p.categoryId, p.id).then(setRelated);
-      }
-    });
-  }, [productId]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
+        <Loader2 size={32} style={{ animation: 'spin 1s linear infinite' }} />
         <div>Carregando...</div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    const status = (error as any)?.response?.status;
+    if (status === 404) {
+      return (
+        <div className={styles.emptyContainer}>
+          <h2>Produto não encontrado</h2>
+          <Link href="/" className={styles.backBtn}>
+            <ArrowLeft size={16} /> Voltar
+          </Link>
+        </div>
+      );
+    }
+    return (
+      <div className={styles.emptyContainer}>
+        <h2>Erro ao carregar produto</h2>
+        <Link href="/" className={styles.backBtn}>
+          <ArrowLeft size={16} /> Voltar
+        </Link>
       </div>
     );
   }
@@ -50,47 +58,59 @@ export default function PublicProductContainer({ productId }: PublicProductConta
     );
   }
 
+  // Ordenação das mídias: [Imagem Principal ou Primeira Imagem] -> [Outras Imagens] -> [Vídeos]
+  const rawMedia = [...product.media];
+
+  let mainMediaIndex = rawMedia.findIndex(m => m.isMain);
+  if (mainMediaIndex === -1 && rawMedia.length > 0) {
+    mainMediaIndex = 0; // Fallback para a primeira imagem
+  }
+
+  const mainMedia = mainMediaIndex !== -1 ? rawMedia.splice(mainMediaIndex, 1)[0] : null;
+
+  const otherPhotos = rawMedia.filter(m => m.type !== 'VIDEO');
+  const videos = rawMedia.filter(m => m.type === 'VIDEO');
+
+  const orderedMedia = [];
+  if (mainMedia) orderedMedia.push(mainMedia);
+  orderedMedia.push(...otherPhotos);
+  orderedMedia.push(...videos);
+
+  const mappedMedia: Media[] = orderedMedia.map(m => ({
+    id: m.id,
+    fileUrl: m.url,
+    type: (m.type === 'FOTO' || (m.type as any) === 'image') ? 'image' : 'video',
+    order: m.order,
+    productId: product.id,
+  }));
+
   return (
     <div className={styles.pageContainer}>
       {/* Breadcrumbs */}
       <nav className={styles.breadcrumbs} aria-label="Navegação">
         <Link href="/">Início</Link>
         <ChevronRight size={14} aria-hidden="true" />
-        {product.category && (
+        {product.categories && product.categories.length > 0 && (
           <>
-            <Link href={`/?category=${product.categoryId}`}>{product.category.name}</Link>
+            <Link href={`/?category=${product.categories[0].category.id}`}>{product.categories[0].category.name}</Link>
             <ChevronRight size={14} aria-hidden="true" />
           </>
         )}
-        <span>{product.title}</span>
+        <span>{product.name}</span>
       </nav>
 
       <div className={styles.layout}>
         {/* Carousel */}
         <div className={styles.galleryColumn}>
-          <ProductCarousel media={product.media} title={product.title} />
+          <ProductCarousel media={mappedMedia} title={product.name} />
         </div>
 
         {/* Details & Seller Info */}
         <div className={styles.detailsColumn}>
           <ProductDetails product={product} />
-          <SellerInfo seller={product.seller} />
+          <SellerInfo seller={product.user} />
         </div>
       </div>
-
-      {/* Related Products */}
-      {related.length > 0 && (
-        <section className={styles.relatedSection}>
-          <h2 className={styles.relatedTitle}>
-            Produtos <span>relacionados</span>
-          </h2>
-          <div className={styles.relatedGrid}>
-            {related.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i} />
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }
