@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Search,
   Moon,
@@ -13,13 +13,87 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
+import { useAuth } from "@/hooks/auth/useAuth";
+import { usePublicEnterpriseLink } from "@/hooks/enterprise/usePublicEnterpriseLink";
 import styles from "./Header.module.scss";
+
+function SearchSection() {
+  const searchParams = useSearchParams();
+  const currentSearch = searchParams.get("search") || "";
+  const [searchValue, setSearchValue] = useState(currentSearch);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const router = useRouter();
+
+  // Sync state if search query in URL changes
+  useEffect(() => {
+    setSearchValue(currentSearch);
+  }, [currentSearch]);
+
+  return (
+    <div
+      className={`${styles.searchWrapper} ${isSearchActive ? styles.active : ""}`}
+    >
+      <button
+        className={styles.iconBtn}
+        onClick={() => setIsSearchActive(!isSearchActive)}
+        aria-label="Buscar"
+      >
+        {isSearchActive ? <X size={18} /> : <Search size={18} />}
+      </button>
+      {isSearchActive && (
+        <>
+          <div
+            className={styles.searchBackdrop}
+            onClick={() => setIsSearchActive(false)}
+          />
+          <div className={styles.searchInputContainer}>
+            <input
+              type="text"
+              className={styles.searchInput}
+              placeholder="O que você procura?"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const val = searchValue.trim();
+                  if (val) {
+                    router.push(`/?search=${encodeURIComponent(val)}#produtos`);
+                  } else {
+                    router.push("/");
+                  }
+                  setIsSearchActive(false);
+                }
+                if (e.key === "Escape") {
+                  setIsSearchActive(false);
+                }
+              }}
+            />
+            {searchValue && (
+              <button
+                className={styles.clearBtn}
+                onClick={() => {
+                  setSearchValue("");
+                  router.push("/");
+                  setIsSearchActive(false);
+                }}
+                aria-label="Limpar busca"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchActive, setIsSearchActive] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { user } = useAuth();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -42,10 +116,17 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
+  const { data: linkData } = usePublicEnterpriseLink();
+  const salesGroupLink = linkData?.link || "https://chat.whatsapp.com/";
+
   const navLinks = [
     { href: "/", label: "Início" },
     { href: "/vendedores", label: "Vendedores" },
-    { href: "https://chat.whatsapp.com/", label: "Vender sua conta", isSpecial: true },
+    {
+      href: salesGroupLink,
+      label: "Vender sua conta",
+      isSpecial: true,
+    },
   ];
 
   return (
@@ -80,39 +161,24 @@ export default function Header() {
           </nav>
 
           <div className={styles.right}>
-            <div
-              className={`${styles.searchWrapper} ${isSearchActive ? styles.active : ""}`}
-            >
-              <button
-                className={styles.iconBtn}
-                onClick={() => setIsSearchActive(!isSearchActive)}
-                aria-label="Buscar"
-              >
-                <Search size={18} />
-              </button>
-              {isSearchActive && (
-                <input
-                  type="text"
-                  className={styles.searchInput}
-                  placeholder="O que você procura?"
-                  autoFocus
-                  onBlur={() => setIsSearchActive(false)}
-                />
-              )}
-            </div>
+            <Suspense fallback={null}>
+              <SearchSection />
+            </Suspense>
 
             <button
-              className={styles.iconBtn}
+              className={`${styles.iconBtn} ${styles.themeBtn}`}
               onClick={toggleTheme}
               aria-label="Mudar tema"
             >
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            <Link href="/dashboard" className={styles.primaryBtn}>
-              <LayoutDashboard size={16} />
-              <span>Dashboard</span>
-            </Link>
+            {user && (
+              <Link href="/dashboard" className={styles.primaryBtn}>
+                <LayoutDashboard size={16} />
+                <span>Dashboard</span>
+              </Link>
+            )}
 
             <button
               className={styles.hamburgerBtn}
@@ -146,11 +212,6 @@ export default function Header() {
             </button>
           </div>
 
-          <div className={styles.mobileSearch}>
-            <Search size={18} />
-            <input type="text" placeholder="Buscar produtos..." />
-          </div>
-
           <nav className={styles.mobileNav}>
             {navLinks.map((link) => (
               <Link
@@ -164,15 +225,33 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/dashboard"
-              className={`${styles.mobileNavLink} ${styles.mobileNavHighlight}`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <LayoutDashboard size={18} />
-              Dashboard
-            </Link>
+            {user && (
+              <Link
+                href="/dashboard"
+                className={`${styles.mobileNavLink} ${styles.mobileNavHighlight}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <LayoutDashboard size={18} />
+                Dashboard
+              </Link>
+            )}
           </nav>
+
+          <div className={styles.mobileThemeSection}>
+            <button onClick={toggleTheme} className={styles.mobileThemeBtn}>
+              {theme === "dark" ? (
+                <>
+                  <Sun size={18} />
+                  <span>Tema Claro</span>
+                </>
+              ) : (
+                <>
+                  <Moon size={18} />
+                  <span>Tema Escuro</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </>

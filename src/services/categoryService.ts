@@ -23,6 +23,11 @@ export async function getCategories(params?: GetCategoriesParams): Promise<Pagin
   return response.data;
 }
 
+export async function getPublicCategories(params?: GetCategoriesParams): Promise<PaginatedCategoriesResponse> {
+  const response = await httpClient.get<PaginatedCategoriesResponse>('/categories/public/enterprise-martins', { params });
+  return response.data;
+}
+
 export async function createCategory(data: CreateCategoryDTO): Promise<CategoryResponseDTO> {
   const response = await httpClient.post<CategoryResponseDTO>('/categories', data);
   return response.data;

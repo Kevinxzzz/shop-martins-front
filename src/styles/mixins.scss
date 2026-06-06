@@ -149,6 +149,7 @@ $breakpoints: (
 
   &:hover:not(:disabled) {
     background: var(--color-primary-hover);
+    color: #ffffff;
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(11, 95, 255, 0.35);
   }

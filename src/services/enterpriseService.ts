@@ -10,3 +10,9 @@ export async function updateEnterprise(data: UpdateEnterpriseData): Promise<Ente
   const response = await httpClient.put<EnterpriseDTO>("/enterprise", data);
   return response.data;
 }
+
+export async function getPublicEnterpriseLink(): Promise<{ link: string | null }> {
+  const response = await httpClient.get<{ link: string | null }>("/enterprise/enterprise-martins/link");
+  return response.data;
+}
+

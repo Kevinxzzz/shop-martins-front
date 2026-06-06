@@ -14,6 +14,7 @@ import { TextAreaField } from './TextAreaField';
 import { MediaUpload } from './MediaUpload';
 import type { CreateProductDTO, MediaUploadDTO } from '@/types/productDTO';
 import styles from './NovoProduto.module.scss';
+import { formatCurrencyInput, parseCurrencyToCents } from '@/utils';
 
 export default function NovoProdutoContainer() {
   const router = useRouter();
@@ -72,17 +73,6 @@ export default function NovoProdutoContainer() {
     setFiles(prev => prev.filter((_, i) => i !== indexToRemove));
   };
 
-  const parsePreco = (value: string): number => {
-    // Remove tudo que não é dígito ou vírgula/ponto
-    let limpo = value.replace(/[^\d.,]/g, '');
-    // Troca vírgula por ponto para parse
-    limpo = limpo.replace(',', '.');
-    const floatVal = parseFloat(limpo);
-    if (isNaN(floatVal)) return 0;
-    // Converte para centavos inteiros
-    return Math.round(floatVal * 100);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -120,7 +110,7 @@ export default function NovoProdutoContainer() {
       const productPayload: CreateProductDTO = {
         name: titulo.trim(),
         description: descricao.trim() || undefined,
-        price: preco ? parsePreco(preco) : undefined,
+        price: preco ? parseCurrencyToCents(preco) : undefined,
         categoryIds: selectedCats.length > 0 ? selectedCats : undefined,
         media: uploadedMedia.length > 0 ? uploadedMedia : undefined,
       };
@@ -190,11 +180,9 @@ export default function NovoProdutoContainer() {
             id="preco"
             label="Preço (R$)"
             value={preco}
-            onChange={setPreco}
+            onChange={(val) => setPreco(formatCurrencyInput(val))}
             placeholder="0,00"
             icon={DollarSign}
-            step="0.01"
-            min="0"
             required
             disabled={isSubmitting}
           />

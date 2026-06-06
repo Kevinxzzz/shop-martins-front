@@ -43,6 +43,21 @@ const httpClient = axios.create({
     Accept: 'application/json',
   },
   timeout: 15000,
+  paramsSerializer: {
+    serialize: (params) => {
+      const searchParams = new URLSearchParams();
+      for (const key in params) {
+        if (params[key] !== undefined && params[key] !== null) {
+          if (Array.isArray(params[key])) {
+            params[key].forEach((val: any) => searchParams.append(key, val));
+          } else {
+            searchParams.append(key, params[key]);
+          }
+        }
+      }
+      return searchParams.toString();
+    }
+  }
 });
 
 // ── Interceptor de Requisição ───────────────────────────────

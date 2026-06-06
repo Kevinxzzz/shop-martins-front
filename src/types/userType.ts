@@ -1,4 +1,5 @@
 import { UserRole } from "@/shared/constants/userRoles";
+import { Product } from "./productType";
 
 export interface User {
   id: string;
@@ -24,6 +25,7 @@ export interface UserDTO {
   id: string;
   name: string;
   email: string;
+  profileImageUrl?: string | null;
   role: UserRole;
   status: "ACTIVE" | "INACTIVE";
   isFounder?: boolean;
@@ -44,4 +46,19 @@ export interface UpdateProfileData {
   name?: string;
   email?: string;
   contactLink?: string;
+}
+
+export interface PublicSeller {
+  id: string;
+  name: string;
+  imageUrl: string | null;
+  productsCount: number;
+}
+
+export interface PublicVendorDetail {
+  id: string;
+  name: string;
+  profileImageUrl: string | null;
+  contactLink: string | null;
+  products: Product[];
 }

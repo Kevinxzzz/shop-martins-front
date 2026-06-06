@@ -24,7 +24,7 @@ const adminNav = [
   { href: '/dashboard/admin/usuarios', label: 'Usuários', icon: Users },
   { href: '/dashboard/admin/produtos', label: 'Todos Produtos', icon: Package },
   { href: '/dashboard/admin/categorias', label: 'Categorias', icon: Tag },
-  { href: '/dashboard/admin/tokens', label: 'Tokens API', icon: Key },
+  { href: '/dashboard/admin/tokens', label: 'Tokens de convite', icon: Key },
   { href: '/dashboard/admin/configuracoes', label: 'Configurações', icon: Settings },
 ];
 

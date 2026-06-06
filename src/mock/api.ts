@@ -8,48 +8,7 @@ import { UserRole } from '@/shared/constants/userRoles';
 
 const delay = (ms = 300) => new Promise((r) => setTimeout(r, ms));
 
-// ── Products ────────────────────────────────────────────────
-export async function getProducts(filters?: {
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  search?: string;
-  sellerId?: string;
-  page?: number;
-  limit?: number;
-}): Promise<{ products: Product[]; total: number }> {
-  await delay(350);
-  let filtered = [...produtos];
 
-  if (filters?.category) {
-    filtered = filtered.filter((p) => p.categoryId === filters.category);
-  }
-  if (filters?.minPrice !== undefined) {
-    filtered = filtered.filter((p) => p.price >= filters.minPrice!);
-  }
-  if (filters?.maxPrice !== undefined) {
-    filtered = filtered.filter((p) => p.price <= filters.maxPrice!);
-  }
-  if (filters?.search) {
-    const q = filters.search.toLowerCase();
-    filtered = filtered.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q),
-    );
-  }
-  if (filters?.sellerId) {
-    filtered = filtered.filter((p) => p.sellerId === filters.sellerId);
-  }
-
-  const total = filtered.length;
-  const page = filters?.page || 1;
-  const limit = filters?.limit || 20;
-  const start = (page - 1) * limit;
-  const paginated = filtered.slice(start, start + limit);
-
-  return { products: paginated, total };
-}
 
 export async function getProductById(id: string): Promise<Product | null> {
   await delay(250);

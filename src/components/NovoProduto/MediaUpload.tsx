@@ -133,17 +133,26 @@ export function MediaUpload({ files, previews, onAddFiles, onRemove }: MediaUplo
         <div className={styles.previewGrid}>
           {previews.map((url, i) => (
             <div key={i} className={styles.previewItem}>
-              {files[i]?.type.startsWith('video/') ? (
-                <video src={url} className={styles.videoPreview} width={72} height={72} muted />
-              ) : (
-                <Image
-                  src={url}
-                  alt={`Preview ${i + 1}`}
-                  width={72}
-                  height={72}
-                  unoptimized
-                />
-              )}
+              {(() => {
+                const isVideoExt = /\.(mp4|webm|mov|m4v|quicktime)($|\?)/i.test(url);
+                const isBlob = url.startsWith('blob:');
+                const newFilesIndex = i - (previews.length - files.length);
+                const isNewVideo = isBlob && newFilesIndex >= 0 && files[newFilesIndex]?.type.startsWith('video/');
+
+                if (isVideoExt || isNewVideo) {
+                  return <video src={url} className={styles.videoPreview} width={72} height={72} muted />;
+                }
+
+                return (
+                  <Image
+                    src={url}
+                    alt={`Preview ${i + 1}`}
+                    width={72}
+                    height={72}
+                    unoptimized
+                  />
+                );
+              })()}
               <button
                 type="button"
                 className={styles.removeBtn}

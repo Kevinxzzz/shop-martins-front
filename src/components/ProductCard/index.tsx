@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Eye } from 'lucide-react';
-import { formatPrice, formatViews } from '@/utils';
+import { formatPrice, formatViews, getAvatarUrl } from '@/utils';
 import type { Product } from '@/types';
 import styles from './ProductCard.module.scss';
 
@@ -50,7 +50,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         {product.seller && (
           <div className={styles.vendor}>
             <Image
-              src={product.seller.profilePicture}
+              src={getAvatarUrl(product.seller.profilePicture, product.seller.name)}
               alt={product.seller.name}
               width={24}
               height={24}
