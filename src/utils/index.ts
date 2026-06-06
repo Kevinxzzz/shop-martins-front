@@ -70,3 +70,11 @@ export function parseCurrencyToCents(value: string): number {
   return Math.round(floatVal * 100);
 }
 
+export function getAvatarUrl(path: string | null | undefined, seedName: string): string {
+  if (!path) return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(seedName)}`;
+  if (path.startsWith('http') || path.startsWith('blob:') || path.startsWith('data:')) return path;
+  
+  // Assumes that if it's not a full URL, it's an S3 object key (e.g. enterprise/:enterpriseId/users/:userId/avatar/...)
+  return `https://ecomerce-martins-bucket.s3.sa-east-1.amazonaws.com/${path}`;
+}
+

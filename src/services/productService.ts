@@ -21,6 +21,12 @@ function mapBackendProductToFrontend(raw: any): Product {
   // Sort media by order
   media.sort((a, b) => a.order - b.order);
 
+  const categories = (raw.categories || []).map((rc: any) => ({
+    id: rc.category?.id || rc.categoryId,
+    name: rc.category?.name || '',
+    slug: rc.category?.slug || '',
+  }));
+
   const categoryId = raw.categories?.[0]?.categoryId || '';
 
   return {
@@ -34,12 +40,14 @@ function mapBackendProductToFrontend(raw: any): Product {
     countViews: raw.countViews || 0,
     media,
     createdAt: raw.createdAt,
+    category: categories[0],
+    categories,
     seller: raw.user ? {
       id: raw.user.id,
       name: raw.user.name,
       email: '',
       whatsappPhone: '',
-      profilePicture: '',
+      profilePicture: raw.user.profileImageUrl || '',
       role: UserRole.SELLER,
       isActive: true,
       enterpriseId: raw.enterpriseId,
@@ -47,7 +55,55 @@ function mapBackendProductToFrontend(raw: any): Product {
   };
 }
 
+export interface GetAdminProductsParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  categoryId?: string | string[];
+  sellerId?: string | string[];
+  minPrice?: number;
+  maxPrice?: number;
+}
+
+export interface PublicProductFilters {
+  page?: number;
+  limit?: number;
+  search?: string;
+  categoryId?: string | string[];
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 export const productService = {
+
+  async getEnterpriseProductsPublic(params: PublicProductFilters): Promise<PaginatedProductsResponse> {
+    const response = await httpClient.get<any>('/products/enterprise-martins', { params });
+    
+    const mappedProducts = (response.data.products || []).map(mapBackendProductToFrontend);
+
+    return {
+      products: mappedProducts,
+      page: response.data.page,
+      limit: response.data.limit,
+      totalItems: response.data.totalItems,
+      totalPages: response.data.totalPages,
+    };
+  },
+
+  async getAdminProducts(params: GetAdminProductsParams): Promise<PaginatedProductsResponse> {
+    const response = await httpClient.get<any>('/products/enterprise', { params });
+    
+    const mappedProducts = (response.data.products || []).map(mapBackendProductToFrontend);
+
+    return {
+      products: mappedProducts,
+      page: response.data.page,
+      limit: response.data.limit,
+      totalItems: response.data.totalItems,
+      totalPages: response.data.totalPages,
+    };
+  },
+
   async createProduct(data: CreateProductDTO): Promise<Product> {
     const response = await httpClient.post<any>('/products', data);
     return mapBackendProductToFrontend(response.data);

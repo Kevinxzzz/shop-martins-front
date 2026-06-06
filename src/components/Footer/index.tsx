@@ -28,14 +28,14 @@ export default function Footer() {
             <Link href="/vendedores" className={styles.columnLink}>
               Vendedores
             </Link>
-            <Link href="/?categoria=cat-002" className={styles.columnLink}>
+            {/* <Link href="/?categoria=cat-002" className={styles.columnLink}>
               Contas Over 3200
             </Link>
             <Link href="/?categoria=cat-001" className={styles.columnLink}>
               Contas com Neymar
-            </Link>
+            </Link> */}
           </div>
-
+{/* 
           <div className={styles.column}>
             <h4 className={styles.columnTitle}>Destaques</h4>
             <Link href="/?q=big-time" className={styles.columnLink}>
@@ -50,8 +50,8 @@ export default function Footer() {
             <Link href="/?q=coins" className={styles.columnLink}>
               Contas com Coins
             </Link>
-          </div>
-
+          </div> */}
+{/* 
           <div className={styles.column}>
             <h4 className={styles.columnTitle}>Suporte</h4>
             <Link href="/dashboard" className={styles.columnLink}>
@@ -60,7 +60,7 @@ export default function Footer() {
             <Link href="/entrar" className={styles.columnLink}>
               Acessar Conta
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
 

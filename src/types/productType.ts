@@ -13,6 +13,7 @@ export interface Product {
   countViews: number;
   media: Media[];
   category?: Category;
+  categories?: Category[];
   seller?: User;
   createdAt: string;
 }

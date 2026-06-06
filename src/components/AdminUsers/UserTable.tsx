@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { UserDTO, AuthUser } from '@/types';
+import { getAvatarUrl } from '@/utils';
 import { RoleSelector } from './RoleSelector';
 import styles from './UserTable.module.scss';
 
@@ -57,7 +58,7 @@ export function UserTable({
           <div key={user.id} className={styles.userRow}>
             <div className={styles.userCol}>
               <Image
-                src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.name}`}
+                src={getAvatarUrl(user.profileImageUrl, user.name)}
                 alt={user.name}
                 width={40}
                 height={40}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { PublicProductDetail } from '@/types/productType';
+import { getAvatarUrl } from '@/utils';
 import styles from './PublicProductContainer.module.scss';
 
 interface SellerInfoProps {
@@ -12,7 +13,7 @@ interface SellerInfoProps {
 export function SellerInfo({ seller }: SellerInfoProps) {
   if (!seller) return null;
 
-  const avatarUrl = seller.profilePicture || seller.profileImageUrl || `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(seller.name)}`;
+  const avatarUrl = getAvatarUrl(seller.profilePicture || seller.profileImageUrl, seller.name);
 
   return (
     <div className={styles.vendorBlock}>
