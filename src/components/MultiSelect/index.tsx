@@ -2,17 +2,23 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { X, ChevronDown } from 'lucide-react';
-import type { Categoria } from '@/types';
+import type { Category } from '@/types';
 import styles from './MultiSelect.module.scss';
 
+interface MultiSelectOption {
+  id: string;
+  name: string;
+}
+
 interface MultiSelectProps {
-  options: Categoria[];
+  options: MultiSelectOption[];
   selected: string[];
   onChange: (ids: string[]) => void;
   placeholder?: string;
+  disabled?: boolean;
 }
 
-export default function MultiSelect({ options, selected, onChange, placeholder = 'Selecione...' }: MultiSelectProps) {
+export default function MultiSelect({ options, selected, onChange, placeholder = 'Selecione...', disabled = false }: MultiSelectProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -27,6 +33,7 @@ export default function MultiSelect({ options, selected, onChange, placeholder =
   }, []);
 
   const toggle = (id: string) => {
+    if (disabled) return;
     if (selected.includes(id)) {
       onChange(selected.filter(s => s !== id));
     } else {
@@ -35,28 +42,35 @@ export default function MultiSelect({ options, selected, onChange, placeholder =
   };
 
   const remove = (id: string) => {
+    if (disabled) return;
     onChange(selected.filter(s => s !== id));
   };
 
   const selectedOptions = options.filter(o => selected.includes(o.id));
 
   return (
-    <div className={styles.wrapper} ref={ref}>
-      <div className={styles.trigger} onClick={() => setOpen(!open)} role="combobox" aria-expanded={open} tabIndex={0}>
+    <div className={`${styles.wrapper} ${disabled ? styles.disabled : ''}`} ref={ref}>
+      <div 
+        className={styles.trigger} 
+        onClick={() => !disabled && setOpen(!open)} 
+        role="combobox" 
+        aria-expanded={open} 
+        tabIndex={disabled ? -1 : 0}
+      >
         {selectedOptions.length === 0 ? (
           <span className={styles.placeholder}>{placeholder}</span>
         ) : (
           <div className={styles.tags}>
             {selectedOptions.map(opt => (
               <span key={opt.id} className={styles.tag}>
-                {opt.nome}
+                {opt.name}
                 <span
                   role="button"
                   tabIndex={0}
                   className={styles.tagRemove}
                   onClick={e => { e.stopPropagation(); remove(opt.id); }}
                   onKeyDown={e => { if (e.key === 'Enter') { e.stopPropagation(); remove(opt.id); } }}
-                  aria-label={`Remover ${opt.nome}`}
+                  aria-label={`Remover ${opt.name}`}
                 >
                   <X size={10} />
                 </span>
@@ -79,7 +93,7 @@ export default function MultiSelect({ options, selected, onChange, placeholder =
               <span className={styles.checkbox}>
                 {selected.includes(opt.id) && <span className={styles.checkmark} />}
               </span>
-              {opt.nome}
+              {opt.name}
             </button>
           ))}
         </div>

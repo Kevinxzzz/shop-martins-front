@@ -1,0 +1,240 @@
+@use '@/styles/mixins' as *;
+
+// ═══════════════════════════════════════════════════════════
+// NOVO PRODUTO — Centered Responsiveness & Form Styles
+// ═══════════════════════════════════════════════════════════
+
+.pageContainer {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-3);
+
+  @include respond-to('md') {
+    padding: var(--space-4) var(--space-6);
+  }
+}
+
+.header {
+  margin-bottom: var(--space-5);
+
+  @include respond-to('md') {
+    margin-bottom: var(--space-6);
+  }
+}
+
+.title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-text);
+
+  @include respond-to('md') {
+    font-size: var(--fs-2xl);
+  }
+}
+
+.formCard {
+  @include card;
+  padding: var(--space-5);
+  width: 100%;
+  transition: box-shadow var(--transition-base), border-color var(--transition-base);
+
+  &:hover {
+    transform: none; // Disable standard card hover translation for forms
+  }
+
+  @include respond-to('md') {
+    padding: var(--space-8);
+  }
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  &.fullWidth {
+    @include respond-to('md') {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+  }
+}
+
+.input {
+  @include input-base;
+  height: 42px;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-lg);
+}
+
+.textarea {
+  @include input-base;
+  min-height: 100px;
+  resize: vertical;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-lg);
+
+  @include respond-to('md') {
+    min-height: 120px;
+  }
+}
+
+.uploadArea {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  color: var(--color-text-tertiary);
+  display: block;
+
+  @include respond-to('md') {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-ultra-light);
+    color: var(--color-primary);
+  }
+}
+
+.uploadIcon {
+  margin-bottom: var(--space-2);
+}
+
+.uploadText {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.uploadHint {
+  font-size: var(--fs-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-1);
+}
+
+.previewGrid {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+
+.previewItem {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  overflow: visible !important;
+
+  @include respond-to('md') {
+    width: 72px;
+    height: 72px;
+  }
+
+  img, .videoPreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+}
+
+.removeBtn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-pill);
+  background: var(--color-danger);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: all var(--transition-base);
+  z-index: 5;
+
+  &:hover {
+    background: darken(#ff3b5c, 10%);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.formActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  width: 100%;
+
+  @include respond-to('md') {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    width: auto;
+  }
+}
+
+.submitBtn {
+  @include button-primary;
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+.cancelBtn {
+  @include button-ghost;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

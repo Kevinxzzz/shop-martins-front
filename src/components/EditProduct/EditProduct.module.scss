@@ -1,0 +1,307 @@
+@use '@/styles/mixins' as *;
+
+.pageContainer {
+  width: 100%;
+  /* Padding top para evitar colisão com header flutuante e margem base para mobile */
+  padding: 1.5rem 1rem 6rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 0 auto;
+  max-width: var(--container-lg);
+  
+  @media (min-width: 640px) {
+    padding: 2rem;
+    gap: 2rem;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+
+  @media (min-width: 640px) {
+    font-size: 1.75rem;
+  }
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  /* Estilos de Card para padronização */
+  background: var(--color-bg-card, var(--color-bg-secondary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl, 1rem);
+  box-shadow: var(--shadow-card, 0 4px 12px rgba(0,0,0,0.05));
+  padding: var(--space-4, 1rem);
+  width: 100%;
+  transition: box-shadow var(--transition-base, 0.2s), border-color var(--transition-base, 0.2s);
+
+  &:focus-within {
+    border-color: rgba(11, 95, 255, 0.4);
+    box-shadow: var(--shadow-card-hover, 0 8px 24px rgba(0,0,0,0.08));
+  }
+
+  @include respond-to('md') {
+    padding: var(--space-6, 1.5rem) var(--space-8, 2rem);
+  }
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+  &.fullWidth {
+    grid-column: 1 / -1;
+  }
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  min-height: 120px;
+  resize: vertical;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-glow);
+    background-color: var(--color-bg);
+  }
+}
+
+/* Category Pills component styling */
+.categoryPillsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.pill {
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-border-focus);
+  }
+
+  &.selected {
+    background-color: var(--color-primary-ultra-light);
+    color: var(--color-primary-dark);
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 0 1px var(--color-primary-glow);
+  }
+
+  /* Em dark mode, a cor do selected text e background deve ser ajustada para contrastar adequadamente, 
+     mas var(--color-primary-ultra-light) e var(--color-primary-dark) já são ajustados no tokens.scss */
+}
+
+/* Media Grid Styling */
+.mediaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
+
+.mediaItem {
+  position: relative;
+  aspect-ratio: 1/1;
+  background: var(--color-bg-secondary);
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  
+  img {
+    object-fit: cover;
+  }
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1/1;
+  border: 2px dashed var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: var(--color-primary-ultra-light);
+  }
+}
+
+.uploadIcon {
+  margin-bottom: 0.5rem;
+}
+
+.uploadText {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+/* Action Bar - Sticky Mobile, Standard on Desktop */
+.formActions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--header-bg);
+  backdrop-filter: var(--glass-blur);
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column-reverse; /* Cancel below Save on mobile */
+  gap: 0.75rem;
+  z-index: 50;
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+
+  @media (min-width: 640px) {
+    position: static;
+    flex-direction: row;
+    justify-content: flex-end;
+    background: transparent;
+    backdrop-filter: none;
+    border-top: none;
+    box-shadow: none;
+    padding: 1rem 0 0 0;
+  }
+}
+
+.submitBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+
+  @media (min-width: 640px) {
+    width: auto;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-primary);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.cancelBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+
+  @media (min-width: 640px) {
+    width: auto;
+  }
+
+  &:hover {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,510 @@
+@use '@/styles/mixins' as *;
+
+.page {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin-inline: auto;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+
+  @include respond-to('md') {
+    padding: var(--space-6);
+    gap: var(--space-8);
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+
+  @include respond-to('sm') {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.title {
+  @include heading(var(--fs-2xl));
+  margin: 0;
+
+  @include respond-to('md') {
+    font-size: var(--fs-3xl);
+  }
+}
+
+.subtitle {
+  @include body-text(var(--fs-xs));
+  color: var(--color-text-secondary);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+  }
+}
+
+.addBtn {
+  @include button-primary;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-xs);
+  padding: var(--space-3) var(--space-4);
+  margin-top: var(--space-2);
+
+  @include respond-to('sm') {
+    width: auto;
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-6);
+    margin-top: 0;
+  }
+}
+
+// ── Stats Summary ───────────────────────────────────────
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+}
+
+.statCard {
+  @include card;
+  padding: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--color-bg-card);
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary-light);
+  }
+}
+
+.statIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  @include flex-center;
+  background: var(--color-primary-ultra-light);
+  color: var(--color-primary);
+  flex-shrink: 0;
+
+  &.success {
+    background: rgba(0, 196, 140, 0.1);
+    color: var(--color-success);
+  }
+
+  &.warning {
+    background: rgba(255, 176, 32, 0.1);
+    color: var(--color-warning);
+  }
+}
+
+.statContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.statValue {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  line-height: var(--lh-tight);
+}
+
+.statLabel {
+  font-size: var(--fs-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--fw-medium);
+}
+
+// ── Collapsible Creation Form Card ──────────────────────
+.formCard {
+  @include card;
+  padding: var(--space-5);
+  border-color: var(--color-primary);
+  animation: slideDown 0.3s ease-out;
+
+  &:hover {
+    transform: none;
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+.formHeader {
+  @include flex-between;
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: var(--space-2);
+}
+
+.formTitle {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+}
+
+.closeFormBtn {
+  @include button-ghost;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+}
+
+.input {
+  @include input-base;
+  height: 42px;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-lg);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.submitBtn {
+  @include button-primary;
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  flex: 1;
+
+  @include respond-to('sm') {
+    flex: initial;
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+.cancelBtn {
+  @include button-ghost;
+  border: 1px solid var(--color-border);
+  font-size: var(--fs-xs);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  flex: 1;
+
+  @include respond-to('sm') {
+    flex: initial;
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+// ── Token Cards Grid ────────────────────────────────────
+.tokensGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tokenCard {
+  @include card;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--color-bg-card);
+  position: relative;
+  overflow: hidden;
+
+  @include respond-to('md') {
+    padding: var(--space-5);
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary-light);
+  }
+}
+
+.cardHeader {
+  @include flex-between;
+}
+
+.cardTypeBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-xs);
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+}
+
+.statusBadge {
+  display: inline-flex;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+
+  &.active {
+    background: rgba(0, 196, 140, 0.1);
+    color: var(--color-success);
+  }
+
+  &.expired {
+    background: rgba(255, 176, 32, 0.1);
+    color: var(--color-warning);
+  }
+
+  &.canceled {
+    background: rgba(255, 59, 92, 0.1);
+    color: var(--color-danger);
+  }
+
+  &.maxedOut {
+    background: var(--color-primary-ultra-light);
+    color: var(--color-primary);
+  }
+}
+
+// ── Token Text Box ──────────────────────────────────────
+.tokenBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.fieldTitle {
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  letter-spacing: var(--ls-wider);
+}
+
+.codeArea {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  min-width: 0;
+}
+
+.codeText {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.copyBtn {
+  @include button-ghost;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-light);
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    color: var(--color-primary);
+    background: var(--color-primary-ultra-light);
+    border-color: var(--color-primary-light);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// ── Usage Progress Bar ──────────────────────────────────
+.usageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.usageHeader {
+  @include flex-between;
+  font-size: 11px;
+}
+
+.usageLabel {
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-secondary);
+}
+
+.usageValue {
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+}
+
+.progressTrack {
+  width: 100%;
+  height: 6px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-pill);
+  transition: width var(--transition-slow) ease-out;
+
+  &.warning {
+    background: var(--color-warning);
+  }
+
+  &.danger {
+    background: var(--color-danger);
+  }
+
+  &.success {
+    background: var(--color-success);
+  }
+}
+
+// ── Meta / Dates ────────────────────────────────────────
+.metaContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-block: var(--space-2);
+  border-block: 1px dashed var(--color-border-light);
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 11px;
+  color: var(--color-text-secondary);
+
+  svg {
+    color: var(--color-text-tertiary);
+    flex-shrink: 0;
+  }
+}
+
+// ── Actions ─────────────────────────────────────────────
+.cardActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.revokeBtn {
+  @include button-ghost;
+  color: var(--color-danger);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+
+  &:hover {
+    background: rgba(255, 59, 92, 0.08);
+    color: var(--color-danger-hover);
+    border-color: rgba(255, 59, 92, 0.2);
+  }
+}
+
+.revokedBadgeText {
+  font-size: var(--fs-xs);
+  color: var(--color-text-tertiary);
+  font-weight: var(--fw-medium);
+  font-style: italic;
+}
+
+// ── Animations ──────────────────────────────────────────
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.emptyState {
+  @include flex-center;
+  flex-direction: column;
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  background: var(--color-bg-card);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  color: var(--color-text-secondary);
+  gap: var(--space-3);
+}
+
+.emptyTitle {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+}
+
+.emptyDesc {
+  font-size: var(--fs-sm);
+  max-width: 320px;
+}

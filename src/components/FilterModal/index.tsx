@@ -3,56 +3,88 @@
 import { useState, useEffect } from 'react';
 import { X, Check } from 'lucide-react';
 import { getCategories } from '@/mock/api';
-import type { Categoria } from '@/types';
+import type { Category } from '@/types';
 import styles from './FilterModal.module.scss';
+import { formatCurrencyInput, parseCurrencyToCents } from '@/utils';
 
 interface FilterModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedCategoria?: string;
-  precoMin?: number;
-  precoMax?: number;
-  onFilter: (filters: { categoria?: string; precoMin?: number; precoMax?: number }) => void;
+  selectedCategory?: string | string[];
+  selectedSeller?: string | string[];
+  minPrice?: number;
+  maxPrice?: number;
+  onFilter: (filters: { category?: string[]; seller?: string[]; minPrice?: number; maxPrice?: number }) => void;
+  categories?: { id: string; name: string }[];
+  sellers?: { id: string; name: string }[];
+  showSellerFilter?: boolean;
+  showPriceFilter?: boolean;
 }
 
 export default function FilterModal({
   isOpen,
   onClose,
-  selectedCategoria,
-  precoMin = 0,
-  precoMax = 2000,
+  selectedCategory,
+  selectedSeller,
+  minPrice,
+  maxPrice,
   onFilter,
+  categories: categoriesProp,
+  sellers = [],
+  showSellerFilter = false,
+  showPriceFilter = true,
 }: FilterModalProps) {
-  const [categories, setCategories] = useState<Categoria[]>([]);
-  const [cat, setCat] = useState(selectedCategoria || '');
-  const [min, setMin] = useState(precoMin);
-  const [max, setMax] = useState(precoMax);
+  const [internalCategories, setInternalCategories] = useState<Category[]>([]);
+  
+  const initArr = (val: string | string[] | undefined) => Array.isArray(val) ? val : val ? [val] : [];
+  
+  const [cat, setCat] = useState<string[]>(initArr(selectedCategory));
+  const [seller, setSeller] = useState<string[]>(initArr(selectedSeller));
+  const [min, setMin] = useState<string>(minPrice ? formatCurrencyInput(minPrice) : '');
+  const [max, setMax] = useState<string>(maxPrice ? formatCurrencyInput(maxPrice) : '');
 
   useEffect(() => {
-    getCategories().then(setCategories);
-  }, []);
+    if (!categoriesProp) {
+      getCategories().then(setInternalCategories);
+    }
+  }, [categoriesProp]);
+
+  const displayedCategories = categoriesProp || internalCategories;
 
   useEffect(() => {
     if (isOpen) {
-      setCat(selectedCategoria || '');
-      setMin(precoMin);
-      setMax(precoMax);
+      setCat(initArr(selectedCategory));
+      setSeller(initArr(selectedSeller));
+      setMin(minPrice ? formatCurrencyInput(minPrice) : '');
+      setMax(maxPrice ? formatCurrencyInput(maxPrice) : '');
     }
-  }, [isOpen, selectedCategoria, precoMin, precoMax]);
+  }, [isOpen, selectedCategory, selectedSeller, minPrice, maxPrice]);
 
   const apply = () => {
     onFilter({
-      categoria: cat || undefined,
-      precoMin: min > 0 ? min : undefined,
-      precoMax: max < 2000 ? max : undefined,
+      category: cat.length > 0 ? cat : undefined,
+      seller: seller.length > 0 ? seller : undefined,
+      minPrice: min ? parseCurrencyToCents(min) : undefined,
+      maxPrice: max ? parseCurrencyToCents(max) : undefined,
     });
   };
 
   const clear = () => {
-    setCat('');
-    setMin(0);
-    setMax(2000);
+    setCat([]);
+    setSeller([]);
+    setMin('');
+    setMax('');
     onFilter({});
+  };
+
+  const toggleCat = (id: string) => {
+    if (!id) setCat([]);
+    else setCat(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]);
+  };
+
+  const toggleSeller = (id: string) => {
+    if (!id) setSeller([]);
+    else setSeller(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]);
   };
 
   if (!isOpen) return null;
@@ -71,65 +103,91 @@ export default function FilterModal({
         <div className={styles.body}>
           {/* Categories */}
           <div className={styles.section}>
-            <h4 className={styles.sectionTitle}>Categoria</h4>
+            <h4 className={styles.sectionTitle}>Categorias</h4>
             <div className={styles.chipGrid}>
               <button
-                className={`${styles.chip} ${cat === '' ? styles.active : ''}`}
-                onClick={() => setCat('')}
+                className={`${styles.chip} ${cat.length === 0 ? styles.active : ''}`}
+                onClick={() => toggleCat('')}
               >
-                {cat === '' && <Check size={12} />}
+                {cat.length === 0 && <Check size={12} />}
                 Todas
               </button>
-              {categories.map(c => (
+              {displayedCategories.map(c => (
                 <button
                   key={c.id}
-                  className={`${styles.chip} ${cat === c.id ? styles.active : ''}`}
-                  onClick={() => setCat(c.id)}
+                  className={`${styles.chip} ${cat.includes(c.id) ? styles.active : ''}`}
+                  onClick={() => toggleCat(c.id)}
                 >
-                  {cat === c.id && <Check size={12} />}
-                  {c.nome}
+                  {cat.includes(c.id) && <Check size={12} />}
+                  {c.name}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Price Range */}
-          <div className={styles.section}>
-            <h4 className={styles.sectionTitle}>Faixa de Preço</h4>
-            <div className={styles.priceRow}>
-              <div className={styles.priceField}>
-                <label htmlFor="filterMin">Mínimo</label>
-                <div className={styles.priceInputWrapper}>
-                  <span className={styles.pricePrefix}>R$</span>
-                  <input
-                    id="filterMin"
-                    type="number"
-                    className={styles.priceInput}
-                    value={min}
-                    onChange={e => setMin(Number(e.target.value))}
-                    min={0}
-                    step={10}
-                  />
-                </div>
+          {/* Sellers */}
+          {showSellerFilter && sellers.length > 0 && (
+            <div className={styles.section}>
+              <h4 className={styles.sectionTitle}>Vendedores</h4>
+              <div className={styles.chipGrid}>
+                <button
+                  className={`${styles.chip} ${seller.length === 0 ? styles.active : ''}`}
+                  onClick={() => toggleSeller('')}
+                >
+                  {seller.length === 0 && <Check size={12} />}
+                  Todos
+                </button>
+                {sellers.map(s => (
+                  <button
+                    key={s.id}
+                    className={`${styles.chip} ${seller.includes(s.id) ? styles.active : ''}`}
+                    onClick={() => toggleSeller(s.id)}
+                  >
+                    {seller.includes(s.id) && <Check size={12} />}
+                    {s.name}
+                  </button>
+                ))}
               </div>
-              <span className={styles.priceDivider} />
-              <div className={styles.priceField}>
-                <label htmlFor="filterMax">Máximo</label>
-                <div className={styles.priceInputWrapper}>
-                  <span className={styles.pricePrefix}>R$</span>
-                  <input
-                    id="filterMax"
-                    type="number"
-                    className={styles.priceInput}
-                    value={max}
-                    onChange={e => setMax(Number(e.target.value))}
-                    min={0}
-                    step={10}
-                  />
+            </div>
+          )}
+
+          {/* Price Range */}
+          {showPriceFilter && (
+            <div className={styles.section}>
+              <h4 className={styles.sectionTitle}>Faixa de Preço</h4>
+              <div className={styles.priceRow}>
+                <div className={styles.priceField}>
+                  <label htmlFor="filterMin">Mínimo</label>
+                  <div className={styles.priceInputWrapper}>
+                    <span className={styles.pricePrefix}>R$</span>
+                    <input
+                      id="filterMin"
+                      type="text"
+                      className={styles.priceInput}
+                      value={min}
+                      onChange={e => setMin(formatCurrencyInput(e.target.value))}
+                      placeholder="0,00"
+                    />
+                  </div>
+                </div>
+                <span className={styles.priceDivider} />
+                <div className={styles.priceField}>
+                  <label htmlFor="filterMax">Máximo</label>
+                  <div className={styles.priceInputWrapper}>
+                    <span className={styles.pricePrefix}>R$</span>
+                    <input
+                      id="filterMax"
+                      type="text"
+                      className={styles.priceInput}
+                      value={max}
+                      onChange={e => setMax(formatCurrencyInput(e.target.value))}
+                      placeholder="Sem limite"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className={styles.footer}>

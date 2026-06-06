@@ -1,0 +1,370 @@
+@use '@/styles/mixins' as *;
+
+// ═══════════════════════════════════════════════════════════════
+// SHOP MARTINS — Cadastro Empresa Page Styles (Mobile-First)
+// ═══════════════════════════════════════════════════════════════
+
+// ── Page Container ──────────────────────────────────────────
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+
+  @include respond-to("lg") {
+    flex-direction: row;
+  }
+}
+
+// ── Brand Panel ─────────────────────────────────────────────
+.brandPanel {
+  display: none; // Hidden on mobile
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-12) var(--space-10);
+  position: relative;
+  overflow: hidden;
+
+  @include respond-to("lg") {
+    display: flex;
+    width: 50%;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  @include respond-to("xl") {
+    width: 55%;
+  }
+}
+
+.brandLogo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  letter-spacing: var(--ls-tight);
+}
+
+.brandLogoIcon {
+  color: var(--color-primary);
+}
+
+.brandContent {
+  margin-top: auto;
+  margin-bottom: auto;
+  max-width: 520px;
+}
+
+.brandTitle {
+  @include heading(var(--fs-5xl));
+  margin-bottom: var(--space-6);
+  background: linear-gradient(180deg, var(--color-text) 0%, var(--color-text-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  [data-theme="dark"] & {
+    background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.featuresList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  @include body-text(var(--fs-lg));
+  color: var(--color-text);
+  opacity: 0;
+}
+
+.featureIcon {
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-ultra-light);
+
+  [data-theme="dark"] & {
+    background: rgba(11, 95, 255, 0.15);
+  }
+}
+
+// ── Form Panel ──────────────────────────────────────────────
+.formPanel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+  position: relative;
+  z-index: 1;
+
+  @include respond-to("md") {
+    padding: var(--space-10) var(--space-8);
+  }
+
+  @include respond-to("lg") {
+    padding: var(--space-12) var(--space-10);
+  }
+}
+
+// ── Form Card ───────────────────────────────────────────────
+.formCard {
+  width: 100%;
+  max-width: 500px;
+  padding: var(--space-8);
+  border-radius: var(--radius-2xl);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  @include respond-to("md") {
+    padding: var(--space-10);
+  }
+
+  [data-theme="dark"] & {
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: var(--shadow-2xl), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--color-primary-gradient);
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+    opacity: 0.8;
+  }
+}
+
+.formHeader {
+  margin-bottom: var(--space-8);
+  text-align: center;
+}
+
+.formHeaderMobileLogo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-6);
+
+  @include respond-to("lg") {
+    display: none;
+  }
+}
+
+.formTitle {
+  @include heading(var(--fs-2xl));
+  margin-bottom: var(--space-2);
+}
+
+.formSubtitle {
+  @include body-text(var(--fs-sm));
+}
+
+// ── Form Elements ───────────────────────────────────────────
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.inputLabel {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
+
+  &:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-glow);
+    background: var(--color-bg);
+  }
+
+  [data-theme="dark"] & {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border);
+
+    &:focus-within {
+      background: var(--color-bg-secondary);
+    }
+  }
+}
+
+.inputError {
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 0 3px rgba(255, 59, 92, 0.12) !important;
+}
+
+.inputIcon {
+  position: absolute;
+  left: var(--space-4);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  transition: color var(--transition-base);
+  flex-shrink: 0;
+
+  .inputWrapper:focus-within & {
+    color: var(--color-primary);
+  }
+
+  .inputError & {
+    color: var(--color-danger);
+  }
+}
+
+.inputField {
+  width: 100%;
+  padding: var(--space-3) var(--space-4) var(--space-3) calc(var(--space-4) + 26px);
+  font-family: var(--font-body);
+  font-size: 16px; // 16px to prevent iOS zoom
+  color: var(--color-text);
+  background: transparent;
+  border: none;
+  outline: none;
+  line-height: var(--lh-normal);
+
+  &::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.togglePassword {
+  position: absolute;
+  right: var(--space-3);
+  background: transparent;
+  border: none;
+  color: var(--color-text-tertiary);
+  padding: var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-bg-tertiary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+  }
+}
+
+.errorText {
+  font-size: var(--fs-xs);
+  color: var(--color-danger);
+  font-weight: var(--fw-medium);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// ── Submit Button ───────────────────────────────────────────
+.submitButton {
+  @include button-primary;
+  width: 100%;
+  padding: var(--space-4);
+  font-size: var(--fs-base);
+  margin-top: var(--space-4);
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+}
+
+// ── Divider ─────────────────────────────────────────────────
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  margin: var(--space-6) 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  &::before {
+    margin-right: var(--space-4);
+  }
+
+  &::after {
+    margin-left: var(--space-4);
+  }
+}
+
+// ── Secondary Action ────────────────────────────────────────
+.secondaryAction {
+  text-align: center;
+  @include body-text(var(--fs-sm));
+
+  a {
+    font-weight: var(--fw-semibold);
+  }
+}
+
+.sectionTitle {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}

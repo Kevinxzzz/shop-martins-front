@@ -1,38 +1,38 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Eye } from 'lucide-react';
-import { formatPrice, formatViews } from '@/utils';
-import type { Produto } from '@/types';
+import { formatPrice, formatViews, getAvatarUrl } from '@/utils';
+import type { Product } from '@/types';
 import styles from './ProductCard.module.scss';
 
 interface ProductCardProps {
-  product: Produto;
+  product: Product;
   index?: number;
 }
 
 export default function ProductCard({ product, index = 0 }: ProductCardProps) {
-  const mainImage = product.midias.find(m => m.tipo === 'imagem');
+  const mainImage = product.media.find(m => m.type === 'image');
 
   return (
     <Link
       href={`/produto/${product.id}`}
       className={styles.card}
       style={{ animationDelay: `${index * 60}ms` }}
-      aria-label={`Ver ${product.titulo} por ${formatPrice(product.preco)}`}
+      aria-label={`Ver ${product.title} por ${formatPrice(product.price)}`}
     >
       <div className={styles.imageWrapper}>
         {mainImage && (
           <Image
-            src={mainImage.url_arquivo}
-            alt={product.titulo}
+            src={mainImage.fileUrl}
+            alt={product.title}
             width={400}
             height={400}
             loading={index < 4 ? 'eager' : 'lazy'}
             unoptimized
           />
         )}
-        {product.categoria && (
-          <span className={styles.badge}>{product.categoria.nome}</span>
+        {product.category && (
+          <span className={styles.badge}>{product.category.name}</span>
         )}
         <span className={styles.views}>
           <Eye size={12} aria-hidden="true" />
@@ -41,23 +41,23 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       </div>
 
       <div className={styles.content}>
-        <h3 className={styles.title}>{product.titulo}</h3>
+        <h3 className={styles.title}>{product.title}</h3>
 
         <div className={styles.priceRow}>
-          <span className={styles.price}>{formatPrice(product.preco)}</span>
+          <span className={styles.price}>{formatPrice(product.price)}</span>
         </div>
 
-        {product.vendedor && (
+        {product.seller && (
           <div className={styles.vendor}>
             <Image
-              src={product.vendedor.foto_perfil}
-              alt={product.vendedor.nome}
+              src={getAvatarUrl(product.seller.profilePicture, product.seller.name)}
+              alt={product.seller.name}
               width={24}
               height={24}
               className={styles.vendorAvatar}
               unoptimized
             />
-            <span className={styles.vendorName}>{product.vendedor.nome}</span>
+            <span className={styles.vendorName}>{product.seller.name}</span>
           </div>
         )}
       </div>

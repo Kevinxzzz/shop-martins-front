@@ -3,7 +3,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 export function formatPrice(value: number): string {
-  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const valueReais= value/100
+  return valueReais.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 export function formatViews(count: number): string {
@@ -34,3 +35,46 @@ export function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength).trim() + '...';
 }
+
+export function ensureExternalLink(url: string | null | undefined): string {
+  if (!url) return '#';
+  const trimmed = url.trim();
+  if (
+    trimmed.startsWith('http://') ||
+    trimmed.startsWith('https://') ||
+    trimmed.startsWith('mailto:') ||
+    trimmed.startsWith('tel:')
+  ) {
+    return trimmed;
+  }
+  return `https://${trimmed}`;
+}
+
+export function formatCurrencyInput(value: string | number): string {
+  const onlyDigits = String(value).replace(/\D/g, '');
+  if (!onlyDigits) return '';
+  const cents = parseInt(onlyDigits, 10);
+  if (isNaN(cents)) return '';
+  return (cents / 100).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+export function parseCurrencyToCents(value: string): number {
+  let limpo = value.replace(/\./g, '');
+  limpo = limpo.replace(',', '.');
+  limpo = limpo.replace(/[^\d.]/g, '');
+  const floatVal = parseFloat(limpo);
+  if (isNaN(floatVal)) return 0;
+  return Math.round(floatVal * 100);
+}
+
+export function getAvatarUrl(path: string | null | undefined, seedName: string): string {
+  if (!path) return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(seedName)}`;
+  if (path.startsWith('http') || path.startsWith('blob:') || path.startsWith('data:')) return path;
+  
+  // Assumes that if it's not a full URL, it's an S3 object key (e.g. enterprise/:enterpriseId/users/:userId/avatar/...)
+  return `https://ecomerce-martins-bucket.s3.sa-east-1.amazonaws.com/${path}`;
+}
+

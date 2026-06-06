@@ -1,16 +1,38 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { vendedores } from '@/mock/data';
-import styles from '../../shared.module.scss';
+import { useUsers } from '@/hooks/users/useUsers';
+import { useAuth } from '@/hooks/auth/useAuth';
+import { UserTable } from '@/components/AdminUsers/UserTable';
+import { useToast } from '@/contexts/ToastContext';
+import styles from './usuarios.module.scss';
 
 export default function AdminUsersPage() {
-  const [users, setUsers] = useState(vendedores.map(v => ({ ...v })));
+  const { data: users, isLoading, isError, error } = useUsers();
+  const { user: currentUser } = useAuth();
+  const { addToast } = useToast();
 
-  const toggleUser = (id: string) => {
-    setUsers(prev => prev.map(u => u.id === id ? { ...u, ativo: !u.ativo } : u));
+  const toggleUserStatus = (id: string) => {
+    // TODO: Implementar ativação/desativação real integrada com a API
+    console.log('Toggle user status:', id);
+    addToast({
+      type: 'alert',
+      title: 'Em Desenvolvimento',
+      message: 'A funcionalidade de alterar status será implementada em breve.',
+    });
   };
+
+  if (isError) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Gerenciar Usuários</h1>
+        </div>
+        <div style={{ padding: '2rem', textAlign: 'center', color: '#ef4444' }}>
+          <p>Erro ao carregar usuários: {error?.message || 'Erro desconhecido'}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -18,51 +40,12 @@ export default function AdminUsersPage() {
         <h1 className={styles.title}>Gerenciar Usuários</h1>
       </div>
 
-      <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Usuário</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-              <tr key={user.id}>
-                <td>
-                  <div className={styles.productRow}>
-                    <Image
-                      src={user.foto_perfil}
-                      alt={user.nome}
-                      width={36}
-                      height={36}
-                      className={styles.productThumb}
-                      style={{ borderRadius: '50%' }}
-                      unoptimized
-                    />
-                    <span>{user.nome}</span>
-                  </div>
-                </td>
-                <td>{user.email}</td>
-                <td><span className={styles.badge}>{user.role}</span></td>
-                <td>
-                  <span className={`${styles.statusBadge} ${user.ativo ? styles.active : styles.inactive}`}>
-                    {user.ativo ? 'Ativo' : 'Inativo'}
-                  </span>
-                </td>
-                <td>
-                  <button className={styles.toggleBtn} onClick={() => toggleUser(user.id)}>
-                    {user.ativo ? 'Desativar' : 'Ativar'}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <UserTable 
+        users={users || []} 
+        isLoading={isLoading} 
+        currentUser={currentUser || null}
+        onToggleStatusClick={toggleUserStatus}
+      />
     </div>
   );
 }

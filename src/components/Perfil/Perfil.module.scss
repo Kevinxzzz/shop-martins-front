@@ -1,0 +1,264 @@
+@use '@/styles/mixins' as *;
+
+.pageContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-4);
+
+  @include respond-to('md') {
+    padding: var(--space-6) var(--space-8);
+  }
+}
+
+.header {
+  margin-bottom: var(--space-5);
+  text-align: left;
+  
+  @include respond-to('md') {
+    margin-bottom: var(--space-6);
+  }
+}
+
+.title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+
+  @include respond-to('md') {
+    font-size: var(--fs-2xl);
+  }
+}
+
+.subtitle {
+  font-size: var(--fs-xs);
+  color: var(--color-text-secondary);
+
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+  }
+}
+
+.profileCard {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-4);
+  width: 100%;
+  transition: box-shadow var(--transition-base), border-color var(--transition-base);
+
+  &:focus-within {
+    border-color: rgba(11, 95, 255, 0.4);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  @include respond-to('md') {
+    padding: var(--space-6) var(--space-8);
+  }
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border-light);
+
+  @include respond-to('sm') {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: var(--space-5);
+  }
+
+  @include respond-to('md') {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
+}
+
+.avatarWrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profileAvatar {
+  width: 70px;
+  height: 70px;
+  border-radius: var(--radius-pill);
+  border: 3px solid var(--color-primary-ultra-light);
+  background: var(--color-bg-tertiary);
+  object-fit: cover;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base);
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  @include respond-to('md') {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.profileName {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+
+  @include respond-to('md') {
+    font-size: var(--fs-lg);
+  }
+}
+
+.profileRole {
+  font-size: 10px;
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  background: var(--color-primary-ultra-light);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  align-self: center;
+
+  @include respond-to('sm') {
+    align-self: flex-start;
+  }
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  @include respond-to('md') {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  &.fullWidth {
+    @include respond-to('md') {
+      grid-column: span 2;
+    }
+  }
+}
+
+.label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-secondary);
+}
+
+.uploadArea {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  color: var(--color-text-tertiary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: var(--color-bg-card);
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-ultra-light);
+    color: var(--color-primary);
+  }
+}
+
+.uploadIcon {
+  color: inherit;
+}
+
+.uploadText {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  
+  @include respond-to('md') {
+    font-size: var(--fs-sm);
+  }
+}
+
+.formActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+
+  @include respond-to('md') {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+.submitBtn {
+  @include button-primary;
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-sm);
+  padding: var(--space-3) var(--space-6);
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 46px;
+
+  @include respond-to('md') {
+    width: auto;
+  }
+}
+
+.alertSuccess {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: rgba(0, 196, 140, 0.08);
+  border: 1px solid rgba(0, 196, 140, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+  color: var(--color-success);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

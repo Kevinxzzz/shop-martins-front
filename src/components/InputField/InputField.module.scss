@@ -1,0 +1,100 @@
+@use '@/styles/mixins' as *;
+
+// ═══════════════════════════════════════════════════════════
+// GLOBAL INPUT FIELD — Custom Styles & Icon Overlay Support
+// ═══════════════════════════════════════════════════════════
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  &.fullWidth {
+    @include respond-to('md') {
+      grid-column: span 2;
+    }
+  }
+}
+
+.label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputIcon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  transition: color var(--transition-base), transform var(--transition-base);
+}
+
+.input {
+  @include input-base;
+  height: 44px;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-lg);
+  padding-left: 2.75rem;
+  transition: all var(--transition-base);
+
+  &.noIcon {
+    padding-left: var(--space-4);
+  }
+
+  &.hasRightElement {
+    padding-right: 2.75rem;
+  }
+
+  &.inputError {
+    border-color: var(--color-danger) !important;
+    box-shadow: 0 0 0 4px rgba(255, 59, 92, 0.12) !important;
+
+    &:focus {
+      box-shadow: 0 0 0 4px rgba(255, 59, 92, 0.18) !important;
+    }
+
+    + .inputIcon {
+      color: var(--color-danger) !important;
+    }
+  }
+
+  &:focus {
+    background: var(--color-bg);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px var(--color-primary-glow);
+    
+    + .inputIcon {
+      color: var(--color-primary);
+      transform: scale(1.05);
+    }
+  }
+}
+
+.errorText {
+  font-size: var(--fs-xs);
+  color: var(--color-danger);
+  font-weight: var(--fw-medium);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--space-1);
+}
+
+.rightElement {
+  position: absolute;
+  right: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

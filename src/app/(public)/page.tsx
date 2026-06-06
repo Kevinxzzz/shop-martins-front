@@ -1,79 +1,101 @@
-'use client';
+"use client";
 
-import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight, ShoppingBag, SlidersHorizontal, X } from 'lucide-react';
-import ProductCard from '@/components/ProductCard';
-import { ProductCardSkeleton } from '@/components/SkeletonLoader';
-import FilterModal from '@/components/FilterModal';
-import { getProducts } from '@/mock/api';
-import { empresa } from '@/mock/data';
-import type { Produto } from '@/types';
-import styles from './page.module.scss';
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import {
+  ArrowRight,
+  ShoppingBag,
+  SlidersHorizontal,
+  X,
+  Loader2,
+} from "lucide-react";
+import HomeBannerCarousel from "@/components/HomeBannerCarousel";
+import ProductCard from "@/components/ProductCard";
+import { ProductCardSkeleton } from "@/components/SkeletonLoader";
+import FilterModal from "@/components/FilterModal";
+import { usePublicProducts } from "@/hooks/products/usePublicProducts";
+import { usePublicCategories } from "@/hooks/categories/usePublicCategories";
+import { usePublicEnterpriseLink } from "@/hooks/enterprise/usePublicEnterpriseLink";
+import type { PublicProductFilters } from "@/services/productService";
+import styles from "./page.module.scss";
 
 function HomeContent() {
   const searchParams = useSearchParams();
-  const [products, setProducts] = useState<Produto[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
   const [filterOpen, setFilterOpen] = useState(false);
-  const [filters, setFilters] = useState<{
-    categoria?: string;
-    precoMin?: number;
-    precoMax?: number;
-    search?: string;
-  }>({});
+  const [filters, setFilters] = useState<PublicProductFilters>({});
 
-  const categoriaParam = searchParams.get('categoria');
-  const searchParam = searchParams.get('search');
+  const { data: linkData } = usePublicEnterpriseLink();
+  const salesGroupLink =
+    linkData?.link || "https://chat.whatsapp.com/abc123grupo";
+
+  const categoryParam = searchParams.get("category");
+  const searchParam = searchParams.get("search");
 
   useEffect(() => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      categoria: categoriaParam || undefined,
+      categoryId: categoryParam ? [categoryParam] : undefined,
       search: searchParam || undefined,
     }));
-  }, [categoriaParam, searchParam]);
+  }, [categoryParam, searchParam]);
 
-  useEffect(() => {
-    setLoading(true);
-    getProducts({ ...filters, limit: 60 }).then(res => {
-      setProducts(res.products);
-      setTotal(res.total);
-      setLoading(false);
-    });
-  }, [filters]);
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = usePublicProducts({
+    categoryId: filters.categoryId,
+    search: filters.search,
+    minPrice: filters.minPrice,
+    maxPrice: filters.maxPrice,
+    limit: 20,
+  });
 
-  const handleFilter = (newFilters: { categoria?: string; precoMin?: number; precoMax?: number }) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
+  const { data: categoriesData } = usePublicCategories({ limit: 100 });
+  const categories =
+    categoriesData?.data.map((c) => ({ id: c.id, name: c.name })) || [];
+
+  const handleFilter = (newFilters: {
+    category?: string[];
+    minPrice?: number;
+    maxPrice?: number;
+  }) => {
+    setFilters((prev) => ({
+      ...prev,
+      categoryId: newFilters.category,
+      minPrice: newFilters.minPrice,
+      maxPrice: newFilters.maxPrice,
+    }));
   };
 
-  const activeFilterCount = [filters.categoria, filters.precoMin, filters.precoMax].filter(Boolean).length;
+  const activeFilterCount = [
+    filters.categoryId && filters.categoryId.length > 0,
+    filters.minPrice,
+    filters.maxPrice,
+  ].filter(Boolean).length;
+
+  const totalItems = data?.pages[0]?.totalItems || 0;
+  const products = data?.pages.flatMap((page) => page.products) || [];
+  const isEmpty = products.length === 0;
 
   return (
     <>
-      {/* Banner */}
-      <section className={styles.banner}>
-        <Image
-          src="/banner-martins.png"
-          alt="Martins Vendas — Marketplace Esportivo Premium"
-          width={1440}
-          height={400}
-          className={styles.bannerImage}
-          priority
-          unoptimized
-        />
-      </section>
+      {/* Banner Carousel */}
+      <HomeBannerCarousel />
 
       {/* Products Section */}
       <section id="produtos" className={styles.main}>
         <div className={styles.sectionHeader}>
           <div className={styles.sectionLeft}>
             <h2 className={styles.sectionTitle}>Produtos</h2>
-            {!loading && (
-              <span className={styles.resultCount}>{total} encontrados</span>
+            {!isLoading && !isError && (
+              <span className={styles.resultCount}>
+                {totalItems} encontrados
+              </span>
             )}
           </div>
           <button
@@ -90,64 +112,128 @@ function HomeContent() {
         </div>
 
         {/* Active Filter Tags */}
-        {filters.categoria && (
+        {((filters.categoryId && filters.categoryId.length > 0) || filters.search) && (
           <div className={styles.activeTags}>
-            <button
-              className={styles.activeTag}
-              onClick={() => setFilters(prev => ({ ...prev, categoria: undefined }))}
-            >
-              Categoria ativa <X size={12} />
-            </button>
+            {filters.categoryId && filters.categoryId.length > 0 && (
+              <button
+                className={styles.activeTag}
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, categoryId: undefined }))
+                }
+              >
+                {filters.categoryId.length}{" "}
+                {filters.categoryId.length === 1
+                  ? "categoria ativa"
+                  : "categorias ativas"}{" "}
+                <X size={12} />
+              </button>
+            )}
+            {filters.search && (
+              <button
+                className={styles.activeTag}
+                onClick={() => {
+                  setFilters((prev) => ({ ...prev, search: undefined }));
+                  router.push("/");
+                }}
+              >
+                Busca: "{filters.search}" <X size={12} />
+              </button>
+            )}
           </div>
         )}
 
-        {loading ? (
+        {isError ? (
+          <div className={styles.empty}>
+            <span style={{ color: "var(--color-danger)" }}>
+              Erro ao carregar os produtos. Tente novamente mais tarde.
+            </span>
+          </div>
+        ) : isLoading ? (
           <div className={styles.grid}>
             {Array.from({ length: 12 }).map((_, i) => (
               <ProductCardSkeleton key={i} />
             ))}
           </div>
-        ) : products.length > 0 ? (
-          <div className={styles.grid}>
-            {products.map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} />
-            ))}
-          </div>
-        ) : (
+        ) : isEmpty ? (
           <div className={styles.empty}>
             <ShoppingBag size={40} />
             <p>Nenhum produto encontrado</p>
           </div>
+        ) : (
+          <>
+            <div className={styles.grid}>
+              {products.map((product, i) => (
+                <ProductCard
+                  key={`${product.id}-${i}`}
+                  product={product}
+                  index={i}
+                />
+              ))}
+            </div>
+
+            {hasNextPage && (
+              <div
+                className={styles.loadMoreContainer}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "2rem",
+                }}
+              >
+                <button
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                  className={styles.ctaBtn}
+                  style={{
+                    cursor: isFetchingNextPage ? "not-allowed" : "pointer",
+                  }}
+                >
+                  {isFetchingNextPage ? (
+                    <>
+                      <Loader2
+                        size={16}
+                        style={{
+                          animation: "spin 1s linear infinite",
+                          marginRight: "8px",
+                        }}
+                      />
+                      Carregando...
+                    </>
+                  ) : (
+                    "Ver mais produtos"
+                  )}
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
 
       {/* Sell CTA Banner */}
-      {empresa.linkGrupoDevenda && (
-        <section className={styles.ctaBanner}>
-          <div className={styles.ctaInner}>
-            <h2 className={styles.ctaTitle}>Deseja vender seus produtos?</h2>
-            <p className={styles.ctaText}>
-              Entre no nosso grupo de vendas e comece a anunciar.
-            </p>
-            <a
-              href={empresa.linkGrupoDevenda}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.ctaBtn}
-            >
-              Quero vender <ArrowRight size={16} />
-            </a>
-          </div>
-        </section>
-      )}
+      <section className={styles.ctaBanner}>
+        <div className={styles.ctaInner}>
+          <h2 className={styles.ctaTitle}>Deseja vender seus produtos?</h2>
+          <p className={styles.ctaText}>Entre no nosso grupo de vendas.</p>
+          <a
+            href={salesGroupLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.ctaBtn}
+          >
+            Quero vender <ArrowRight size={16} />
+          </a>
+        </div>
+      </section>
 
       {/* Filter Modal */}
       <FilterModal
         isOpen={filterOpen}
         onClose={() => setFilterOpen(false)}
-        selectedCategoria={filters.categoria}
-        precoMin={filters.precoMin}
-        precoMax={filters.precoMax}
+        selectedCategory={filters.categoryId}
+        minPrice={filters.minPrice}
+        maxPrice={filters.maxPrice}
+        categories={categories}
+        showSellerFilter={false}
         onFilter={(f) => {
           handleFilter(f);
           setFilterOpen(false);
@@ -159,7 +245,15 @@ function HomeContent() {
 
 export default function HomePage() {
   return (
-    <Suspense>
+    <Suspense
+      fallback={
+        <div
+          style={{ display: "flex", justifyContent: "center", padding: "4rem" }}
+        >
+          <Loader2 size={32} style={{ animation: "spin 1s linear infinite" }} />
+        </div>
+      }
+    >
       <HomeContent />
     </Suspense>
   );

@@ -1,0 +1,101 @@
+@use '@/styles/mixins' as *;
+
+.container {
+  @include container;
+  /* Espaçamento extra no topo para não sobrepor o header flutuante */
+  padding: 6rem var(--space-4) var(--space-6) var(--space-4);
+
+  @include respond-to('sm') {
+    padding: 7rem var(--space-6) var(--space-10) var(--space-6);
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+
+  @include respond-to('sm') {
+    margin-bottom: var(--space-12);
+  }
+}
+
+.headerIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-ultra-light);
+  color: var(--color-primary);
+  @include flex-center;
+  margin: 0 auto var(--space-3);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+
+  &:hover {
+    transform: scale(1.08);
+    background: var(--color-primary-light);
+  }
+
+  @include respond-to('sm') {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--space-4);
+  }
+}
+
+.title {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
+  margin-bottom: var(--space-2);
+  line-height: 1.2;
+
+  span {
+    color: var(--color-primary);
+  }
+
+  @include respond-to('sm') {
+    font-size: var(--fs-4xl);
+    margin-bottom: var(--space-3);
+  }
+}
+
+.subtitle {
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+  max-width: 480px;
+  margin: 0 auto;
+  padding-inline: var(--space-4);
+
+  @include respond-to('sm') {
+    font-size: var(--fs-md);
+    padding-inline: 0;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // 3 por linha no mobile por padrão
+  gap: var(--space-2); // gap menor no mobile para acomodar 3 colunas
+  padding-inline: var(--space-1);
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    padding-inline: 0;
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+  }
+}
+
+.skeletonCard {
+  @include skeleton-pulse;
+  height: 240px;
+  border-radius: var(--radius-lg);
+
+  @include respond-to('sm') {
+    height: 280px;
+    border-radius: var(--radius-xl);
+  }
+}
