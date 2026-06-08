@@ -1,11 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { ChevronRight, ArrowLeft, Loader2 } from 'lucide-react';
+import { ChevronRight, ArrowLeft } from 'lucide-react';
 import ProductCarousel from '@/components/ProductCarousel';
 import { useProductDetail } from '@/hooks/products/useProductDetail';
 import { ProductDetails } from './ProductDetails';
 import { SellerInfo } from './SellerInfo';
+import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
+import Footer from '@/components/Footer';
 import type { Media } from '@/types';
 import styles from './PublicProductContainer.module.scss';
 
@@ -17,12 +19,7 @@ export default function PublicProductContainer({ productId }: PublicProductConta
   const { data: product, isLoading, isError, error } = useProductDetail(productId);
 
   if (isLoading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <Loader2 size={32} style={{ animation: 'spin 1s linear infinite' }} />
-        <div>Carregando...</div>
-      </div>
-    );
+    return <FullScreenLoader />;
   }
 
   if (isError) {
@@ -77,32 +74,35 @@ export default function PublicProductContainer({ productId }: PublicProductConta
   orderedMedia.push(...videos);
 
   return (
-    <div className={styles.pageContainer}>
-      {/* Breadcrumbs */}
-      <nav className={styles.breadcrumbs} aria-label="Navegação">
-        <Link href="/">Início</Link>
-        <ChevronRight size={14} aria-hidden="true" />
-        {product.categories && product.categories.length > 0 && (
-          <>
-            <Link href={`/?category=${product.categories[0].category.id}`}>{product.categories[0].category.name}</Link>
-            <ChevronRight size={14} aria-hidden="true" />
-          </>
-        )}
-        <span>{product.name}</span>
-      </nav>
+    <>
+      <div className={styles.pageContainer}>
+        {/* Breadcrumbs */}
+        <nav className={styles.breadcrumbs} aria-label="Navegação">
+          <Link href="/">Início</Link>
+          <ChevronRight size={14} aria-hidden="true" />
+          {product.categories && product.categories.length > 0 && (
+            <>
+              <Link href={`/?category=${product.categories[0].category.id}`}>{product.categories[0].category.name}</Link>
+              <ChevronRight size={14} aria-hidden="true" />
+            </>
+          )}
+          <span>{product.name}</span>
+        </nav>
 
-      <div className={styles.layout}>
-        {/* Carousel */}
-        <div className={styles.galleryColumn}>
-          <ProductCarousel media={orderedMedia} title={product.name} />
-        </div>
+        <div className={styles.layout}>
+          {/* Carousel */}
+          <div className={styles.galleryColumn}>
+            <ProductCarousel media={orderedMedia} title={product.name} />
+          </div>
 
-        {/* Details & Seller Info */}
-        <div className={styles.detailsColumn}>
-          <ProductDetails product={product} />
-          <SellerInfo seller={product.user} />
+          {/* Details & Seller Info */}
+          <div className={styles.detailsColumn}>
+            <ProductDetails product={product} />
+            <SellerInfo seller={product.user} />
+          </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
