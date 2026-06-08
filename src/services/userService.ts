@@ -5,8 +5,7 @@
 
 import { httpClient } from "./httpClient";
 import { UserDTO, ProfileResponse, UpdateProfileData, PublicSeller, PublicVendorDetail } from "@/types";
-import { Product } from "@/types/productType";
-import { Media } from "@/types/mediaType";
+import { Product, Media } from "@/types/productType";
 import { UserRole } from "@/shared/constants/userRoles";
 
 // ── Funções do Serviço ──────────────────────────────────────
@@ -69,6 +68,7 @@ export async function getPublicUserById(userId: string): Promise<PublicVendorDet
       id: m.id,
       fileUrl: m.url,
       type: m.type === 'FOTO' ? 'image' : 'video',
+      isMain: m.isMain || false,
       order: m.order || 0,
       productId: p.id,
     }));

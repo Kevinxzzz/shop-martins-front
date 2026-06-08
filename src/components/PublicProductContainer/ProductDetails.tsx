@@ -33,16 +33,27 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         <span className={styles.priceNote}>à vista com o vendedor</span>
       </div>
 
-      <a
-        href={ensureExternalLink(product.user?.contactLink)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.contactBtn}
-        aria-label="Entrar em contato com o vendedor"
-      >
-        <MessageCircle size={22} />
-        Entrar em Contato
-      </a>
+      {product.user?.contactLink ? (
+        <a
+          href={ensureExternalLink(product.user.contactLink)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.contactBtn}
+          aria-label="Entrar em contato com o vendedor"
+        >
+          <MessageCircle size={22} />
+          Entrar em Contato
+        </a>
+      ) : (
+        <button
+          className={`${styles.contactBtn} ${styles.disabled}`}
+          disabled
+          aria-label="Contato do vendedor não disponível"
+        >
+          <MessageCircle size={22} />
+          Entrar em Contato
+        </button>
+      )}
 
       <div className={styles.description}>
         <h3>Descrição</h3>

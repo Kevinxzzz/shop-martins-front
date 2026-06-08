@@ -141,7 +141,7 @@ export default function Header() {
                 <ShoppingBag size={20} />
               </div>
               <span className={styles.logoText}>
-                Martins<strong>Vendas</strong>
+                <strong>BLUE</strong>FOOT
               </span>
             </Link>
           </div>
@@ -201,7 +201,7 @@ export default function Header() {
         <div className={styles.mobileMenu}>
           <div className={styles.mobileHeader}>
             <span className={styles.logoText}>
-              Martins<strong>Vendas</strong>
+              <strong>Blue</strong>foot
             </span>
             <button
               className={styles.closeBtn}

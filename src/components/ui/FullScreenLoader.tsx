@@ -1,15 +1,21 @@
-import { Loader2, Sparkles } from 'lucide-react';
-import styles from './FullScreenLoader.module.scss';
+import { Loader2, Sparkles } from "lucide-react";
+import styles from "./FullScreenLoader.module.scss";
 
-export function FullScreenLoader() {
+interface FullScreenLoaderProps {
+  message?: string;
+}
+
+export function FullScreenLoader({
+  message,
+}: FullScreenLoaderProps) {
   return (
     <div className={styles.container}>
       <div className={styles.brand}>
         <Sparkles className={styles.icon} size={32} />
-        <span className={styles.title}>Shop Martins</span>
+        <span className={styles.title}>BlueFoot </span>
       </div>
       <Loader2 className={styles.spinner} size={40} />
-      <p className={styles.text}>Carregando sua sessão...</p>
+      {message && <p className={styles.text}>{message}</p>}
     </div>
   );
 }

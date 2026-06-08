@@ -33,5 +33,9 @@ export const queryKeys = {
     list: (userId: string, page: number) => ['products', 'list', userId, page] as const,
     detail: (productId: string) => ['products', 'detail', productId] as const,
   },
+  tokens: {
+    all: ['tokens'] as const,
+    list: ['tokens', 'list'] as const,
+  },
 };
 
