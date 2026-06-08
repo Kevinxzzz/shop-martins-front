@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Plus, Key } from 'lucide-react';
-import { getTokens, generateToken, revokeToken } from '@/services/tokenService';
+import { useTokens } from '@/hooks/tokens/useTokens';
+import { useGenerateToken } from '@/hooks/tokens/useGenerateToken';
+import { useRevokeToken } from '@/hooks/tokens/useRevokeToken';
 import type { Token } from '@/types';
 import StatsPanel from './StatsPanel';
 import TokenForm from './TokenForm';
@@ -10,10 +12,9 @@ import TokenCard from './TokenCard';
 import styles from './AdminTokens.module.scss';
 
 export default function AdminTokensContainer() {
-  const [tokens, setTokens] = useState<Token[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [generating, setGenerating] = useState(false);
-  const [revokingId, setRevokingId] = useState<string | null>(null);
+  const { data: tokens = [], isLoading, isError } = useTokens();
+  const generateMutation = useGenerateToken();
+  const revokeMutation = useRevokeToken();
 
   // Controle do Formulário
   const [showForm, setShowForm] = useState(false);
@@ -31,30 +32,22 @@ export default function AdminTokensContainer() {
   };
 
   useEffect(() => {
-    getTokens().then((t) => {
-      setTokens(t);
-      setLoading(false);
-    });
     setExpiredAt(getTomorrowDateTimeLocal());
   }, []);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
-    setGenerating(true);
     try {
-      const newToken = await generateToken({
+      await generateMutation.mutateAsync({
         maxUses,
         expiredAt: new Date(expiredAt).toISOString(),
       });
-      setTokens((prev) => [newToken, ...prev]);
       setShowForm(false);
       // Reset form
       setMaxUses(5);
       setExpiredAt(getTomorrowDateTimeLocal());
     } catch (error) {
       console.error("Erro ao gerar token:", error);
-    } finally {
-      setGenerating(false);
     }
   };
 
@@ -67,25 +60,10 @@ export default function AdminTokensContainer() {
       return;
     }
 
-    setRevokingId(tokenId);
     try {
-      await revokeToken(tokenId);
-      // Atualiza o estado local para marcar como cancelado
-      setTokens((prev) =>
-        prev.map((t) =>
-          t.id === tokenId
-            ? {
-                ...t,
-                canceledAt: new Date().toISOString(),
-                status: 'CANCELED' as const,
-              }
-            : t
-        )
-      );
+      await revokeMutation.mutateAsync(tokenId);
     } catch (error) {
       console.error("Erro ao revogar token:", error);
-    } finally {
-      setRevokingId(null);
     }
   };
 
@@ -103,7 +81,7 @@ export default function AdminTokensContainer() {
     0
   );
 
-  if (loading) return <div className={styles.loading}>Carregando...</div>;
+  if (isLoading) return <div className={styles.loading}>Carregando...</div>;
 
   return (
     <div className={styles.page}>
@@ -137,7 +115,7 @@ export default function AdminTokensContainer() {
           setMaxUses={setMaxUses}
           expiredAt={expiredAt}
           setExpiredAt={setExpiredAt}
-          generating={generating}
+          generating={generateMutation.isPending}
           onClose={() => setShowForm(false)}
         />
       )}
@@ -162,7 +140,7 @@ export default function AdminTokensContainer() {
               copiedKey={copiedKey}
               copyToClipboard={copyToClipboard}
               handleRevoke={handleRevoke}
-              revokingId={revokingId}
+              revokingId={revokeMutation.isPending ? (revokeMutation.variables ?? null) : null}
             />
           ))}
         </div>
