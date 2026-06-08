@@ -173,6 +173,21 @@
   &:active {
     transform: translateY(0);
   }
+
+  &.disabled {
+    filter: brightness(0.6) grayscale(0.4);
+    opacity: 0.8;
+    pointer-events: none;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    transform: none !important;
+
+    &:hover {
+      background: var(--color-primary) !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
 }
 
 .description {

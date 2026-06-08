@@ -8,9 +8,9 @@ export default function Footer() {
         <div className={styles.grid}>
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
-              <div className={styles.logoIcon}>S</div>
+              <div className={styles.logoIcon}>B</div>
               <div className={styles.logoText}>
-                Shop<span>Martins</span>
+                <span>BLUE</span>FOOT
               </div>
             </Link>
             <p className={styles.brandDesc}>
