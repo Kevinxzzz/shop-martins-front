@@ -69,6 +69,7 @@ export async function getPublicUserById(userId: string): Promise<PublicVendorDet
       id: m.id,
       fileUrl: m.url,
       type: m.type === 'FOTO' ? 'image' : 'video',
+      isMain: m.isMain || false,
       order: m.order || 0,
       productId: p.id,
     }));

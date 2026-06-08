@@ -76,56 +76,61 @@ export function ProductCardList({ products, onDelete }: ProductCardListProps) {
 
   return (
     <div className={styles.cardList}>
-      {products.map(p => (
-        <div key={p.id} className={styles.productCard}>
-          <div className={styles.cardHeader}>
-            <Image
-              src={p.media?.[0]?.fileUrl || '/placeholder-product.svg'}
-              alt={p.title}
-              width={48}
-              height={48}
-              className={styles.cardThumb}
-              unoptimized
-            />
-            <div className={styles.cardMainInfo}>
-              <h3 className={styles.cardTitle}>{p.title}</h3>
-              <div>
-                <CategoryCellDropdown categories={p.categories} defaultCategory={p.category} />
+      {products.map(p => {
+        const mainImage = p.media?.find(m => m.isMain && m.type === 'image')
+          || p.media?.find(m => m.type === 'image')
+          || p.media?.[0];
+        return (
+          <div key={p.id} className={styles.productCard}>
+            <div className={styles.cardHeader}>
+              <Image
+                src={mainImage?.fileUrl || '/placeholder-product.svg'}
+                alt={p.title}
+                width={48}
+                height={48}
+                className={styles.cardThumb}
+                unoptimized
+              />
+              <div className={styles.cardMainInfo}>
+                <h3 className={styles.cardTitle}>{p.title}</h3>
+                <div>
+                  <CategoryCellDropdown categories={p.categories} defaultCategory={p.category} />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className={styles.cardBody}>
-            <div className={styles.metaRow}>
-              <span className={styles.metaLabel}>
-                <User size={12} style={{ marginRight: '4px' }} /> Vendedor:
-              </span>
-              <span className={styles.metaValue}>{p.seller?.name || 'Não informado'}</span>
-            </div>
-            <div className={styles.metaRow}>
-              <span className={styles.metaLabel}>Views:</span>
-              <span className={styles.metaValue}>{p.countViews}</span>
-            </div>
-            <div className={styles.priceRow}>
-              <span className={sharedStyles.price}>{formatPrice(p.price)}</span>
-              <div className={sharedStyles.actionBtns}>
-                <Link href={`/produto/${p.id}`} className={sharedStyles.actionBtn} title="Visualizar">
-                  <Eye size={16} />
-                </Link>
-                <button
-                  type="button"
-                  className={`${sharedStyles.actionBtn} ${sharedStyles.danger}`}
-                  onClick={() => onDelete(p.id)}
-                  title="Excluir produto"
-                  aria-label="Excluir produto"
-                >
-                  <Trash2 size={16} />
-                </button>
+            <div className={styles.cardBody}>
+              <div className={styles.metaRow}>
+                <span className={styles.metaLabel}>
+                  <User size={12} style={{ marginRight: '4px' }} /> Vendedor:
+                </span>
+                <span className={styles.metaValue}>{p.seller?.name || 'Não informado'}</span>
+              </div>
+              <div className={styles.metaRow}>
+                <span className={styles.metaLabel}>Views:</span>
+                <span className={styles.metaValue}>{p.countViews}</span>
+              </div>
+              <div className={styles.priceRow}>
+                <span className={sharedStyles.price}>{formatPrice(p.price)}</span>
+                <div className={sharedStyles.actionBtns}>
+                  <Link href={`/produto/${p.id}`} className={sharedStyles.actionBtn} title="Visualizar">
+                    <Eye size={16} />
+                  </Link>
+                  <button
+                    type="button"
+                    className={`${sharedStyles.actionBtn} ${sharedStyles.danger}`}
+                    onClick={() => onDelete(p.id)}
+                    title="Excluir produto"
+                    aria-label="Excluir produto"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

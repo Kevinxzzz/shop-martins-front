@@ -87,21 +87,25 @@ export function ProductTable({ products, onDelete }: ProductTableProps) {
           </tr>
         </thead>
         <tbody>
-          {products.map(p => (
-            <tr key={p.id}>
-              <td>
-                <div className={sharedStyles.productRow}>
-                  <Image
-                    src={p.media?.[0]?.fileUrl || '/placeholder-product.svg'}
-                    alt={p.title}
-                    width={36}
-                    height={36}
-                    className={sharedStyles.productThumb}
-                    unoptimized
-                  />
-                  <span className={sharedStyles.productTitle}>{p.title}</span>
-                </div>
-              </td>
+          {products.map(p => {
+            const mainImage = p.media?.find(m => m.isMain && m.type === 'image')
+              || p.media?.find(m => m.type === 'image')
+              || p.media?.[0];
+            return (
+              <tr key={p.id}>
+                <td>
+                  <div className={sharedStyles.productRow}>
+                    <Image
+                      src={mainImage?.fileUrl || '/placeholder-product.svg'}
+                      alt={p.title}
+                      width={36}
+                      height={36}
+                      className={sharedStyles.productThumb}
+                      unoptimized
+                    />
+                    <span className={sharedStyles.productTitle}>{p.title}</span>
+                  </div>
+                </td>
               <td>{p.seller?.name}</td>
               <td>
                 <CategoryCellDropdown categories={p.categories} defaultCategory={p.category} />
@@ -127,7 +131,8 @@ export function ProductTable({ products, onDelete }: ProductTableProps) {
                 </div>
               </td>
             </tr>
-          ))}
+          );
+        })}
         </tbody>
       </table>
     </div>

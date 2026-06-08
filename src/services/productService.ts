@@ -14,6 +14,7 @@ function mapBackendProductToFrontend(raw: any): Product {
     id: m.id,
     fileUrl: m.url, // Backend uses 'url', Frontend expects 'fileUrl'
     type: m.type === 'FOTO' ? 'image' : 'video', // Backend FOTO -> image, VIDEO -> video
+    isMain: m.isMain || false,
     order: m.order || 0,
     productId: m.productId,
   }));

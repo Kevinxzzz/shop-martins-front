@@ -12,7 +12,10 @@ interface ProductListItemProps {
 }
 
 export function ProductListItem({ product, onView, onEdit, onDelete }: ProductListItemProps) {
-  const thumbnail = product.media?.[0]?.fileUrl || '/placeholder-product.svg';
+  const mainImage = product.media?.find(m => m.isMain && m.type === 'image')
+    || product.media?.find(m => m.type === 'image')
+    || product.media?.[0];
+  const thumbnail = mainImage?.fileUrl || '/placeholder-product.svg';
 
   return (
     <article className={styles.card}>
