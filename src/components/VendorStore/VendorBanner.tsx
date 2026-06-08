@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { MessageCircle, Package } from 'lucide-react';
-import { getWhatsAppLink, getAvatarUrl } from '@/utils';
+import { getAvatarUrl, ensureExternalLink } from '@/utils';
 import type { PublicVendorDetail } from '@/types';
 import styles from './VendorStore.module.scss';
 
@@ -10,11 +10,6 @@ interface VendorBannerProps {
 }
 
 export default function VendorBanner({ vendor, productsCount }: VendorBannerProps) {
-  const whatsappLink = vendor.contactLink || getWhatsAppLink(
-    '', // Sem telefone fixo
-    `Olá ${vendor.name}! Vi sua loja no Shop Martins e gostaria de conversar.`
-  );
-
   return (
     <div className={styles.banner}>
       <div className={styles.bannerBg} />
@@ -34,15 +29,26 @@ export default function VendorBanner({ vendor, productsCount }: VendorBannerProp
             {productsCount} {productsCount === 1 ? 'produto' : 'produtos'}
           </span>
         </div>
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.contactBtn}
-        >
-          <MessageCircle size={18} aria-hidden="true" />
-          Entre em contato
-        </a>
+        {vendor.contactLink ? (
+          <a
+            href={ensureExternalLink(vendor.contactLink)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.contactBtn}
+          >
+            <MessageCircle size={18} aria-hidden="true" />
+            Entre em contato
+          </a>
+        ) : (
+          <button
+            className={`${styles.contactBtn} ${styles.disabled}`}
+            disabled
+            aria-label="Contato do vendedor não disponível"
+          >
+            <MessageCircle size={18} aria-hidden="true" />
+            Entre em contato
+          </button>
+        )}
       </div>
     </div>
   );
