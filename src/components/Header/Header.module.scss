@@ -364,7 +364,7 @@
   right: 0;
   width: 100%;
   max-width: 320px;
-  height: 100vh;
+  height: 100dvh;
   background: var(--color-bg);
   box-shadow: -8px 0 32px rgba(0, 0, 0, 0.1);
   transform: translateX(100%);
@@ -440,7 +440,7 @@
 }
 
 .mobileThemeSection {
-  margin-top: auto;
+  margin-top: 24px;
   padding: 24px;
   border-top: 1px solid var(--color-border);
   display: flex;

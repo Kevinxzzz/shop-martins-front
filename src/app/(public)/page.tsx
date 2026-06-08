@@ -16,6 +16,8 @@ import FilterModal from "@/components/FilterModal";
 import { usePublicProducts } from "@/hooks/products/usePublicProducts";
 import { usePublicCategories } from "@/hooks/categories/usePublicCategories";
 import { usePublicEnterpriseLink } from "@/hooks/enterprise/usePublicEnterpriseLink";
+import { FullScreenLoader } from "@/components/ui/FullScreenLoader";
+import Footer from "@/components/Footer";
 import type { PublicProductFilters } from "@/services/productService";
 import styles from "./page.module.scss";
 
@@ -239,6 +241,7 @@ function HomeContent() {
           setFilterOpen(false);
         }}
       />
+      <Footer />
     </>
   );
 }
@@ -247,11 +250,7 @@ export default function HomePage() {
   return (
     <Suspense
       fallback={
-        <div
-          style={{ display: "flex", justifyContent: "center", padding: "4rem" }}
-        >
-          <Loader2 size={32} style={{ animation: "spin 1s linear infinite" }} />
-        </div>
+        <FullScreenLoader message="" />
       }
     >
       <HomeContent />

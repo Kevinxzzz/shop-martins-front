@@ -5,7 +5,8 @@ import { ArrowLeft } from 'lucide-react';
 import { usePublicUserDetail } from '@/hooks/users/usePublicUserDetail';
 import VendorBanner from './VendorBanner';
 import VendorProducts from './VendorProducts';
-import VendorSkeleton from './VendorSkeleton';
+import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
+import Footer from '@/components/Footer';
 import styles from './VendorStore.module.scss';
 
 interface VendorStoreContainerProps {
@@ -16,7 +17,7 @@ export default function VendorStoreContainer({ vendorId }: VendorStoreContainerP
   const { data: vendor, isLoading, isError, error } = usePublicUserDetail(vendorId);
 
   if (isLoading) {
-    return <VendorSkeleton />;
+    return <FullScreenLoader />;
   }
 
   if (isError || !vendor) {
@@ -34,9 +35,12 @@ export default function VendorStoreContainer({ vendorId }: VendorStoreContainerP
   }
 
   return (
-    <div className={styles.container}>
-      <VendorBanner vendor={vendor} productsCount={vendor.products.length} />
-      <VendorProducts vendorName={vendor.name} products={vendor.products} />
-    </div>
+    <>
+      <div className={styles.container}>
+        <VendorBanner vendor={vendor} productsCount={vendor.products.length} />
+        <VendorProducts vendorName={vendor.name} products={vendor.products} />
+      </div>
+      <Footer />
+    </>
   );
 }
