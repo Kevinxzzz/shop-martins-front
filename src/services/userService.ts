@@ -5,8 +5,7 @@
 
 import { httpClient } from "./httpClient";
 import { UserDTO, ProfileResponse, UpdateProfileData, PublicSeller, PublicVendorDetail } from "@/types";
-import { Product } from "@/types/productType";
-import { Media } from "@/types/mediaType";
+import { Product, Media } from "@/types/productType";
 import { UserRole } from "@/shared/constants/userRoles";
 
 // ── Funções do Serviço ──────────────────────────────────────

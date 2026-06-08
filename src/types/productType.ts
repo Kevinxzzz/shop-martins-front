@@ -1,6 +1,41 @@
-import { Category } from './categoryType';
-import { User } from './userType';
-import { Media } from './mediaType';
+import { Category } from "./categoryType";
+import { User } from "./userType";
+
+export interface Media {
+  id: string;
+  fileUrl: string;
+  type: "image" | "video";
+  isMain?: boolean;
+  order: number;
+  productId: string;
+}
+
+export interface MediaUploadDTO {
+  url: string;
+  key: string;
+  type: "FOTO" | "VIDEO";
+  isMain?: boolean;
+}
+
+export interface CreateProductDTO {
+  name: string;
+  description?: string;
+  price?: number; // Integer (cents)
+  categoryIds?: string[];
+  media?: MediaUploadDTO[];
+}
+
+export interface UpdateProductDTO {
+  name?: string;
+  description?: string;
+  price?: number;
+  categoryIds?: string[];
+}
+
+export interface UpdateProductMediaDTO {
+  keepMediaIds: string[];
+  files: File[];
+}
 
 export interface Product {
   id: string;
@@ -41,13 +76,7 @@ export interface PublicProductDetail {
     };
   }[];
 
-  media: {
-    id: string;
-    url: string;
-    type: 'FOTO' | 'VIDEO';
-    isMain: boolean;
-    order: number;
-  }[];
+  media: Media[];
 
   user: {
     id: string;

@@ -12,8 +12,7 @@ import { useProductDetail } from '@/hooks/products/useProductDetail';
 import { useUpdateProduct } from '@/hooks/products/useUpdateProduct';
 import { useUpdateProductMedia } from '@/hooks/products/useUpdateProductMedia';
 import { useToast } from '@/contexts/ToastContext';
-import type { UpdateProductDTO, UpdateProductMediaDTO } from '@/types/productDTO';
-import type { Media } from '@/types/mediaType';
+import type { UpdateProductDTO, UpdateProductMediaDTO, Media } from '@/types/productType';
 import styles from '@/components/NovoProduto/NovoProduto.module.scss'; // Reuse styles
 import { formatCurrencyInput, parseCurrencyToCents } from '@/utils';
 
@@ -54,14 +53,7 @@ export default function EditProductContainer({ productId }: EditProductContainer
       const cats = product.categories ? product.categories.map((c: any) => c.category?.id || c.categoryId) : [];
       setSelectedCats(cats);
       
-      const mappedMedia: Media[] = (product.media || []).map((m: any) => ({
-        id: m.id,
-        fileUrl: m.url,
-        type: m.type === 'FOTO' ? 'image' : 'video',
-        order: m.order,
-        productId: product.id,
-      }));
-      setExistingMedia(mappedMedia);
+      setExistingMedia(product.media || []);
     }
   }, [product]);
 
