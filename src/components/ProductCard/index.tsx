@@ -11,7 +11,9 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, index = 0 }: ProductCardProps) {
-  const mainImage = product.media.find(m => m.type === 'image');
+  const mainImage = product.media?.find(m => m.isMain && m.type === 'image')
+    || product.media?.find(m => m.type === 'image');
+  const imageUrl = mainImage?.fileUrl || '/placeholder-product.svg';
 
   return (
     <Link
@@ -21,16 +23,14 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       aria-label={`Ver ${product.title} por ${formatPrice(product.price)}`}
     >
       <div className={styles.imageWrapper}>
-        {mainImage && (
-          <Image
-            src={mainImage.fileUrl}
-            alt={product.title}
-            width={400}
-            height={400}
-            loading={index < 4 ? 'eager' : 'lazy'}
-            unoptimized
-          />
-        )}
+        <Image
+          src={imageUrl}
+          alt={product.title}
+          width={400}
+          height={400}
+          loading={index < 4 ? 'eager' : 'lazy'}
+          unoptimized
+        />
         {product.category && (
           <span className={styles.badge}>{product.category.name}</span>
         )}

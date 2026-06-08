@@ -12,7 +12,7 @@ import { useToast } from '@/contexts/ToastContext';
 import { InputField } from '@/components/InputField';
 import { TextAreaField } from './TextAreaField';
 import { MediaUpload } from './MediaUpload';
-import type { CreateProductDTO, MediaUploadDTO } from '@/types/productDTO';
+import type { CreateProductDTO, MediaUploadDTO } from '@/types/productType';
 import styles from './NovoProduto.module.scss';
 import { formatCurrencyInput, parseCurrencyToCents } from '@/utils';
 

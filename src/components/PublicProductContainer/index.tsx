@@ -68,21 +68,13 @@ export default function PublicProductContainer({ productId }: PublicProductConta
 
   const mainMedia = mainMediaIndex !== -1 ? rawMedia.splice(mainMediaIndex, 1)[0] : null;
 
-  const otherPhotos = rawMedia.filter(m => m.type !== 'VIDEO');
-  const videos = rawMedia.filter(m => m.type === 'VIDEO');
+  const otherPhotos = rawMedia.filter(m => m.type === 'image');
+  const videos = rawMedia.filter(m => m.type === 'video');
 
-  const orderedMedia = [];
+  const orderedMedia: Media[] = [];
   if (mainMedia) orderedMedia.push(mainMedia);
   orderedMedia.push(...otherPhotos);
   orderedMedia.push(...videos);
-
-  const mappedMedia: Media[] = orderedMedia.map(m => ({
-    id: m.id,
-    fileUrl: m.url,
-    type: (m.type === 'FOTO' || (m.type as any) === 'image') ? 'image' : 'video',
-    order: m.order,
-    productId: product.id,
-  }));
 
   return (
     <div className={styles.pageContainer}>
@@ -102,7 +94,7 @@ export default function PublicProductContainer({ productId }: PublicProductConta
       <div className={styles.layout}>
         {/* Carousel */}
         <div className={styles.galleryColumn}>
-          <ProductCarousel media={mappedMedia} title={product.name} />
+          <ProductCarousel media={orderedMedia} title={product.name} />
         </div>
 
         {/* Details & Seller Info */}

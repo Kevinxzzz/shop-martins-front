@@ -141,9 +141,9 @@ export default function LoginForm() {
             <input type="checkbox" className={styles.checkbox} />
             <span className={styles.checkboxLabel}>Lembrar de mim</span>
           </label>
-          <Link href="/recuperar-senha" className={styles.forgotPassword}>
+          {/* <Link href="/recuperar-senha" className={styles.forgotPassword}>
             Esqueceu a senha?
-          </Link>
+          </Link> */}
         </div>
 
         {/* Submit */}

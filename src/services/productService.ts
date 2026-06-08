@@ -4,9 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { httpClient } from './httpClient';
-import type { CreateProductDTO, UpdateProductDTO, UpdateProductMediaDTO } from '@/types/productDTO';
-import type { Product, PaginatedProductsResponse, PublicProductDetail } from '@/types/productType';
-import type { Media } from '@/types/mediaType';
+import type { CreateProductDTO, UpdateProductDTO, UpdateProductMediaDTO, Product, PaginatedProductsResponse, PublicProductDetail, Media } from '@/types/productType';
 import { UserRole } from '@/shared/constants/userRoles';
 
 function mapBackendProductToFrontend(raw: any): Product {
@@ -14,6 +12,7 @@ function mapBackendProductToFrontend(raw: any): Product {
     id: m.id,
     fileUrl: m.url, // Backend uses 'url', Frontend expects 'fileUrl'
     type: m.type === 'FOTO' ? 'image' : 'video', // Backend FOTO -> image, VIDEO -> video
+    isMain: m.isMain || false,
     order: m.order || 0,
     productId: m.productId,
   }));
@@ -131,8 +130,24 @@ export const productService = {
   },
 
   async getProductById(productId: string): Promise<PublicProductDetail> {
-    const response = await httpClient.get<PublicProductDetail>(`/products/${productId}`);
-    return response.data;
+    const response = await httpClient.get<any>(`/products/${productId}`);
+    const raw = response.data;
+
+    const media: Media[] = (raw.media || []).map((m: any) => ({
+      id: m.id,
+      fileUrl: m.url,
+      type: m.type === 'FOTO' ? 'image' : 'video',
+      isMain: m.isMain || false,
+      order: m.order || 0,
+      productId: raw.id,
+    }));
+
+    media.sort((a, b) => a.order - b.order);
+
+    return {
+      ...raw,
+      media,
+    };
   },
 
   async updateProduct(productId: string, data: UpdateProductDTO): Promise<Product> {
