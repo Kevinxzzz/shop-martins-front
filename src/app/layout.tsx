@@ -14,17 +14,17 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Shop Martins — Marketplace Esportivo Premium',
-    template: '%s | Shop Martins',
+    default: 'BlueFoot',
+    template: '%s | BlueFoot',
   },
   description:
-    'Marketplace esportivo premium. Encontre chuteiras, camisas, acessórios e tudo para o esporte com os melhores vendedores.',
-  keywords: ['marketplace', 'esporte', 'chuteiras', 'camisas de time', 'loja esportiva'],
-  authors: [{ name: 'Shop Martins' }],
+    'Ecomerce esportivo premium. Encontre contas de efootball com os melhores vendedores.',
+  keywords: ['marketplace', 'esporte', 'ecomerce'],
+  authors: [{ name: 'BlueFoot' }],
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    siteName: 'Shop Martins',
+    siteName: 'BlueFoot',
   },
 };
 
