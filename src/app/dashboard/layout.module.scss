@@ -24,19 +24,47 @@
   }
 }
 
+.mobileWrapper {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  pointer-events: none;
+
+  @include respond-to('lg') {
+    display: none;
+  }
+}
+
 .mobileSidebar {
   @extend .sidebar;
   display: flex;
   z-index: var(--z-modal);
-  animation: slide-in-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translate3d(-100%, 0, 0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 .overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: var(--color-bg-overlay);
   z-index: var(--z-overlay);
-  animation: fade-in 0.2s ease-out;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+}
+
+.mobileWrapper.open {
+  pointer-events: auto;
+
+  .overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobileSidebar {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .sidebarHeader {
