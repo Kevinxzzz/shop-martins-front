@@ -66,7 +66,7 @@ export default function Footer() {
 
       <div className={styles.bottom}>
         <p className={styles.copyright}>
-          © {new Date().getFullYear()} Shop Martins. Todos os direitos
+          © {new Date().getFullYear()} BlueFoot. Todos os direitos
           reservados.
         </p>
         <div className={styles.bottomLinks}>

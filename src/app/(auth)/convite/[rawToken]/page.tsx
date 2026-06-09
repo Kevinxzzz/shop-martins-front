@@ -2,8 +2,8 @@ import CadastroContainer from '@/components/Cadastro';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Convite - MartinsVendas',
-  description: 'Aceite seu convite e cadastre-se no MartinsVendas.',
+  title: 'Convite - BlueFoot',
+  description: 'Aceite seu convite e cadastre-se no BlueFoot.',
 };
 
 type ConvitePageProps = {

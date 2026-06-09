@@ -2,7 +2,7 @@ import EditProductContainer from '@/components/EditProduct';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Editar Produto - MartinsVendas',
+  title: 'Editar Produto - BlueFoot',
   description: 'Altere as informações, categorias e mídias do seu produto.',
 };
 
