@@ -42,8 +42,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <>
       <div className={styles.sidebarHeader}>
         <Link href="/" className={styles.logo}>
-          <div className={styles.logoIcon}>S</div>
-          <span className={styles.logoText}>Shop<span>Martins</span></span>
+          <div className={styles.logoIcon}>B</div>
+          <span className={styles.logoText}>Blue<span>Foot</span></span>
         </Link>
       </div>
 

@@ -173,7 +173,7 @@ export default function CadastroEmpresaForm() {
         <div className={styles.formHeaderMobileLogo}>
           <div className={styles.brandLogo}>
             <Sparkles className={styles.brandLogoIcon} size={24} />
-            <span>MartinsVendas</span>
+            <span>BlueFoot</span>
           </div>
         </div>
         <h2 className={styles.formTitle}>Cadastrar Empresa</h2>

@@ -7,7 +7,7 @@ export default function BrandPanel() {
       <div>
         <div className={styles.brandLogo}>
           <Sparkles className={styles.brandLogoIcon} size={28} />
-          <span>MartinsVendas</span>
+          <span>BlueFoot</span>
         </div>
       </div>
 

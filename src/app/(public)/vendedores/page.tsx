@@ -2,7 +2,7 @@ import PublicVendorsContainer from '@/components/PublicVendors';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Nossos Vendedores - MartinsVendas',
+  title: 'Nossos Vendedores - BlueFoot',
   description: 'Conheça os vendedores da plataforma e explore seus produtos exclusivos.',
 };
 

@@ -2,7 +2,7 @@ import AdminTokensContainer from '@/components/AdminTokens';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Convites de Vendedores - MartinsVendas',
+  title: 'Convites de Vendedores - BlueFoot',
   description: 'Gere e gerencie os links de convite para onboarding de vendedores.',
 };
 
