@@ -14,6 +14,8 @@ interface ModalConfirmProps {
   onConfirm: () => void;
   onCancel: () => void;
   variant?: 'danger' | 'default';
+  isLoading?: boolean;
+  loadingText?: string;
 }
 
 export default function ModalConfirm({
@@ -25,6 +27,8 @@ export default function ModalConfirm({
   onConfirm,
   onCancel,
   variant = 'default',
+  isLoading = false,
+  loadingText = 'Carregando...',
 }: ModalConfirmProps) {
   if (!isOpen) return null;
 
@@ -40,12 +44,15 @@ export default function ModalConfirm({
         <h3 id="modal-title" className={styles.title}>{title}</h3>
         <p className={styles.message}>{message}</p>
         <div className={styles.actions}>
-          <button className={styles.cancelBtn} onClick={onCancel}>{cancelText}</button>
+          <button className={styles.cancelBtn} onClick={onCancel} disabled={isLoading}>
+            {cancelText}
+          </button>
           <button
             className={`${styles.confirmBtn} ${variant === 'danger' ? styles.danger : ''}`}
             onClick={onConfirm}
+            disabled={isLoading}
           >
-            {confirmText}
+            {isLoading ? loadingText : confirmText}
           </button>
         </div>
       </div>
