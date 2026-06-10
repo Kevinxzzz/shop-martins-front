@@ -3,22 +3,35 @@
 import { useUsers } from '@/hooks/users/useUsers';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { UserTable } from '@/components/AdminUsers/UserTable';
-import { useToast } from '@/contexts/ToastContext';
+import { useDeleteUser } from '@/hooks/users/useDeleteUser';
+import ModalConfirm from '@/components/ModalConfirm';
+import { useState } from 'react';
+import { UserDTO } from '@/types';
 import styles from './usuarios.module.scss';
 
 export default function AdminUsersPage() {
   const { data: users, isLoading, isError, error } = useUsers();
   const { user: currentUser } = useAuth();
-  const { addToast } = useToast();
+  const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
+  
+  const [userToDelete, setUserToDelete] = useState<UserDTO | null>(null);
 
-  const toggleUserStatus = (id: string) => {
-    // TODO: Implementar ativação/desativação real integrada com a API
-    console.log('Toggle user status:', id);
-    addToast({
-      type: 'alert',
-      title: 'Em Desenvolvimento',
-      message: 'A funcionalidade de alterar status será implementada em breve.',
-    });
+  const handleDeleteClick = (user: UserDTO) => {
+    setUserToDelete(user);
+  };
+
+  const handleConfirmDelete = () => {
+    if (userToDelete) {
+      deleteUser(userToDelete.id, {
+        onSuccess: () => {
+          setUserToDelete(null);
+        }
+      });
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setUserToDelete(null);
   };
 
   if (isError) {
@@ -44,7 +57,25 @@ export default function AdminUsersPage() {
         users={users || []} 
         isLoading={isLoading} 
         currentUser={currentUser || null}
-        onToggleStatusClick={toggleUserStatus}
+        onDeleteClick={handleDeleteClick}
+      />
+
+      <ModalConfirm
+        isOpen={!!userToDelete}
+        title="Excluir Usuário"
+        message={
+          <span>
+            Tem certeza que deseja excluir o usuário <strong>{userToDelete?.name}</strong> permanentemente?
+            Esta ação não pode ser desfeita.
+          </span>
+        }
+        confirmText="Sim, Excluir"
+        cancelText="Cancelar"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        variant="danger"
+        isLoading={isDeleting}
+        loadingText="Excluindo..."
       />
     </div>
   );
