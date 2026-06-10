@@ -29,6 +29,14 @@ export async function updateUserRole(userId: string, role: string): Promise<User
 }
 
 /**
+ * Exclui definitivamente um usuário e seus arquivos associados.
+ * DELETE /users/:id
+ */
+export async function deleteUser(userId: string): Promise<void> {
+  await httpClient.delete(`/users/${userId}`);
+}
+
+/**
  * Busca o perfil completo do usuário logado.
  * GET /users/profile
  */

@@ -9,14 +9,14 @@ interface UserTableProps {
   users: UserDTO[] | undefined;
   isLoading: boolean;
   currentUser: AuthUser | null;
-  onToggleStatusClick: (id: string) => void;
+  onDeleteClick: (user: UserDTO) => void;
 }
 
 export function UserTable({ 
   users, 
   isLoading, 
   currentUser,
-  onToggleStatusClick 
+  onDeleteClick 
 }: UserTableProps) {
   
   function canEditRole(user: UserDTO) {
@@ -24,12 +24,11 @@ export function UserTable({
     return user.id !== currentUser.id && user.status === 'ACTIVE';
   }
 
-  // LOGS ADICIONADOS PARA DEBUG DO PAYLOAD DA API
-  console.log('--- USER TABLE DEBUG: PAYLOAD DA API ---');
-  users?.forEach(u => {
-    console.log(`User: ${u.name} | isFounder: ${u.isFounder} | role: ${u.role}`);
-  });
-  console.log('----------------------------------------');
+  function canDeleteUser(user: UserDTO) {
+    if (!currentUser || currentUser.role !== 'ADMIN') return false;
+    return user.id !== currentUser.id && !user.isFounder;
+  }
+
 
   return (
     <div className={styles.usersList}>
@@ -101,14 +100,14 @@ export function UserTable({
             </div>
 
             <div className={styles.actionsCol}>
-              <button
-                className={`${styles.actionBtn} ${
-                  user.status === 'ACTIVE' ? styles.btnDeactivate : styles.btnActivate
-                }`}
-                onClick={() => onToggleStatusClick(user.id)}
-              >
-                {user.status === 'ACTIVE' ? 'Desativar' : 'Ativar'}
-              </button>
+              {canDeleteUser(user) && (
+                <button
+                  className={`${styles.actionBtn} ${styles.btnDeactivate}`}
+                  onClick={() => onDeleteClick(user)}
+                >
+                  Excluir
+                </button>
+              )}
             </div>
           </div>
         ))}
