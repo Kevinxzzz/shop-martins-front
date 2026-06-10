@@ -2,7 +2,7 @@ import PublicProductContainer from '@/components/PublicProductContainer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Detalhes do Produto - MartinsVendas',
+  title: 'Detalhes do Produto - BlueFoot',
   description: 'Veja todos os detalhes, fotos e preço deste produto.',
 };
 

@@ -103,6 +103,7 @@ a {
   color: var(--color-primary);
   text-decoration: none;
   transition: color var(--transition-fast);
+  touch-action: manipulation;
 
   &:hover {
     color: var(--color-primary-hover);
@@ -113,6 +114,7 @@ a {
 button {
   font-family: inherit;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 input,

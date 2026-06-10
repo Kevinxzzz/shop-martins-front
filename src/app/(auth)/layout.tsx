@@ -4,7 +4,7 @@ import styles from './layout.module.scss';
 
 export const metadata: Metadata = {
   title: 'Autenticação',
-  description: 'Acesse sua conta ou crie uma nova no Shop Martins - Marketplace Esportivo Premium.',
+  description: 'Acesse sua conta ou crie uma nova no BlueFoot - Marketplace Esportivo Premium.',
 };
 
 export default function AuthLayout({

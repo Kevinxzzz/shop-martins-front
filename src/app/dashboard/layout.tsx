@@ -42,8 +42,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <>
       <div className={styles.sidebarHeader}>
         <Link href="/" className={styles.logo}>
-          <div className={styles.logoIcon}>S</div>
-          <span className={styles.logoText}>Shop<span>Martins</span></span>
+          <div className={styles.logoIcon}>B</div>
+          <span className={styles.logoText}>Blue<span>Foot</span></span>
         </Link>
       </div>
 
@@ -104,13 +104,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Desktop sidebar */}
         <aside className={styles.sidebar}>{sidebarContent}</aside>
 
-        {/* Mobile overlay */}
-        {sidebarOpen && (
-          <>
-            <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />
-            <aside className={styles.mobileSidebar}>{sidebarContent}</aside>
-          </>
-        )}
+        {/* Mobile sidebar container */}
+        <div className={`${styles.mobileWrapper} ${sidebarOpen ? styles.open : ''}`}>
+          <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />
+          <aside className={styles.mobileSidebar}>{sidebarContent}</aside>
+        </div>
 
         {/* Main content */}
         <div className={styles.main}>

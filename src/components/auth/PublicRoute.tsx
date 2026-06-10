@@ -8,6 +8,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/auth/useAuth';
+import { tokenStorage } from '@/lib/auth/tokenStorage';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
 
 export function PublicRoute({ children }: { children: React.ReactNode }) {
@@ -15,7 +16,10 @@ export function PublicRoute({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
+    // Importante verificar o token no storage diretamente, pois o estado isAuthenticated 
+    // pode estar "stale" (desatualizado) por milissegundos logo após o logout
+    const token = tokenStorage.getAccessToken();
+    if (!isLoading && isAuthenticated && token) {
       router.replace('/');
     }
   }, [isAuthenticated, isLoading, router]);
