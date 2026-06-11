@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, Package, Plus, User, Users, Shield, Key, Settings,
@@ -42,8 +43,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <>
       <div className={styles.sidebarHeader}>
         <Link href="/" className={styles.logo}>
-          <div className={styles.logoIcon}>B</div>
-          <span className={styles.logoText}>Blue<span>Foot</span></span>
+          <div className={styles.logoContainer}>
+            <Image
+              src="/logo-branco-BlueFoot.png"
+              alt="BlueFoot Logo"
+              width={68}
+              height={68}
+              className={`${styles.logoImg} ${styles.logoWhite}`}
+              priority
+            />
+            <Image
+              src="/logo-preto-Bluefoot.png"
+              alt="BlueFoot Logo"
+              width={68}
+              height={68}
+              className={`${styles.logoImg} ${styles.logoBlack}`}
+              priority
+            />
+          </div>
+          <span className={styles.logoText}>BLUE<span>FOOT</span></span>
         </Link>
       </div>
 
