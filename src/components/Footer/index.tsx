@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./Footer.module.scss";
 
 export default function Footer() {
@@ -8,7 +9,22 @@ export default function Footer() {
         <div className={styles.grid}>
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
-              <div className={styles.logoIcon}>B</div>
+              <div className={styles.logoContainer}>
+                <Image
+                  src="/logo-branco-BlueFoot.png"
+                  alt="BlueFoot Logo"
+                  width={88}
+                  height={88}
+                  className={`${styles.logoImg} ${styles.logoWhite}`}
+                />
+                <Image
+                  src="/logo-preto-Bluefoot.png"
+                  alt="BlueFoot Logo"
+                  width={88}
+                  height={88}
+                  className={`${styles.logoImg} ${styles.logoBlack}`}
+                />
+              </div>
               <div className={styles.logoText}>
                 <span>BLUE</span>FOOT
               </div>
