@@ -22,14 +22,15 @@
   }
 
   @include respond-to("sm") {
-    aspect-ratio: 16 / 6;
+    aspect-ratio: 16 / 7;
   }
 
   @include respond-to("md") {
-    aspect-ratio: 16 / 5;
+    aspect-ratio: 16 / 7;
   }
 
   @include respond-to("lg") {
+    aspect-ratio: 16 / 5;
     max-height: 440px;
   }
 
@@ -72,6 +73,22 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.desktopOnly {
+  display: none !important;
+
+  @include respond-to("lg") {
+    display: block !important;
+  }
+}
+
+.mobileTabletOnly {
+  display: block !important;
+
+  @include respond-to("lg") {
+    display: none !important;
+  }
 }
 
 // ── Navigation Arrows ───────────────────────────────────────

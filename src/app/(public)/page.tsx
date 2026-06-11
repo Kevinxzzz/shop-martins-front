@@ -29,7 +29,7 @@ function HomeContent() {
 
   const { data: linkData } = usePublicEnterpriseLink();
   const salesGroupLink =
-    linkData?.link || "https://chat.whatsapp.com/abc123grupo";
+    linkData?.link || "";
 
   const categoryParam = searchParams.get("category");
   const searchParam = searchParams.get("search");

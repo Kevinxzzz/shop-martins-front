@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Search,
@@ -132,13 +133,28 @@ export default function Header() {
   return (
     <>
       <header
-        className={`${styles.header} ${isScrolled ? styles.isScrolled : ""}`}
+        className={`${styles.header} ${isScrolled ? styles.isScrolled : ""} ${pathname === "/" ? styles.isHome : ""}`}
       >
         <div className={styles.container}>
           <div className={styles.left}>
             <Link href="/" className={styles.logo}>
-              <div className={styles.logoIcon}>
-                <ShoppingBag size={20} />
+              <div className={styles.logoContainer}>
+                <Image
+                  src="/logo-branco-BlueFoot.png"
+                  alt="BlueFoot Logo"
+                  width={48}
+                  height={48}
+                  className={`${styles.logoImg} ${styles.logoWhite}`}
+                  priority
+                />
+                <Image
+                  src="/logo-preto-Bluefoot.png"
+                  alt="BlueFoot Logo"
+                  width={48}
+                  height={48}
+                  className={`${styles.logoImg} ${styles.logoBlack}`}
+                  priority
+                />
               </div>
               <span className={styles.logoText}>
                 <strong>BLUE</strong>FOOT
@@ -200,9 +216,27 @@ export default function Header() {
         />
         <div className={styles.mobileMenu}>
           <div className={styles.mobileHeader}>
-            <span className={styles.logoText}>
-              <strong>Blue</strong>foot
-            </span>
+            <div className={styles.logo}>
+              <div className={styles.logoContainer}>
+                <Image
+                  src="/logo-branco-BlueFoot.png"
+                  alt="BlueFoot Logo"
+                  width={42}
+                  height={42}
+                  className={`${styles.logoImg} ${styles.logoWhite}`}
+                />
+                <Image
+                  src="/logo-preto-Bluefoot.png"
+                  alt="BlueFoot Logo"
+                  width={42}
+                  height={42}
+                  className={`${styles.logoImg} ${styles.logoBlack}`}
+                />
+              </div>
+              <span className={styles.logoText}>
+                <strong>Blue</strong>foot
+              </span>
+            </div>
             <button
               className={styles.closeBtn}
               onClick={() => setIsMobileMenuOpen(false)}
